@@ -1,27 +1,25 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function AuthCallback() {
   const { user, loading } = useAuth();
   const [params] = useSearchParams();
-  const navigate = useNavigate();
+  const next = params.get("next") ?? "/";
 
-  useEffect(() => {
-    if (loading) return;
-    const next = params.get("next") ?? "/";
-    if (user) {
-      navigate(next, { replace: true });
-    } else {
-      navigate("/login?error=auth_failed", { replace: true });
-    }
-  }, [user, loading, params, navigate]);
+  if (loading) {
+    return (
+      <section className="min-h-screen flex items-center justify-center">
+        <p className="text-muted text-sm uppercase tracking-widest animate-pulse">
+          Redirigiendo...
+        </p>
+      </section>
+    );
+  }
 
-  return (
-    <section className="min-h-screen flex items-center justify-center">
-      <p className="text-muted text-sm uppercase tracking-widest animate-pulse">
-        Redirigiendo...
-      </p>
-    </section>
-  );
+  if (user) {
+    return <Navigate to={next} replace />;
+  }
+
+  // Not logged in after callback — auth must have failed
+  return <Navigate to="/login?error=auth_failed" replace />;
 }
