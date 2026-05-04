@@ -5,6 +5,8 @@ import { Toaster as Sonner } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Layout } from "@/components/Layout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 
 // Eager (hot path)
 import Home from "./pages/Home";
@@ -52,6 +54,8 @@ export default function App() {
       <AuthProvider>
         <Sonner position="top-center" theme="dark" richColors />
         <BrowserRouter>
+          <ScrollToTop />
+          <AnalyticsTracker />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/login" element={<Login />} />

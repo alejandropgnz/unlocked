@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Unlocked
 
-## Getting Started
+Web viral de logros absurdos. Trading-card style con tier por rareza real.
 
-First, run the development server:
+**Stack:** Vite + React 18 + TypeScript + Tailwind v4 + TanStack Query + Supabase + Vercel
+
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:5173
+npm test             # Vitest unit tests
+npm run build        # Build de producción
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crea `.env.local` (no commit) con:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+VITE_SUPABASE_URL=https://<your-project>.supabase.co
+VITE_SUPABASE_ANON_KEY=<anon-key>
+VITE_SITE_URL=http://localhost:5173
 
-## Learn More
+# Server-side (sólo serverless functions en api/)
+SUPABASE_URL=<same>
+SUPABASE_ANON_KEY=<same>
+SITE_URL=https://unlocked-rgcv.vercel.app
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Estructura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/pages/` — páginas (React Router lazy-loaded)
+- `src/components/` — feature components + `ui/` design system primitives
+- `src/hooks/` — TanStack Query hooks por dominio
+- `src/contexts/AuthContext.tsx` — sesión + perfil + OAuth Google
+- `src/lib/` — supabase, rarity, slug, moderation, validators, share, logger
+- `api/` — Vercel serverless functions (OG images + crawler HTML)
+- `supabase/migrations/` — SQL schema histórico
+- `supabase/seed/` — 200 logros curados
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## OG Images
 
-## Deploy on Vercel
+`api/page.js` genera HTML para crawlers y `api/og.js` genera imágenes OG dinámicas.
+`/og-default.png` se usa como fallback para rutas desconocidas — si no existe, el OG meta dará 404 (los crawlers lo manejan con gracia; reemplazar con imagen real antes del launch).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Producto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Spec completa en `docs/superpowers/specs/2026-05-04-unlocked-design.md`. Reglas y convenciones en `CLAUDE.md`.
