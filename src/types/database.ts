@@ -246,6 +246,24 @@ export type Database = {
         };
         Relationships: [];
       };
+      passes: {
+        Row: {
+          user_id: string;
+          achievement_id: string;
+          created_at: string;
+        };
+        Insert: {
+          user_id: string;
+          achievement_id: string;
+          created_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          achievement_id?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       achievement_rarity: {
@@ -259,7 +277,12 @@ export type Database = {
         Relationships: [];
       };
     };
-    Functions: Record<string, never>;
+    Functions: {
+      find_similar_achievement: {
+        Args: { query_title: string; min_similarity?: number };
+        Returns: { id: string; slug: string; title: string; sim: number }[];
+      };
+    };
     Enums: {
       achievement_category:
         | "familia"
@@ -269,7 +292,9 @@ export type Database = {
         | "trabajo"
         | "random"
         | "salud"
-        | "viajes";
+        | "viajes"
+        | "amigos"
+        | "relaciones";
       achievement_status: "pending" | "approved" | "rejected";
       report_target_type: "achievement" | "story" | "reply" | "profile";
       report_reason: "spam" | "ofensivo" | "datos_personales" | "otro";
