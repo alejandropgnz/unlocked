@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { saveBio } from "@/app/yo/actions";
 
 export function BioForm({ initial }: { initial: string }) {
@@ -8,6 +8,12 @@ export function BioForm({ initial }: { initial: string }) {
   const [error, setError] = useState<string | null>(null);
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (savedAt === null) return;
+    const id = setTimeout(() => setSavedAt(null), 2500);
+    return () => clearTimeout(id);
+  }, [savedAt]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,7 +27,7 @@ export function BioForm({ initial }: { initial: string }) {
     });
   };
 
-  const justSaved = savedAt !== null && Date.now() - savedAt < 2500;
+  const justSaved = savedAt !== null;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2">
