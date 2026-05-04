@@ -10,6 +10,7 @@ import {
   tierTextColor,
 } from "@/lib/rarity";
 import { AdjudicateModal } from "@/components/adjudicate-modal";
+import { StoryThread, type StoryListItem } from "@/components/story-thread";
 
 export const revalidate = 60;
 
@@ -120,6 +121,55 @@ export default async function AchievementPage({
     currentUsername = profileRes.data?.username ?? null;
   }
 
+  type StoryRow = {
+    id: string;
+    body: string;
+    score: number;
+    created_at: string;
+    user_id: string;
+    profiles: { username: string; display_name: string; avatar_url: string | null } | null;
+  };
+
+  const { data: storiesRaw } = await supabase
+    .from("stories")
+    .select(
+      "id, body, score, created_at, user_id, profiles!stories_user_id_fkey(username, display_name, avatar_url)",
+    )
+    .eq("achievement_id", achievement.id)
+    .eq("is_hidden", false)
+    .order("score", { ascending: false })
+    .limit(50)
+    .returns<StoryRow[]>();
+
+  const storyIds = (storiesRaw ?? []).map((s) => s.id);
+  const myReactionByStoryId = new Map<string, 1 | -1>();
+  if (user && storyIds.length > 0) {
+    const { data: rs } = await supabase
+      .from("reactions")
+      .select("target_id, value")
+      .eq("user_id", user.id)
+      .eq("target_type", "story")
+      .in("target_id", storyIds)
+      .returns<{ target_id: string; value: number }[]>();
+    for (const r of rs ?? []) {
+      myReactionByStoryId.set(r.target_id, r.value as 1 | -1);
+    }
+  }
+
+  const stories: StoryListItem[] = (storiesRaw ?? []).map((s) => ({
+    id: s.id,
+    body: s.body,
+    score: s.score,
+    createdAt: s.created_at,
+    user: {
+      username: s.profiles?.username ?? "",
+      displayName: s.profiles?.display_name ?? "",
+      avatarUrl: s.profiles?.avatar_url ?? null,
+    },
+    isOwn: !!user && user.id === s.user_id,
+    myReaction: myReactionByStoryId.get(s.id) ?? 0,
+  }));
+
   const rarityPercent = Number(rarityRow?.rarity_percent ?? 0);
   const tier = rarityTier(rarityPercent);
   const tierColor = tierTextColor(tier);
@@ -174,6 +224,11 @@ export default async function AchievementPage({
           />
         </div>
       </div>
+
+      <section className="mt-12">
+        <h2 className="text-xs uppercase tracking-widest text-muted mb-4">Historias</h2>
+        <StoryThread stories={stories} isLoggedIn={!!user} />
+      </section>
     </main>
   );
 }
