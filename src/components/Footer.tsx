@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Instagram, Twitter } from "lucide-react";
+import { Wordmark } from "./Wordmark";
 
 /**
  * Site footer. Visible on desktop. Hidden on mobile (BottomNav serves as
@@ -17,8 +18,8 @@ export function Footer() {
     <footer className="hidden md:block border-t border-white/5 mt-12 py-10 px-6 lg:px-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <Link to="/" className="font-black text-lg tracking-tightest hover:text-gold transition">
-            UNLOCKED
+          <Link to="/" aria-label="Unlocked — Inicio" className="hover:text-gold transition">
+            <Wordmark size="md" />
           </Link>
           <div className="flex gap-2">
             <a

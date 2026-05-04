@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "./ui/Button";
+import { Wordmark } from "./Wordmark";
 
 /**
  * Top nav bar (desktop). Brand on the left, login button on the right (only
@@ -12,8 +13,8 @@ export function NavBar() {
 
   return (
     <nav className="hidden md:flex items-center justify-between px-6 lg:px-8 py-4 border-b border-white/5">
-      <Link to="/" className="font-black text-lg tracking-tightest">
-        UNLOCKED
+      <Link to="/" aria-label="Unlocked — Inicio">
+        <Wordmark size="md" />
       </Link>
       <div className="flex items-center gap-4 text-sm">
         {!user && (
