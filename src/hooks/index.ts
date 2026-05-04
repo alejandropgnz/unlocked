@@ -28,3 +28,7 @@ export { useSaveBio, useSaveTop5, useDeleteAccount } from "./useYo";
 export { useUpdateAvatar } from "./useUpdateAvatar";
 export { trackEvent } from "./useTrack";
 export { useAddStory } from "./useAddStory";
+export { useDebounce } from "./useDebounce";
+export { useUsernameAvailability } from "./useUsernameAvailability";
+export type { UsernameStatus } from "./useUsernameAvailability";
+export { useChangeUsername } from "./useChangeUsername";

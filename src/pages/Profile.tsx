@@ -12,6 +12,7 @@ import { AchievementCard } from "@/components/AchievementCard";
 import { ShareCardModal } from "@/components/ShareCardModal";
 import { AvatarUploader } from "@/components/AvatarUploader";
 import { BioForm } from "@/components/BioForm";
+import { UsernameForm } from "@/components/UsernameForm";
 import { Top5Editor } from "@/components/Top5Editor";
 import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 import type { UnlockedItem } from "@/hooks/types";
@@ -129,6 +130,14 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      {/* Username editor (owner only) */}
+      {isOwner && (
+        <div>
+          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">Username</h2>
+          <UsernameForm currentUsername={profile.username} />
+        </div>
+      )}
 
       {/* Bio editor (owner only) */}
       {isOwner && (
