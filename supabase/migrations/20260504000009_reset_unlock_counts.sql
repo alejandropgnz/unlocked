@@ -1,0 +1,11 @@
+-- Reset unlock_count to 0 for all achievements.
+-- From this point on the bump_unlock_count trigger (migration 003) maintains
+-- this denormalised counter naturally on every INSERT/DELETE in the unlocks table.
+-- Without this reset, any hardcoded or erroneous values in unlock_count would
+-- cause the achievement_rarity view to return absurd rarity_percent values when
+-- the number of user profiles is small (e.g. unlock_count=12500, profiles=1
+-- → rarity_percent = 1,250,000%).
+--
+-- APPLY MANUALLY via Supabase Dashboard → SQL Editor, or:
+--   supabase db push
+update achievements set unlock_count = 0;

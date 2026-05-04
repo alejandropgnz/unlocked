@@ -15,8 +15,8 @@ export function rarityTier(percent: number, ctx?: RarityContext): Tier {
   }
   if (percent > 10) return "common";
   if (percent >= 1) return "rare";
-  if (percent > 0) return "legendary";
-  return "common";
+  // percent > 0 but <= 1, or percent === 0 (no one has it yet) → legendary
+  return "legendary";
 }
 
 const LABELS: Record<Tier, string> = {

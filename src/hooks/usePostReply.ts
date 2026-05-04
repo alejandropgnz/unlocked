@@ -34,6 +34,7 @@ export function usePostReply() {
     },
     onSuccess: (_data, vars) => {
       queryClient.invalidateQueries({ queryKey: ["replies", "by-story", vars.storyId] });
+      toast.success("Respuesta publicada");
     },
     onError: (e: Error) => {
       toast.error(e.message);

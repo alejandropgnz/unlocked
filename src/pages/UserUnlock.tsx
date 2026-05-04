@@ -36,11 +36,11 @@ export default function UserUnlock() {
     );
   }
 
-  const { achievement, user: profileUser, story, rarityPercent } = data;
+  const { achievement, user: profileUser, story, rarityPercent, unlockedAt } = data;
   const tier = rarityTier(rarityPercent);
   const tierColor = tierTextColor(tier);
 
-  const unlockedDate = new Date().toLocaleDateString("es-ES", {
+  const unlockedDate = new Date(unlockedAt).toLocaleDateString("es-ES", {
     year: "numeric",
     month: "long",
     day: "numeric",

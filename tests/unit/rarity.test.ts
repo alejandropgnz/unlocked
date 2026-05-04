@@ -21,8 +21,11 @@ describe("rarityTier", () => {
     expect(rarityTier(100, { totalUsers: 1, unlockCount: 1 })).toBe<Tier>("unique");
   });
 
-  it("returns common when percent is zero (no data)", () => {
-    expect(rarityTier(0)).toBe<Tier>("common");
+  it("returns legendary when percent is zero (nobody has it yet)", () => {
+    // An achievement with 0 unlocks (unlock_count=0) produces rarity_percent=0.
+    // Showing it as "common" (grey) is misleading — it should be "legendary"
+    // since literally no one else has unlocked it.
+    expect(rarityTier(0)).toBe<Tier>("legendary");
   });
 });
 

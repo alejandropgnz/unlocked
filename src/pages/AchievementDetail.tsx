@@ -1,16 +1,20 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAchievement } from "@/hooks/useAchievement";
 import { useStories } from "@/hooks/useStories";
 import { useUserUnlocks } from "@/hooks/useUserUnlocks";
 import { useAuth } from "@/contexts/AuthContext";
 import { AdjudicateModal } from "@/components/AdjudicateModal";
+import { AddStoryModal } from "@/components/AddStoryModal";
 import { StoriesList } from "@/components/StoriesList";
+import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { rarityTier, tierBorderClass, tierLabel, tierTextColor } from "@/lib/rarity";
 
 export default function AchievementDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
+  const [storyOpen, setStoryOpen] = useState(false);
 
   const { data: achievement, isLoading, isError } = useAchievement(slug);
   const { data: stories, isLoading: storiesLoading } = useStories(
@@ -41,6 +45,8 @@ export default function AchievementDetail() {
   const alreadyUnlocked = !!myUnlocks?.some(
     (u) => u.achievementId === achievement.id,
   );
+  // True only once stories have loaded and we know for sure the user has none
+  const ownStoryExists = !!stories?.some((s) => s.isOwn);
 
   return (
     <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
@@ -74,6 +80,21 @@ export default function AchievementDetail() {
             rarityPercent={achievement.rarityPercent}
             alreadyUnlocked={alreadyUnlocked}
           />
+          {/* CTA to add a story for users who adjudicated via swipe (no story yet) */}
+          {alreadyUnlocked && !storiesLoading && !ownStoryExists && (
+            <div className="mt-3">
+              <Button variant="ghost" size="md" onClick={() => setStoryOpen(true)}>
+                Cuenta tu historia
+              </Button>
+            </div>
+          )}
+          {achievement && (
+            <AddStoryModal
+              open={storyOpen}
+              onClose={() => setStoryOpen(false)}
+              achievementId={achievement.id}
+            />
+          )}
         </div>
       </div>
 

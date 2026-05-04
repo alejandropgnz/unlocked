@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 export interface UserUnlockData {
   unlockId: string;
+  unlockedAt: string;
   achievement: {
     id: string;
     slug: string;
@@ -50,7 +51,7 @@ export function useUserUnlock(
       // 3. Unlock joining the two
       const { data: unlock, error: uErr } = await supabase
         .from("unlocks")
-        .select("id")
+        .select("id, created_at")
         .eq("user_id", profile.id)
         .eq("achievement_id", achievement.id)
         .maybeSingle();
@@ -74,6 +75,7 @@ export function useUserUnlock(
 
       return {
         unlockId: unlock.id,
+        unlockedAt: unlock.created_at,
         achievement: {
           id: achievement.id,
           slug: achievement.slug,

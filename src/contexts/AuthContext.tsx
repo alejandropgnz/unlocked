@@ -55,32 +55,49 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     let cancelled = false;
 
-    void supabase.auth.getSession().then(async ({ data: { session: s } }) => {
-      if (cancelled) return;
-      setSession(s);
-      setUser(s?.user ?? null);
-      if (s?.user) {
-        setProfileLoading(true);
-        const p = await fetchProfile(s.user.id);
+    const init = async () => {
+      try {
+        const { data: { session: s } } = await supabase.auth.getSession();
         if (cancelled) return;
-        setProfile(p);
-        setProfileLoading(false);
+        setSession(s);
+        setUser(s?.user ?? null);
+        if (s?.user) {
+          setProfileLoading(true);
+          try {
+            const p = await fetchProfile(s.user.id);
+            if (cancelled) return;
+            setProfile(p);
+          } finally {
+            if (!cancelled) setProfileLoading(false);
+          }
+        }
+      } catch (e) {
+        logger.error("auth init failed", e);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      setLoading(false);
-    });
+    };
+    void init();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, s) => {
       if (cancelled) return;
-      setSession(s);
-      setUser(s?.user ?? null);
-      if (s?.user) {
-        setProfileLoading(true);
-        const p = await fetchProfile(s.user.id);
-        if (cancelled) return;
-        setProfile(p);
-        setProfileLoading(false);
-      } else {
-        setProfile(null);
+      try {
+        setSession(s);
+        setUser(s?.user ?? null);
+        if (s?.user) {
+          setProfileLoading(true);
+          try {
+            const p = await fetchProfile(s.user.id);
+            if (cancelled) return;
+            setProfile(p);
+          } finally {
+            if (!cancelled) setProfileLoading(false);
+          }
+        } else {
+          setProfile(null);
+        }
+      } catch (e) {
+        logger.error("auth state change failed", e);
       }
     });
 

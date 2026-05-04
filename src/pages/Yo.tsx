@@ -8,13 +8,23 @@ import { Top5Editor } from "@/components/Top5Editor";
 import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 
 export default function Yo() {
-  const { user, profile } = useAuth();
+  const { user, profile, profileLoading } = useAuth();
   const { data: unlocks, isLoading } = useUserUnlocks(user?.id);
+
+  if (profileLoading) {
+    return (
+      <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
+        <p className="text-muted animate-pulse">Cargando perfil...</p>
+      </section>
+    );
+  }
 
   if (!profile) {
     return (
       <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
-        <p className="text-muted animate-pulse">Cargando perfil...</p>
+        <p className="text-red text-sm">
+          No se pudo cargar tu perfil. Recarga la página.
+        </p>
       </section>
     );
   }

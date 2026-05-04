@@ -222,3 +222,10 @@ insert into achievements (slug, title, emoji, description, category, status) val
   ('comunion-dinero', 'Usé el dinero de mi comunión en algo que mis padres nunca supieron', '💒', 'Lo sabían. Lo saben ahora.', 'random', 'approved')
 
 on conflict (slug) do nothing;
+
+-- Reset unlock_count for ALL achievements.
+-- The bump_unlock_count trigger (migration 003) maintains this column
+-- automatically on INSERT/DELETE in the unlocks table.
+-- Any hardcoded promotional values produce absurd rarity_percent numbers when
+-- the profile count is small (e.g. 12500 unlocks / 1 profile * 100 = 1,250,000%).
+update achievements set unlock_count = 0;
