@@ -1,9 +1,12 @@
 import { useInfiniteAchievements } from "@/hooks/useInfiniteAchievements";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useUserUnlocks } from "@/hooks/useUserUnlocks";
+import { useAuth } from "@/contexts/AuthContext";
 import { AchievementGrid } from "@/components/AchievementGrid";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 export default function Home() {
+  const { user } = useAuth();
   const {
     data,
     isLoading,
@@ -12,6 +15,7 @@ export default function Home() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteAchievements();
+  const { data: ownedUnlocks } = useUserUnlocks(user?.id);
 
   const sentinelRef = useIntersectionObserver(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -20,6 +24,9 @@ export default function Home() {
   });
 
   const items = data?.pages.flatMap((p) => p.items) ?? [];
+  const ownedSet = new Set(
+    (ownedUnlocks ?? []).map((u) => u.achievementId),
+  );
 
   return (
     <section className="min-h-screen max-w-7xl mx-auto">
@@ -53,6 +60,7 @@ export default function Home() {
               rarityPercent: a.rarityPercent,
               unlockCount: a.unlock_count,
               category: a.category,
+              isUnlocked: ownedSet.has(a.id),
             }))}
           />
 

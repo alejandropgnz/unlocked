@@ -7,6 +7,7 @@ interface GridItem {
   rarityPercent: number;
   unlockCount: number;
   category: string;
+  isUnlocked?: boolean;
 }
 
 export function AchievementGrid({
