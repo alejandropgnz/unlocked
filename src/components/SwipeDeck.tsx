@@ -55,6 +55,15 @@ function TopCard({
       whileTap={{ cursor: "grabbing" }}
       className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col select-none cursor-grab active:cursor-grabbing"
     >
+      <div className="text-center text-xs sm:text-sm shrink-0">
+        <span
+          className="font-mono font-bold tabular-nums"
+          style={{ color: tierColor }}
+        >
+          {item.rarityPercent.toFixed(2)}%
+        </span>{" "}
+        <span className="text-muted">de las personas tienen este logro</span>
+      </div>
       <div className="flex-1 flex flex-col items-center justify-center text-center min-h-0">
         <div className="text-7xl sm:text-8xl">{item.emoji}</div>
         <div className="mt-5 sm:mt-6 text-xl sm:text-2xl md:text-3xl font-black tracking-tighter">
@@ -62,15 +71,6 @@ function TopCard({
         </div>
         <div className="mt-3 text-[11px] text-muted font-mono uppercase tracking-widest">
           {item.category} · {item.unlockCount.toLocaleString("es-ES")} desbloqueados
-        </div>
-        <div className="mt-4 text-xs sm:text-sm">
-          <span
-            className="font-mono font-bold tabular-nums"
-            style={{ color: tierColor }}
-          >
-            {item.rarityPercent.toFixed(2)}%
-          </span>{" "}
-          <span className="text-muted">de las personas tienen este logro</span>
         </div>
       </div>
       <div className="flex justify-between text-xs text-muted">
