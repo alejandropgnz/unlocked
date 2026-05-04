@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { motion, useMotionValue, useTransform, type PanInfo } from "framer-motion";
+import Link from "next/link";
 import { adjudicateAction } from "@/app/l/[slug]/actions";
 import { rarityTier, tierLabel, tierTextColor } from "@/lib/rarity";
 
@@ -84,14 +85,14 @@ function TopCard({
 
 function StaticCard({ item, depth }: { item: SwipeItem; depth: number }) {
   return (
-    <div
+    <motion.div
       style={{ scale: 1 - depth * 0.05, y: depth * 8 }}
       className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-8 opacity-60"
     >
       <div className="flex-1 flex flex-col items-center justify-center text-center pointer-events-none">
         <div className="text-7xl">{item.emoji}</div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -132,12 +133,12 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
         <p className="text-muted mt-2 text-sm">
           {stats.kept} adjudicados · {stats.passed} pasados
         </p>
-        <a
+        <Link
           href="/"
           className="mt-6 inline-block px-5 py-3 bg-white text-bg font-black rounded-full text-xs tracking-widest uppercase hover:bg-gold transition"
         >
           Volver al inicio
-        </a>
+        </Link>
       </div>
     );
   }
