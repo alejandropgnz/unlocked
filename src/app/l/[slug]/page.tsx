@@ -12,7 +12,7 @@ import {
 import { AdjudicateModal } from "@/components/adjudicate-modal";
 import { StoryThread, type StoryListItem } from "@/components/story-thread";
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export async function generateMetadata({
   params,

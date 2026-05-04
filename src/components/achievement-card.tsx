@@ -39,6 +39,7 @@ export function AchievementCard({
   return (
     <Link
       href={`/l/${slug}`}
+      prefetch
       className={`${sizing.card} block rounded-[18px] p-[2px] transition-transform hover:scale-[1.03] ${tierBorderClass(tier)}`}
     >
       <div className={`bg-surface rounded-[16px] ${sizing.padding} h-full flex flex-col`}>

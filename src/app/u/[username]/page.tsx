@@ -7,7 +7,7 @@ import type { Database } from "@/types/database";
 import { AchievementCard } from "@/components/achievement-card";
 import { ProfileShareButton } from "@/components/profile-share-button";
 
-export const revalidate = 30;
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,

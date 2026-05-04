@@ -4,7 +4,7 @@ import Script from "next/script";
 import { NavBar } from "@/components/nav-bar";
 import { TabBar } from "@/components/tab-bar";
 import { CookieBanner } from "@/components/cookie-banner";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentProfileSummary } from "@/lib/auth-helpers";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,20 +27,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  let username: string | null = null;
-  if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("username")
-      .eq("id", user.id)
-      .returns<{ username: string }[]>()
-      .maybeSingle();
-    username = data?.username ?? null;
-  }
+  const profile = await getCurrentProfileSummary();
 
   return (
     <html lang="es" className={`${inter.variable} ${jetbrainsMono.variable}`}>
@@ -52,7 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
         <NavBar />
         {children}
-        <TabBar username={username} />
+        <TabBar username={profile?.username ?? null} />
         <CookieBanner />
       </body>
     </html>

@@ -1,40 +1,26 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
 import { LoginButton } from "./login-button";
+import { getCurrentProfileSummary } from "@/lib/auth-helpers";
 
 export async function NavBar() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let username: string | null = null;
-  let isAdmin = false;
-  if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("username, is_admin")
-      .eq("id", user.id)
-      .returns<{ username: string; is_admin: boolean }[]>()
-      .maybeSingle();
-    username = data?.username ?? null;
-    isAdmin = data?.is_admin ?? false;
-  }
+  const profile = await getCurrentProfileSummary();
+  const username = profile?.username ?? null;
+  const isAdmin = profile?.isAdmin ?? false;
 
   return (
     <nav className="hidden md:flex items-center justify-between px-8 py-4 border-b border-white/5">
-      <Link href="/" className="font-black text-lg tracking-tightest">
+      <Link href="/" className="font-black text-lg tracking-tightest" prefetch>
         UNLOCKED
       </Link>
       <div className="flex items-center gap-6 text-sm">
-        <Link href="/" className="hover:text-gold">Home</Link>
-        <Link href="/descubrir" className="hover:text-gold">Descubrir</Link>
-        <Link href="/crear" className="hover:text-gold">Crear</Link>
+        <Link href="/" className="hover:text-gold" prefetch>Home</Link>
+        <Link href="/descubrir" className="hover:text-gold" prefetch>Descubrir</Link>
+        <Link href="/crear" className="hover:text-gold" prefetch>Crear</Link>
         {isAdmin && (
           <Link href="/admin" className="hover:text-gold">Admin</Link>
         )}
         {username ? (
-          <Link href="/yo" className="hover:text-gold">@{username}</Link>
+          <Link href={`/yo`} className="hover:text-gold" prefetch>@{username}</Link>
         ) : (
           <LoginButton />
         )}

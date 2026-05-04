@@ -6,7 +6,7 @@ import type { Database } from "@/types/database";
 type AchievementRow = Database["public"]["Tables"]["achievements"]["Row"];
 type RarityRow = Database["public"]["Views"]["achievement_rarity"]["Row"];
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export default async function HomePage() {
   const supabase = await createClient();
