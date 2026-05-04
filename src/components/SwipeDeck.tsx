@@ -53,21 +53,24 @@ function TopCard({
       onDragEnd={handleDragEnd}
       style={{ x, rotate }}
       whileTap={{ cursor: "grabbing" }}
-      className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-8 flex flex-col select-none cursor-grab active:cursor-grabbing"
+      className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col select-none cursor-grab active:cursor-grabbing"
     >
-      <div
-        className="flex justify-end items-center text-[10px] font-bold tracking-[2.5px]"
-        style={{ color: tierColor }}
-      >
-        <span className="font-mono">{item.rarityPercent.toFixed(2)}%</span>
-      </div>
-      <div className="flex-1 flex flex-col items-center justify-center text-center">
-        <div className="text-8xl">{item.emoji}</div>
-        <div className="mt-6 text-2xl md:text-3xl font-black tracking-tighter">
+      <div className="flex-1 flex flex-col items-center justify-center text-center min-h-0">
+        <div className="text-7xl sm:text-8xl">{item.emoji}</div>
+        <div className="mt-5 sm:mt-6 text-xl sm:text-2xl md:text-3xl font-black tracking-tighter">
           {item.title}
         </div>
-        <div className="mt-3 text-xs text-muted font-mono uppercase tracking-widest">
+        <div className="mt-3 text-[11px] text-muted font-mono uppercase tracking-widest">
           {item.category} · {item.unlockCount.toLocaleString("es-ES")} desbloqueados
+        </div>
+        <div className="mt-4 text-xs sm:text-sm">
+          <span
+            className="font-mono font-bold tabular-nums"
+            style={{ color: tierColor }}
+          >
+            {item.rarityPercent.toFixed(2)}%
+          </span>{" "}
+          <span className="text-muted">de las personas tienen este logro</span>
         </div>
       </div>
       <div className="flex justify-between text-xs text-muted">
@@ -143,7 +146,7 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
   const peek = stack.slice(1, 3);
 
   return (
-    <div className="relative w-full max-w-sm mx-auto h-[520px]">
+    <div className="relative w-full max-w-sm mx-auto h-full max-h-[520px]">
       {peek
         .slice()
         .reverse()
