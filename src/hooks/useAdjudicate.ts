@@ -65,10 +65,14 @@ export function useAdjudicate() {
       return { unlockId: unlock.id, storyId };
     },
     onSuccess: (_data, _vars) => {
-      queryClient.invalidateQueries({ queryKey: ["unlocks"] });
-      queryClient.invalidateQueries({ queryKey: ["achievement"] });
-      queryClient.invalidateQueries({ queryKey: ["achievements"] });
-      queryClient.invalidateQueries({ queryKey: ["stories"] });
+      // refetchType: "all" forces refetch on inactive queries too (e.g. the
+      // home grid that's currently unmounted because the user is on /l/:slug).
+      // Without this, invalidate marks them stale but with refetchOnMount:false
+      // the cached old data shows up when the user navigates back.
+      queryClient.invalidateQueries({ queryKey: ["unlocks"], refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: ["achievement"], refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: ["achievements"], refetchType: "all" });
+      queryClient.invalidateQueries({ queryKey: ["stories"], refetchType: "all" });
     },
     onError: (e: Error) => {
       toast.error(e.message);
