@@ -14,9 +14,9 @@ export default function Home() {
       </header>
 
       {isLoading && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 px-4 md:px-8 py-4 justify-items-start">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 px-4 md:px-8 py-4 justify-items-stretch">
           {Array.from({ length: 10 }).map((_, i) => (
-            <Skeleton key={i} className="w-[200px] h-[260px]" />
+            <Skeleton key={i} className="w-full h-[260px]" />
           ))}
         </div>
       )}

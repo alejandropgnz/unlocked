@@ -18,9 +18,9 @@ export interface AchievementCardProps {
 }
 
 const SIZES = {
-  sm: { card: "w-[140px]", emoji: "text-3xl", title: "text-xs", padding: "p-3" },
-  md: { card: "w-[200px]", emoji: "text-5xl", title: "text-sm", padding: "p-4" },
-  lg: { card: "w-[230px]", emoji: "text-6xl", title: "text-base", padding: "p-5" },
+  sm: { card: "w-full max-w-[180px]", emoji: "text-3xl", title: "text-xs", padding: "p-3" },
+  md: { card: "w-full", emoji: "text-5xl", title: "text-sm", padding: "p-4" },
+  lg: { card: "w-full max-w-[260px]", emoji: "text-6xl", title: "text-base", padding: "p-5" },
 } as const;
 
 export function AchievementCard({
