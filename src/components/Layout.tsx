@@ -3,6 +3,7 @@ import { NavBar } from "./NavBar";
 import { Sidebar } from "./Sidebar";
 import { MobileTopBar } from "./MobileTopBar";
 import { BottomNav } from "./BottomNav";
+import { Footer } from "./Footer";
 import { CookieBanner } from "./CookieBanner";
 
 export function Layout() {
@@ -12,13 +13,16 @@ export function Layout() {
       <MobileTopBar />
       <div className="flex-1 flex">
         <Sidebar />
-        <main
-          className="flex-1 min-w-0
+        <div
+          className="flex-1 min-w-0 flex flex-col
             pt-[calc(3.5rem+env(safe-area-inset-top))] md:pt-0
             pb-[calc(3.5rem+env(safe-area-inset-bottom)+0.5rem)] md:pb-0"
         >
-          <Outlet />
-        </main>
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
       </div>
       <CookieBanner />
       <BottomNav />

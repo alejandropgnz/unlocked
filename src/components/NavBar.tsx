@@ -3,11 +3,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "./ui/Button";
 
 /**
- * Top nav bar (desktop). Shows brand on the left, auth status on the right.
- * Navigation links live in `<Sidebar />` below this bar.
+ * Top nav bar (desktop). Brand on the left, login button on the right (only
+ * when not authenticated). Once logged in, profile access lives in the sidebar
+ * and there's nothing else needed here — keeps the bar minimal.
  */
 export function NavBar() {
-  const { user, profile, signInWithGoogle } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
 
   return (
     <nav className="hidden md:flex items-center justify-between px-6 lg:px-8 py-4 border-b border-white/5">
@@ -15,14 +16,7 @@ export function NavBar() {
         UNLOCKED
       </Link>
       <div className="flex items-center gap-4 text-sm">
-        {user && profile ? (
-          <Link
-            to={`/u/${profile.username}`}
-            className="hover:text-gold transition font-bold"
-          >
-            @{profile.username}
-          </Link>
-        ) : (
+        {!user && (
           <Button size="sm" onClick={() => void signInWithGoogle()}>
             Entrar con Google
           </Button>
