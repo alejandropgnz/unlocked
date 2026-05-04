@@ -106,12 +106,12 @@ export function AchievementCard({
         )}
       </div>
 
-      {/* Owned indicator — tiny check inside the card, no extruded badge.
-          The dark overlay above already does the heavy lifting; this is just
-          a subtle confirmation glyph, not a sticker. */}
+      {/* Owned indicator — tiny check in the top-LEFT (the % rarity already
+          lives top-right). The dark overlay above does the heavy lifting;
+          this is just a quiet confirmation glyph, not a sticker. */}
       {isUnlocked && (
         <div
-          className="absolute top-2 right-2 z-10 pointer-events-none"
+          className="absolute top-2 left-2 z-10 pointer-events-none"
           aria-label="Ya lo tienes"
         >
           <Check className="w-3.5 h-3.5 text-gold/70" strokeWidth={3} />
