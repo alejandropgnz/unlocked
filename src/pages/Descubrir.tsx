@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useUserUnlocks } from "@/hooks/useUserUnlocks";
+import { useUserPasses } from "@/hooks/useUserPasses";
 import { SwipeDeck } from "@/components/SwipeDeck";
 import { Skeleton } from "@/components/ui/Skeleton";
 import type { SwipeItem } from "@/components/SwipeDeck";
@@ -19,16 +20,19 @@ export default function Descubrir() {
   const { user } = useAuth();
   const { data: achievements, isLoading: achLoading } = useAchievements();
   const { data: myUnlocks, isLoading: unlocksLoading } = useUserUnlocks(user?.id);
+  const { data: passedIds, isLoading: passesLoading } = useUserPasses(user?.id);
 
-  const ownedIds = useMemo(
-    () => new Set((myUnlocks ?? []).map((u) => u.achievementId)),
-    [myUnlocks],
-  );
+  const skipIds = useMemo(() => {
+    const set = new Set<string>();
+    for (const u of myUnlocks ?? []) set.add(u.achievementId);
+    for (const id of passedIds ?? []) set.add(id);
+    return set;
+  }, [myUnlocks, passedIds]);
 
   const deck = useMemo((): SwipeItem[] => {
     if (!achievements) return [];
-    const notOwned = achievements.filter((a) => !ownedIds.has(a.id));
-    return shuffled(notOwned).map((a) => ({
+    const remaining = achievements.filter((a) => !skipIds.has(a.id));
+    return shuffled(remaining).map((a) => ({
       id: a.id,
       slug: a.slug,
       emoji: a.emoji,
@@ -37,9 +41,9 @@ export default function Descubrir() {
       unlockCount: a.unlock_count,
       category: a.category,
     }));
-  }, [achievements, ownedIds]);
+  }, [achievements, skipIds]);
 
-  const isLoading = achLoading || unlocksLoading;
+  const isLoading = achLoading || unlocksLoading || passesLoading;
 
   return (
     <section

@@ -5,6 +5,8 @@ export { useIntersectionObserver } from "./useIntersectionObserver";
 export { useAchievement } from "./useAchievement";
 export { useUserProfile } from "./useUserProfile";
 export { useUserUnlocks } from "./useUserUnlocks";
+export { useUserPasses } from "./useUserPasses";
+export { usePass } from "./usePass";
 export { useUserUnlock } from "./useUserUnlock";
 export type { UserUnlockData } from "./useUserUnlock";
 export { useStories } from "./useStories";

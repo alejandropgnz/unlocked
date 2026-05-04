@@ -7,6 +7,7 @@ import {
   type PanInfo,
 } from "framer-motion";
 import { useAdjudicate } from "@/hooks/useAdjudicate";
+import { usePass } from "@/hooks/usePass";
 import { trackEvent } from "@/hooks/useTrack";
 import { rarityTier, tierTextColor } from "@/lib/rarity";
 
@@ -135,6 +136,7 @@ function SidePeekCard({ item, label }: { item: SwipeItem; label: string }) {
 
 export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
   const adjudicateMut = useAdjudicate();
+  const passMut = usePass();
   const [stack, setStack] = useState<SwipeItem[]>(initial);
   const [lastSwiped, setLastSwiped] = useState<SwipeItem | null>(null);
   const [stats, setStats] = useState({ kept: 0, passed: 0 });
@@ -150,6 +152,8 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
       void trackEvent("achievement_unlocked", { achievementId: top.id, source: "swipe" });
     } else {
       setStats((s) => ({ ...s, passed: s.passed + 1 }));
+      // Persist the pass so this card doesn't come back after reload.
+      passMut.mutate(top.id);
     }
   };
 
