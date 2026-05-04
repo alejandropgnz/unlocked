@@ -13,10 +13,8 @@ const SIZES = {
 };
 
 /**
- * Brand wordmark "UNLOC<reversed-K>ED". The K is mirrored on the X axis as
- * the brand quirk (like Spotify's reversed letters or DOOR with the O upside
- * down). Done with CSS `transform: scaleX(-1)` so it scales with text size
- * and inherits the same Inter Black weight.
+ * Brand wordmark "UNLOCKED". Inter Black, tight tracking. Reusable across
+ * NavBar, Footer, MobileTopBar so brand changes happen in one place.
  */
 export function Wordmark({ size = "md", className }: WordmarkProps) {
   return (
@@ -26,17 +24,8 @@ export function Wordmark({ size = "md", className }: WordmarkProps) {
         SIZES[size],
         className,
       )}
-      aria-label="UNLOCKED"
     >
-      <span aria-hidden>UNLOC</span>
-      <span
-        aria-hidden
-        className="inline-block"
-        style={{ transform: "scaleX(-1)" }}
-      >
-        K
-      </span>
-      <span aria-hidden>ED</span>
+      UNLOCKED
     </span>
   );
 }
