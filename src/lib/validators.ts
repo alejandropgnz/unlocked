@@ -1,5 +1,21 @@
 import { z } from "zod";
 
+// Patterns for detecting URLs in plain-text fields (stories, replies, bio).
+// Strategy: flag explicit protocols and www., but for bare domains require
+// the TLD to be followed by "/" or end-of-string to avoid false positives
+// on Spanish sentence-ending patterns like "recordamos.cierto".
+const URL_PATTERNS = [
+  /\bhttps?:\/\//i,
+  /\bwww\./i,
+  /\b(?:t\.me|bit\.ly|tinyurl\.com|goo\.gl|youtu\.be|discord\.gg|tiktok\.com)\b/i,
+  /[\w-]+\.(com|es|net|org|io|app|co|me|tv|gg|dev|xyz|info|biz|tk|ml|ga|cf|to|ly)(?:\/|$)/i,
+];
+
+export function containsUrl(text: string): boolean {
+  if (!text) return false;
+  return URL_PATTERNS.some((re) => re.test(text));
+}
+
 export const adjudicateSchema = z.object({
   achievementId: z.string().uuid(),
   story: z

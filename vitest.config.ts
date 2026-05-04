@@ -3,8 +3,9 @@ import path from "node:path";
 
 export default defineConfig({
   test: {
-    environment: "node",
+    environment: "happy-dom",
     include: ["tests/unit/**/*.test.ts"],
+    globals: true,
   },
   resolve: {
     alias: {

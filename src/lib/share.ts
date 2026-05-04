@@ -23,5 +23,5 @@ export function instagramStoriesShare(imageUrl: string, appId = "0"): string {
 }
 
 export function siteOrigin(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+  return import.meta.env.VITE_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:5173";
 }
