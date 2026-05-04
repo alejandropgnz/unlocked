@@ -86,37 +86,64 @@ export default function Profile() {
 
   return (
     <section className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-6 md:py-8 space-y-10 md:space-y-12">
-      {/* ===== Header ===== */}
-      <header className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-4 md:gap-6">
-        <div className="shrink-0">
-          {isOwner ? (
-            <AvatarUploader
-              userId={user.id}
-              value={authProfile.avatar_url ?? null}
-              onChange={(url) => updateAvatarMut.mutate(url)}
-              initials={initials}
-              size="lg"
-            />
-          ) : (
-            <Avatar src={profile.avatar_url} size="lg" />
-          )}
-        </div>
-        <div className="flex-1 min-w-0 w-full">
-          <h1 className="text-2xl md:text-3xl font-black tracking-tighter break-words">
-            {profile.display_name}
-          </h1>
-          <p className="text-muted text-sm">@{profile.username}</p>
-          {!isOwner && profile.bio && (
-            <p className="mt-3 text-sm">{profile.bio}</p>
-          )}
-          <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-sm">
-            <span className="font-mono text-muted">
-              {totalUnlocks.toLocaleString("es-ES")} {totalUnlocks === 1 ? "logro" : "logros"}
-            </span>
+      {/* ===== Header — Wisheem-style: always horizontal, bio + actions below ===== */}
+      <header>
+        <div className="flex flex-row items-start gap-4 sm:gap-6">
+          <div className="shrink-0">
+            {isOwner ? (
+              <AvatarUploader
+                userId={user.id}
+                value={authProfile.avatar_url ?? null}
+                onChange={(url) => updateAvatarMut.mutate(url)}
+                initials={initials}
+                size="lg"
+              />
+            ) : (
+              <Avatar src={profile.avatar_url} size="lg" />
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0 pt-1">
+            <h1 className="text-[26px] sm:text-3xl md:text-4xl font-black tracking-tightest leading-[1.05] truncate">
+              {profile.display_name}
+            </h1>
+            <p className="text-[13px] text-muted font-mono mt-1 truncate">
+              @{profile.username}
+            </p>
+
+            {/* Stats row — flex-nowrap so it doesn't break on small screens */}
+            <div className="mt-3 flex items-baseline gap-x-3 text-[13px] sm:text-sm whitespace-nowrap">
+              <span className="inline-flex items-baseline gap-1">
+                <span className="font-bold text-white tabular-nums font-mono">
+                  {totalUnlocks}
+                </span>
+                <span className="text-muted">
+                  {totalUnlocks === 1 ? "logro" : "logros"}
+                </span>
+              </span>
+            </div>
+          </div>
+
+          {/* Action buttons inline on desktop */}
+          <div className="hidden md:flex items-center gap-2 shrink-0 pt-1">
             <Button variant="ghost" size="sm" onClick={() => setShareOpen(true)}>
-              Compartir colección
+              Compartir
             </Button>
           </div>
+        </div>
+
+        {/* Bio below the header row */}
+        {profile.bio && !isOwner && (
+          <p className="text-sm sm:text-base whitespace-pre-wrap leading-relaxed mt-4 sm:mt-5 max-w-[620px]">
+            {profile.bio}
+          </p>
+        )}
+
+        {/* Action buttons row — mobile only (full width) */}
+        <div className="md:hidden mt-5">
+          <Button variant="ghost" size="block" onClick={() => setShareOpen(true)}>
+            Compartir colección
+          </Button>
         </div>
       </header>
 

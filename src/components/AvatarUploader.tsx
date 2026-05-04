@@ -28,8 +28,11 @@ export function AvatarUploader({
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  const avatarSize = size === "lg" ? "w-32 h-32" : "w-24 h-24";
-  const camSize = size === "lg" ? "w-9 h-9" : "w-8 h-8";
+  // Profile header avatar: 88px mobile, 112px desktop (matches Wisheem pattern).
+  // "md" preset stays smaller (avatar uploader inside dialogs etc.).
+  const avatarSize =
+    size === "lg" ? "w-[88px] h-[88px] sm:w-[112px] sm:h-[112px]" : "w-24 h-24";
+  const camSize = size === "lg" ? "w-8 h-8 sm:w-9 sm:h-9" : "w-8 h-8";
 
   const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
