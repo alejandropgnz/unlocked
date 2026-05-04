@@ -36,6 +36,10 @@
         }
       ],
       "destination": "/api/page?path=/u/:username"
+    },
+    {
+      "source": "/((?!api/|assets/|favicon|.*\\.(?:js|css|png|jpg|jpeg|svg|webp|ico|woff2?|ttf|otf|json|map|txt|xml)).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
