@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 import { AchievementCard } from "@/components/achievement-card";
-import { SiteHeader } from "@/components/site-header";
 import { ProfileShareButton } from "@/components/profile-share-button";
 
 export const revalidate = 30;
@@ -84,7 +83,6 @@ export default async function ProfilePage({
     console.error("profile load error", profileError);
     return (
       <main className="min-h-screen">
-        <SiteHeader />
         <div className="px-4 md:px-8">
           <p className="text-red">No se pudo cargar el perfil.</p>
         </div>
@@ -146,8 +144,6 @@ export default async function ProfilePage({
 
   return (
     <main className="min-h-screen">
-      <SiteHeader />
-
       <section className="px-4 md:px-8 max-w-5xl mx-auto">
         <header className="flex flex-col md:flex-row md:items-end gap-4 md:gap-8 pb-8 border-b border-white/10">
           {profile.avatar_url && (

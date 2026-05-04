@@ -8,6 +8,7 @@ import {
   twitterShare,
   instagramStoriesShare,
 } from "@/lib/share";
+import { trackClient } from "@/lib/track";
 
 type Kind =
   | {
@@ -58,6 +59,7 @@ export function ShareCardModal({
   };
 
   const handleDownload = async () => {
+    void trackClient("share_card_downloaded", { kind: data.kind, username: data.username });
     const res = await fetch(ogImageUrl);
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
@@ -97,12 +99,14 @@ export function ShareCardModal({
           </button>
           <a
             href={instagramStoriesShare(ogImageUrl)}
+            onClick={() => void trackClient("share_card_clicked", { platform: "instagram", kind: data.kind })}
             className="py-3 bg-gradient-to-r from-red to-violet text-white font-black rounded-full text-xs uppercase tracking-widest text-center"
           >
             Stories IG
           </a>
           <a
             href={whatsappShare(`${caption}\n${origin}/u/${data.username}`)}
+            onClick={() => void trackClient("share_card_clicked", { platform: "whatsapp", kind: data.kind })}
             target="_blank"
             rel="noopener noreferrer"
             className="py-3 bg-[#25D366] text-white font-black rounded-full text-xs uppercase tracking-widest text-center"
@@ -111,6 +115,7 @@ export function ShareCardModal({
           </a>
           <a
             href={twitterShare(`${caption}\n${origin}/u/${data.username}`)}
+            onClick={() => void trackClient("share_card_clicked", { platform: "twitter", kind: data.kind })}
             target="_blank"
             rel="noopener noreferrer"
             className="py-3 bg-[#1DA1F2] text-white font-black rounded-full text-xs uppercase tracking-widest text-center"

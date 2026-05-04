@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { proposeAchievementSchema } from "@/lib/validators";
 import { containsBlockedWord, isDuplicateTitle } from "@/lib/moderation";
 import { slugify } from "@/lib/slug";
+import { logEvent } from "@/lib/analytics";
 
 export type ProposeResult = { ok: true } | { ok: false; error: string };
 
@@ -76,6 +77,8 @@ export async function proposeAchievement(formData: FormData): Promise<ProposeRes
     console.error("propose insert error", error);
     return { ok: false, error: "No se pudo crear" };
   }
+
+  await logEvent("achievement_proposed", { title: parsed.data.title });
 
   return { ok: true };
 }

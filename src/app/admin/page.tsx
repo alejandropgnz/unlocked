@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { SiteHeader } from "@/components/site-header";
 import { AdminQueue, type PendingItem, type ReportItem } from "./admin-queue";
 
 export const dynamic = "force-dynamic";
@@ -78,7 +77,6 @@ export default async function AdminPage() {
 
   return (
     <main className="min-h-screen">
-      <SiteHeader />
       <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
         <h1 className="text-3xl font-black tracking-tighter">Admin</h1>
         <AdminQueue pending={pending} reports={reports} />

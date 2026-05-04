@@ -3,7 +3,6 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
-import { SiteHeader } from "@/components/site-header";
 import { Top5Editor, type Top5Item } from "@/components/top5-editor";
 import { BioForm } from "@/components/bio-form";
 import { DeleteAccountButton } from "@/components/delete-account-button";
@@ -64,7 +63,6 @@ export default async function YoPage({
 
   return (
     <main className="min-h-screen">
-      <SiteHeader />
       <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
         <header className="flex items-center gap-4 pb-6 border-b border-white/10">
           {profile.avatar_url && (

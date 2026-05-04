@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
-import { SiteHeader } from "@/components/site-header";
 import { SwipeDeck, type SwipeItem } from "@/components/swipe-deck";
 
 export const dynamic = "force-dynamic";
@@ -45,7 +44,6 @@ export default async function DescubrirPage() {
     console.error("descubrir pool load error", error);
     return (
       <main className="min-h-screen">
-        <SiteHeader />
         <p className="px-4 md:px-8 text-red mt-6">No se pudieron cargar los logros.</p>
       </main>
     );
@@ -81,7 +79,6 @@ export default async function DescubrirPage() {
 
   return (
     <main className="min-h-screen">
-      <SiteHeader />
       <section className="px-4 py-6 md:py-10">
         <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-center mb-6 md:mb-8">
           Descubrir

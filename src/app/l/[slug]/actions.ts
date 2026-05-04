@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { adjudicateSchema } from "@/lib/validators";
+import { logEvent } from "@/lib/analytics";
 import type { Database } from "@/types/database";
 
 export type AdjudicateResult =
@@ -72,6 +73,8 @@ export async function adjudicateAction(formData: FormData): Promise<AdjudicateRe
   }
 
   if (slugStr) revalidatePath(`/l/${slugStr}`);
+
+  await logEvent("achievement_unlocked", { achievementId: parsed.data.achievementId });
 
   return { ok: true, unlockId: unlock.id, storyId };
 }

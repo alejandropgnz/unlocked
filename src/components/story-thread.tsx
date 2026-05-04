@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactionButtons } from "./reaction-buttons";
+import { ReportButton } from "./report-button";
 
 export interface StoryListItem {
   id: string;
@@ -61,12 +62,15 @@ export function StoryThread({
             </div>
           </div>
           <p className="mt-3 text-sm whitespace-pre-wrap">{s.body}</p>
-          <Link
-            href={`/h/${s.id}`}
-            className="mt-3 inline-block text-xs text-muted hover:text-white"
-          >
-            Ver respuestas →
-          </Link>
+          <div className="mt-3 flex items-center gap-3">
+            <Link
+              href={`/h/${s.id}`}
+              className="text-xs text-muted hover:text-white"
+            >
+              Ver respuestas →
+            </Link>
+            <ReportButton targetType="story" targetId={s.id} />
+          </div>
         </li>
       ))}
     </ul>

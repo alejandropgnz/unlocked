@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactionButtons } from "./reaction-buttons";
+import { ReportButton } from "./report-button";
 
 export interface ReplyItem {
   id: string;
@@ -50,6 +51,9 @@ export function ReplyList({
             </div>
           </div>
           <p className="mt-2 text-sm whitespace-pre-wrap">{r.body}</p>
+          <div className="mt-1 text-right">
+            <ReportButton targetType="reply" targetId={r.id} />
+          </div>
         </li>
       ))}
     </ul>

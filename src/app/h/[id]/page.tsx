@@ -2,7 +2,6 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/site-header";
 import { ReplyList, type ReplyItem } from "@/components/reply-list";
 import { ReplyBox } from "@/components/reply-box";
 import { ReactionButtons } from "@/components/reaction-buttons";
@@ -126,7 +125,6 @@ export default async function StoryThreadPage({
 
   return (
     <main className="min-h-screen">
-      <SiteHeader />
       <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
         {story.achievements && (
           <Link
