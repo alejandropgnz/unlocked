@@ -10,8 +10,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { AchievementCard } from "@/components/AchievementCard";
 import { ShareCardModal } from "@/components/ShareCardModal";
 import { AvatarUploader } from "@/components/AvatarUploader";
-import { BioForm } from "@/components/BioForm";
-import { UsernameForm } from "@/components/UsernameForm";
+import { EditProfileForm } from "@/components/EditProfileForm";
 import { Top5Editor } from "@/components/Top5Editor";
 import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 import type { UnlockedItem } from "@/hooks/types";
@@ -147,24 +146,11 @@ export default function Profile() {
         </div>
       </header>
 
-      {/* ===== Edit (owner only): username + bio side by side on desktop ===== */}
+      {/* ===== Edit (owner only): unified form with single Guardar button ===== */}
       {isOwner && (
-        <section className="space-y-6">
+        <section className="space-y-4">
           <h2 className="text-xs uppercase tracking-widest text-muted">Editar perfil</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="text-[11px] uppercase tracking-widest text-muted mb-2 block">
-                Username
-              </label>
-              <UsernameForm currentUsername={profile.username} />
-            </div>
-            <div>
-              <label className="text-[11px] uppercase tracking-widest text-muted mb-2 block">
-                Bio
-              </label>
-              <BioForm />
-            </div>
-          </div>
+          <EditProfileForm currentUsername={profile.username} />
         </section>
       )}
 
