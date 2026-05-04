@@ -50,9 +50,11 @@ export default function Descubrir() {
         md:h-auto
       "
     >
-      <header className="text-center mb-4 md:mb-8 shrink-0">
-        <h1 className="text-2xl md:text-3xl font-black tracking-tighter">Descubrir</h1>
-        <p className="text-muted text-xs md:text-sm mt-1">
+      {/* Header — hidden on mobile (the title sits in MobileTopBar instead so
+          the swipe card gets the spotlight). Visible on desktop. */}
+      <header className="hidden md:block text-center mb-8 shrink-0">
+        <h1 className="text-3xl font-black tracking-tighter">Descubrir</h1>
+        <p className="text-muted text-sm mt-1">
           Desliza derecha para adjudicarte, izquierda para pasar.
         </p>
       </header>
