@@ -4,12 +4,16 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import confetti from "canvas-confetti";
 import { adjudicateAction } from "@/app/l/[slug]/actions";
+import { ShareCardModal } from "@/components/share-card-modal";
 
 interface Props {
   achievementId: string;
   slug: string;
   isLoggedIn: boolean;
   alreadyUnlocked: boolean;
+  title: string;
+  rarityPercent: number;
+  username: string | null;
 }
 
 export function AdjudicateModal({
@@ -17,10 +21,15 @@ export function AdjudicateModal({
   slug,
   isLoggedIn,
   alreadyUnlocked,
+  title,
+  rarityPercent,
+  username,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [story, setStory] = useState("");
   const [done, setDone] = useState(false);
+  const [unlockId, setUnlockId] = useState<string | null>(null);
+  const [shareOpen, setShareOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -59,6 +68,7 @@ export function AdjudicateModal({
         setError(result.error);
         return;
       }
+      setUnlockId(result.unlockId);
       setDone(true);
       setOpen(false);
       try {
@@ -71,25 +81,48 @@ export function AdjudicateModal({
 
   if (done) {
     return (
-      <div className="mt-8 p-6 bg-surface rounded-2xl border border-gold/30">
-        <div className="text-2xl font-black tracking-tighter">¡Desbloqueado! 🎉</div>
-        <p className="text-muted mt-2 text-sm">Ya forma parte de tu colección.</p>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Link
-            href={`/u/me`}
-            prefetch={false}
-            onClick={(e) => {
-              // Best-effort jump to the user's own profile via SiteHeader's @username link.
-              // Falls back to home — the SiteHeader links to /u/[username] on next page load.
-              e.preventDefault();
-              window.location.href = "/";
-            }}
-            className="px-4 py-2 border border-white/20 rounded-full text-sm hover:border-gold transition"
-          >
-            Ver mi perfil
-          </Link>
+      <>
+        <div className="mt-8 p-6 bg-surface rounded-2xl border border-gold/30">
+          <div className="text-2xl font-black tracking-tighter">¡Desbloqueado! 🎉</div>
+          <p className="text-muted mt-2 text-sm">Ya forma parte de tu colección.</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href={`/u/me`}
+              prefetch={false}
+              onClick={(e) => {
+                // Best-effort jump to the user's own profile via SiteHeader's @username link.
+                // Falls back to home — the SiteHeader links to /u/[username] on next page load.
+                e.preventDefault();
+                window.location.href = "/";
+              }}
+              className="px-4 py-2 border border-white/20 rounded-full text-sm hover:border-gold transition"
+            >
+              Ver mi perfil
+            </Link>
+            {unlockId && username && (
+              <button
+                onClick={() => setShareOpen(true)}
+                className="px-4 py-2 bg-gold/20 text-gold font-black rounded-full text-sm uppercase tracking-widest hover:bg-gold/30 transition"
+              >
+                Compartir card
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+        {unlockId && username && (
+          <ShareCardModal
+            open={shareOpen}
+            onClose={() => setShareOpen(false)}
+            data={{
+              kind: "unlock",
+              unlockId,
+              title,
+              rarityPercent,
+              username,
+            }}
+          />
+        )}
+      </>
     );
   }
 

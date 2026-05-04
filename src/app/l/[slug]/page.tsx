@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -11,6 +12,42 @@ import {
 import { AdjudicateModal } from "@/components/adjudicate-modal";
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("achievements")
+    .select("title, description")
+    .eq("slug", slug)
+    .eq("status", "approved")
+    .returns<{ title: string; description: string | null }[]>()
+    .maybeSingle();
+
+  if (!data) return { title: "Logro no encontrado · Unlocked" };
+
+  const origin = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+  const ogUrl = `${origin}/og/achievement/${slug}`;
+
+  return {
+    title: `${data.title} · Unlocked`,
+    description: data.description ?? "Colecciona los logros más absurdos de tu vida.",
+    openGraph: {
+      title: data.title,
+      description: data.description ?? undefined,
+      images: [{ url: ogUrl, width: 1080, height: 1920 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data.title,
+      images: [ogUrl],
+    },
+  };
+}
 
 type AchievementRow = Pick<
   Database["public"]["Tables"]["achievements"]["Row"],
@@ -62,15 +99,25 @@ export default async function AchievementPage({
   } = await supabase.auth.getUser();
 
   let alreadyUnlocked = false;
+  let currentUsername: string | null = null;
   if (user) {
-    const { data: existing } = await supabase
-      .from("unlocks")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("achievement_id", achievement.id)
-      .returns<{ id: string }[]>()
-      .maybeSingle();
-    alreadyUnlocked = !!existing;
+    const [existingRes, profileRes] = await Promise.all([
+      supabase
+        .from("unlocks")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("achievement_id", achievement.id)
+        .returns<{ id: string }[]>()
+        .maybeSingle(),
+      supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .returns<{ username: string }[]>()
+        .maybeSingle(),
+    ]);
+    alreadyUnlocked = !!existingRes.data;
+    currentUsername = profileRes.data?.username ?? null;
   }
 
   const rarityPercent = Number(rarityRow?.rarity_percent ?? 0);
@@ -121,6 +168,9 @@ export default async function AchievementPage({
             slug={slug}
             isLoggedIn={!!user}
             alreadyUnlocked={alreadyUnlocked}
+            title={achievement.title}
+            rarityPercent={rarityPercent}
+            username={currentUsername}
           />
         </div>
       </div>

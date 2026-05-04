@@ -1,12 +1,35 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 import { AchievementCard } from "@/components/achievement-card";
 import { SiteHeader } from "@/components/site-header";
+import { ProfileShareButton } from "@/components/profile-share-button";
 
 export const revalidate = 30;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}): Promise<Metadata> {
+  const { username } = await params;
+  const origin = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+  const ogUrl = `${origin}/og/profile/${username}`;
+  return {
+    title: `@${username} · Unlocked`,
+    openGraph: {
+      title: `@${username} en Unlocked`,
+      images: [{ url: ogUrl, width: 1080, height: 1920 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [ogUrl],
+    },
+  };
+}
 
 type ProfileRow = Pick<
   Database["public"]["Tables"]["profiles"]["Row"],
@@ -144,11 +167,12 @@ export default async function ProfilePage({
               {profile.display_name}
             </h1>
             {profile.bio && <p className="text-muted mt-2 text-sm">{profile.bio}</p>}
-            <div className="mt-3 text-sm">
-              <span className="font-mono font-bold">{items.length}</span>{" "}
+            <div className="mt-3 flex items-center gap-3 text-sm">
+              <span className="font-mono font-bold">{items.length}</span>
               <span className="text-muted">
                 {items.length === 1 ? "logro" : "logros"} desbloqueados
               </span>
+              <ProfileShareButton username={profile.username} total={items.length} />
             </div>
           </div>
         </header>
