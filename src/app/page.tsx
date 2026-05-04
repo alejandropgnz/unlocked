@@ -1,34 +1,39 @@
 import { createClient } from "@/lib/supabase/server";
 import { AchievementGrid, type GridItem } from "@/components/achievement-grid";
+import type { Database } from "@/types/database";
+
+type AchievementRow = Database["public"]["Tables"]["achievements"]["Row"];
+type RarityRow = Database["public"]["Views"]["achievement_rarity"]["Row"];
 
 export const revalidate = 60;
-
-interface AchievementRow {
-  slug: string;
-  title: string;
-  emoji: string;
-  category: string;
-  unlock_count: number;
-  achievement_rarity:
-    | { rarity_percent: number | null }
-    | { rarity_percent: number | null }[]
-    | null;
-}
 
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const { data: rawAchievements, error } = await supabase
-    .from("achievements")
-    .select(
-      "slug, title, emoji, category, unlock_count, achievement_rarity!inner(rarity_percent)",
-    )
-    .eq("status", "approved")
-    .order("unlock_count", { ascending: false })
-    .limit(40);
+  const [achievementsRes, rarityRes] = await Promise.all([
+    supabase
+      .from("achievements")
+      .select("id, slug, title, emoji, category, unlock_count")
+      .eq("status", "approved")
+      .order("unlock_count", { ascending: false })
+      .limit(40)
+      .returns<
+        Pick<
+          AchievementRow,
+          "id" | "slug" | "title" | "emoji" | "category" | "unlock_count"
+        >[]
+      >(),
+    supabase
+      .from("achievement_rarity")
+      .select("id, rarity_percent")
+      .returns<Pick<RarityRow, "id" | "rarity_percent">[]>(),
+  ]);
 
-  if (error) {
-    console.error("home achievements load error", error);
+  if (achievementsRes.error || rarityRes.error) {
+    console.error("home load error", {
+      achievements: achievementsRes.error,
+      rarity: rarityRes.error,
+    });
     return (
       <main className="min-h-screen p-8">
         <p className="text-red">No se pudieron cargar los logros.</p>
@@ -36,21 +41,19 @@ export default async function HomePage() {
     );
   }
 
-  const achievements = (rawAchievements ?? []) as AchievementRow[];
+  const rarityById = new Map<string, number>();
+  for (const r of rarityRes.data ?? []) {
+    if (r.id != null) rarityById.set(r.id, Number(r.rarity_percent ?? 0));
+  }
 
-  const items: GridItem[] = achievements.map((a) => {
-    const rarity = Array.isArray(a.achievement_rarity)
-      ? a.achievement_rarity[0]
-      : a.achievement_rarity;
-    return {
-      slug: a.slug,
-      title: a.title,
-      emoji: a.emoji,
-      category: a.category,
-      unlockCount: a.unlock_count,
-      rarityPercent: Number(rarity?.rarity_percent ?? 0),
-    };
-  });
+  const items: GridItem[] = (achievementsRes.data ?? []).map((a) => ({
+    slug: a.slug,
+    title: a.title,
+    emoji: a.emoji,
+    category: a.category,
+    unlockCount: a.unlock_count,
+    rarityPercent: rarityById.get(a.id) ?? 0,
+  }));
 
   return (
     <main className="min-h-screen">
