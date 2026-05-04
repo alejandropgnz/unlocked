@@ -80,7 +80,7 @@ insert into achievements (slug, title, emoji, description, category, status) val
   ('copie-a-companero', 'He copiado el trabajo de un compañero discretamente', '🤫', NULL, 'trabajo', 'approved'),
   ('reunion-que-era-email', 'He asistido a una reunión de una hora que era un email', '📧', 'La reunión para ver si hacemos la reunión.', 'trabajo', 'approved'),
   ('llegue-tarde-excusa-metro', 'He llegado tarde al trabajo y he culpado al transporte público', '🚇', 'El metro llegó en hora.', 'trabajo', 'approved'),
-  ('puse-fondo-falso-teletrabajo', 'He puesto un fondo de pantalla falso en videollamada para que no vieran mi cuarto', '🖥️', NULL, 'trabajo', 'approved'),
+  ('puse-fondo-falso-teletrabajo', 'He puesto fondo falso en videollamada para que no vieran mi cuarto', '🖥️', NULL, 'trabajo', 'approved'),
   ('hice-la-lista-de-curros-futuros', 'He buscado casas en otras ciudades mientras estaba en el trabajo', '🏠', NULL, 'trabajo', 'approved'),
   ('no-encontre-aparcamiento-llegue-tarde', 'Llegué tarde porque "no había aparcamiento"', '🅿️', 'Salí tarde de casa.', 'trabajo', 'approved'),
   ('perdi-hilo-reunion-larga', 'Perdí el hilo de una reunión de dos horas y asentí a todo', '👍', NULL, 'trabajo', 'approved'),
