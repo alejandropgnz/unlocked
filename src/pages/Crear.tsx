@@ -5,10 +5,26 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { CategoryPicker } from "@/components/CategoryPicker";
+import { isEmojiOnly, emojiCount } from "@/lib/validators";
+import { cn } from "@/lib/cn";
 
 export default function Crear() {
   const proposeMut = usePropose();
   const [done, setDone] = useState(false);
+  const [emoji, setEmoji] = useState("");
+
+  const trimmed = emoji.trim();
+  const onlyEmoji = trimmed.length === 0 || isEmojiOnly(trimmed);
+  const count = emojiCount(trimmed);
+  const emojiValid = trimmed.length > 0 && onlyEmoji && count >= 1 && count <= 3;
+
+  const emojiHint = (() => {
+    if (trimmed.length === 0) return "1 a 3 emojis. Solo emojis, sin letras ni números.";
+    if (!onlyEmoji) return "Solo emojis (sin letras, números ni símbolos)";
+    if (count > 3) return "Máximo 3 emojis";
+    if (count === 0) return "Pon al menos 1 emoji";
+    return `${count}/3`;
+  })();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,15 +72,30 @@ export default function Crear() {
           <label className="text-xs uppercase tracking-widest text-muted">Emoji</label>
           <input
             name="emoji"
-            maxLength={8}
+            value={emoji}
+            onChange={(e) => setEmoji(e.target.value)}
+            maxLength={32}
             required
             placeholder="😴"
-            className="mt-1 w-24 bg-bg border border-white/10 rounded-xl p-3 text-2xl text-center focus:border-gold focus:outline-none"
+            className="mt-1 w-32 bg-bg border border-white/10 rounded-xl p-3 text-2xl text-center focus:border-gold focus:outline-none"
           />
-          <p className="text-[10px] text-muted mt-1">Hasta 8 caracteres.</p>
+          <p
+            className={cn(
+              "text-[10px] mt-1",
+              trimmed.length === 0
+                ? "text-muted"
+                : emojiValid
+                  ? "text-green-400"
+                  : "text-red",
+            )}
+          >
+            {emojiHint}
+          </p>
         </div>
         <div>
-          <label className="text-xs uppercase tracking-widest text-muted">Descripción (opcional)</label>
+          <label className="text-xs uppercase tracking-widest text-muted">
+            Descripción (opcional)
+          </label>
           <div className="mt-1">
             <Textarea
               name="description"
@@ -80,7 +111,11 @@ export default function Crear() {
             <CategoryPicker name="category" />
           </div>
         </div>
-        <Button type="submit" size="block" disabled={proposeMut.isPending}>
+        <Button
+          type="submit"
+          size="block"
+          disabled={proposeMut.isPending || !emojiValid}
+        >
           {proposeMut.isPending ? "..." : "Proponer"}
         </Button>
       </form>

@@ -16,6 +16,53 @@ export function containsUrl(text: string): boolean {
   return URL_PATTERNS.some((re) => re.test(text));
 }
 
+// Matches a single emoji "grapheme cluster":
+// - An Extended_Pictographic (the main emoji), optionally followed by:
+//   - U+FE0F (Variation Selector-16, makes it render as emoji)
+//   - U+200D + another pictographic (ZWJ sequences like 👨‍👩‍👧)
+// - OR a pair of Regional_Indicator characters (a flag like 🇪🇸)
+// Built with explicit unicode escapes — invisible chars in source are fragile.
+const EMOJI_GRAPHEME = new RegExp(
+  "^(?:\\p{Extended_Pictographic}(?:\\uFE0F|\\u200D\\p{Extended_Pictographic})*|\\p{Regional_Indicator}{2})$",
+  "u",
+);
+const EMOJI_ONLY = new RegExp(
+  "^(?:\\p{Extended_Pictographic}(?:\\uFE0F|\\u200D\\p{Extended_Pictographic})*|\\p{Regional_Indicator}{2})+$",
+  "u",
+);
+
+/**
+ * True if the text contains ONLY emojis (no letters, digits, punctuation).
+ * Returns false for empty strings.
+ */
+export function isEmojiOnly(text: string): boolean {
+  const stripped = text.trim();
+  if (stripped.length === 0) return false;
+  return EMOJI_ONLY.test(stripped);
+}
+
+/**
+ * Count user-perceived emoji "characters" (grapheme clusters).
+ * Uses Intl.Segmenter for correct counting of compound emojis.
+ *
+ * "👨‍👩‍👧" → 1 (a single ZWJ family)
+ * "🇪🇸" → 1 (a flag, one grapheme)
+ * "🚬👨‍👩‍👧🇪🇸" → 3
+ *
+ * Returns -1 if any segment is not a valid emoji grapheme.
+ */
+export function emojiCount(text: string): number {
+  const stripped = text.trim();
+  if (stripped.length === 0) return 0;
+  const seg = new Intl.Segmenter("es", { granularity: "grapheme" });
+  let count = 0;
+  for (const piece of seg.segment(stripped)) {
+    if (EMOJI_GRAPHEME.test(piece.segment)) count += 1;
+    else return -1; // signal: not pure emojis
+  }
+  return count;
+}
+
 export const adjudicateSchema = z.object({
   achievementId: z.string().uuid(),
   story: z
@@ -28,7 +75,20 @@ export const adjudicateSchema = z.object({
 
 export const proposeAchievementSchema = z.object({
   title: z.string().trim().min(3).max(80),
-  emoji: z.string().min(1).max(8),
+  emoji: z
+    .string()
+    .trim()
+    .max(32) // Hard char cap (3 complex ZWJ emojis + slack — grapheme count is the real check below)
+    .refine((v) => isEmojiOnly(v), {
+      message: "Solo emojis (sin letras ni números)",
+    })
+    .refine(
+      (v) => {
+        const c = emojiCount(v);
+        return c >= 1 && c <= 3;
+      },
+      { message: "Entre 1 y 3 emojis" },
+    ),
   description: z.string().trim().max(200),
   category: z.enum([
     "familia",

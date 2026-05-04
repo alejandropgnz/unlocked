@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { containsUrl } from "@/lib/validators";
+import { containsUrl, isEmojiOnly, emojiCount } from "@/lib/validators";
 
 describe("containsUrl", () => {
   it("flags https links", () => {
@@ -32,5 +32,62 @@ describe("containsUrl", () => {
     // Normal punctuation. Sentences end with `. ` (dot + space).
     expect(containsUrl("Algo pasó. Luego pasó otra cosa")).toBe(false);
     expect(containsUrl("recordamos. cierto evento")).toBe(false);
+  });
+});
+
+describe("isEmojiOnly", () => {
+  it("accepts a single emoji", () => {
+    expect(isEmojiOnly("🚬")).toBe(true);
+    expect(isEmojiOnly("😴")).toBe(true);
+    expect(isEmojiOnly("🐳")).toBe(true);
+  });
+  it("accepts multiple emojis", () => {
+    expect(isEmojiOnly("🚬😴")).toBe(true);
+    expect(isEmojiOnly("🚬😴🐳")).toBe(true);
+  });
+  it("accepts ZWJ family compound", () => {
+    expect(isEmojiOnly("👨‍👩‍👧")).toBe(true);
+  });
+  it("accepts country flags", () => {
+    expect(isEmojiOnly("🇪🇸")).toBe(true);
+  });
+  it("rejects letters and numbers", () => {
+    expect(isEmojiOnly("a")).toBe(false);
+    expect(isEmojiOnly("1")).toBe(false);
+    expect(isEmojiOnly("hola")).toBe(false);
+  });
+  it("rejects mix of emoji + text", () => {
+    expect(isEmojiOnly("🚬 hola")).toBe(false);
+    expect(isEmojiOnly("hola🚬")).toBe(false);
+  });
+  it("rejects empty string", () => {
+    expect(isEmojiOnly("")).toBe(false);
+    expect(isEmojiOnly("   ")).toBe(false);
+  });
+  it("rejects punctuation alone", () => {
+    expect(isEmojiOnly(".")).toBe(false);
+    expect(isEmojiOnly("...")).toBe(false);
+  });
+});
+
+describe("emojiCount", () => {
+  it("counts simple emojis correctly", () => {
+    expect(emojiCount("🚬")).toBe(1);
+    expect(emojiCount("🚬😴")).toBe(2);
+    expect(emojiCount("🚬😴🐳")).toBe(3);
+  });
+  it("counts a ZWJ compound as ONE emoji", () => {
+    expect(emojiCount("👨‍👩‍👧")).toBe(1);
+  });
+  it("counts a flag as ONE emoji", () => {
+    expect(emojiCount("🇪🇸")).toBe(1);
+  });
+  it("returns 0 for empty input", () => {
+    expect(emojiCount("")).toBe(0);
+    expect(emojiCount("   ")).toBe(0);
+  });
+  it("returns -1 (signal) for non-emoji text", () => {
+    expect(emojiCount("hola")).toBe(-1);
+    expect(emojiCount("🚬a")).toBe(-1);
   });
 });
