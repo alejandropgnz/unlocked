@@ -42,7 +42,7 @@ export default function Home() {
       {isLoading && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 px-4 sm:px-6 lg:px-8 py-4 justify-items-start">
           {Array.from({ length: 12 }).map((_, i) => (
-            <Skeleton key={i} className="w-[200px] h-[260px]" />
+            <Skeleton key={i} className="w-full max-w-[200px] h-[260px]" />
           ))}
         </div>
       )}
@@ -73,7 +73,7 @@ export default function Home() {
           {isFetchingNextPage && (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 px-4 sm:px-6 lg:px-8 py-4 justify-items-start">
               {Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="w-[200px] h-[260px]" />
+                <Skeleton key={i} className="w-full max-w-[200px] h-[260px]" />
               ))}
             </div>
           )}

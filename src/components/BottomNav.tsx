@@ -14,8 +14,8 @@ export function BottomNav() {
   const path = useLocation().pathname;
 
   const tabs: Tab[] = [
-    { href: "/", label: "Logros", emoji: "🏆", matches: (p) => p === "/" },
     { href: "/descubrir", label: "Descubrir", emoji: "🔥", matches: (p) => p.startsWith("/descubrir") },
+    { href: "/", label: "Logros", emoji: "🏆", matches: (p) => p === "/" },
     { href: "/crear", label: "Crear", emoji: "✨", matches: (p) => p.startsWith("/crear") },
     {
       href: user && profile?.username ? `/u/${profile.username}` : "/login",

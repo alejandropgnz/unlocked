@@ -21,10 +21,13 @@ export interface AchievementCardProps {
   isUnlocked?: boolean;
 }
 
+// w-full + max-w lets cards fill narrow grid cells on mobile (where 2 cols ×
+// 200px + gap + page padding overflows a 375px viewport) while still capping
+// width on larger viewports so cards don't stretch into giant rectangles.
 const SIZES = {
-  sm: { card: "w-[140px]", title: "text-xs", padding: "p-3" },
-  md: { card: "w-[200px]", title: "text-sm", padding: "p-4" },
-  lg: { card: "w-[230px]", title: "text-base", padding: "p-5" },
+  sm: { card: "w-full max-w-[140px]", title: "text-xs", padding: "p-3" },
+  md: { card: "w-full max-w-[200px]", title: "text-sm", padding: "p-4" },
+  lg: { card: "w-full max-w-[230px]", title: "text-base", padding: "p-5" },
 } as const;
 
 // Emoji size scales with how many emojis there are so 3 emojis fit on one line

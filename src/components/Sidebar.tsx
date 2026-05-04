@@ -14,8 +14,8 @@ export function Sidebar() {
   const { user, profile } = useAuth();
 
   const items: SidebarItem[] = [
-    { to: "/", label: "Logros", icon: Trophy, end: true },
     { to: "/descubrir", label: "Descubrir", icon: Flame },
+    { to: "/", label: "Logros", icon: Trophy, end: true },
     { to: "/crear", label: "Crear", icon: Sparkles },
   ];
 
