@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export function MobileTopBar() {
   return (
     <header
-      className="md:hidden fixed top-0 left-0 right-0 z-40 bg-bg/95 backdrop-blur-md border-b border-white/10 h-14 flex items-center justify-center"
+      className="md:hidden fixed top-0 left-0 right-0 z-40 bg-bg/95 backdrop-blur-md border-b border-white/10 h-14 flex items-center px-4"
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <Link
