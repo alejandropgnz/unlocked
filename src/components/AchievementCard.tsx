@@ -106,13 +106,15 @@ export function AchievementCard({
         )}
       </div>
 
-      {/* Owned badge — circular gold stamp, top-right corner overlapping border */}
+      {/* Owned indicator — tiny check inside the card, no extruded badge.
+          The dark overlay above already does the heavy lifting; this is just
+          a subtle confirmation glyph, not a sticker. */}
       {isUnlocked && (
         <div
-          className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-gold flex items-center justify-center shadow-lg ring-2 ring-bg z-10"
+          className="absolute top-2 right-2 z-10 pointer-events-none"
           aria-label="Ya lo tienes"
         >
-          <Check className="w-4 h-4 text-bg" strokeWidth={3.5} />
+          <Check className="w-3.5 h-3.5 text-gold/70" strokeWidth={3} />
         </div>
       )}
     </Link>
