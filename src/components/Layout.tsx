@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { NavBar } from "./NavBar";
 import { BottomNav } from "./BottomNav";
+import { CookieBanner } from "./CookieBanner";
 
 export function Layout() {
   return (
@@ -9,6 +10,7 @@ export function Layout() {
       <main className="flex-1 pb-[calc(3.5rem+env(safe-area-inset-bottom)+0.5rem)] md:pb-0">
         <Outlet />
       </main>
+      <CookieBanner />
       <BottomNav />
     </div>
   );

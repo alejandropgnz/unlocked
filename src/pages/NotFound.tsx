@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center gap-4 px-4 text-center">
-      <p className="text-7xl font-black tracking-tightest text-muted">404</p>
-      <h1 className="text-2xl font-black tracking-tighter">Página no encontrada</h1>
-      <p className="text-muted text-sm">Esta ruta no existe (o la borramos).</p>
-      <Link to="/" className="text-gold underline text-sm mt-2">Ir al inicio →</Link>
-    </div>
+    <section className="min-h-screen flex flex-col items-center justify-center text-center p-8">
+      <div className="text-6xl mb-4">🔒</div>
+      <h1 className="text-3xl font-black tracking-tighter">No encontrado</h1>
+      <p className="text-muted mt-2">No existe esa página.</p>
+      <Link to="/" className="mt-6 underline text-sm">
+        Volver al inicio
+      </Link>
+    </section>
   );
 }
