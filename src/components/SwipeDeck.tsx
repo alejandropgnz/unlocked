@@ -207,14 +207,17 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
   const peek = stack.slice(1, 3);
 
   return (
-    <div className="relative w-full h-full flex items-stretch justify-center gap-4">
+    // items-center so the smaller side peeks can be vertically centered
+    // alongside the full-height active card without forcing them to stretch.
+    <div className="relative w-full h-full flex items-center justify-center gap-4 lg:gap-6">
       {/* Left peek — desktop only (lg+). Shows the previously-swiped card,
-          dimmed/locked, so the user has spatial context of "what just was". */}
-      <div className="hidden lg:block w-32 xl:w-40 h-full flex-shrink-0">
+          dimmed/locked, so the user has spatial context of "what just was".
+          Sized smaller (h-[70%]) so the active center card stays the focus. */}
+      <div className="hidden lg:block w-28 xl:w-32 h-[70%] flex-shrink-0">
         {lastSwiped && <SidePeekCard item={lastSwiped} label="Anterior" />}
       </div>
 
-      {/* Center deck — the active card stack. */}
+      {/* Center deck — the active card stack, full parent height. */}
       <div className="relative w-full max-w-sm h-full flex-shrink-0">
         {/* Decorative stacked-behind cards. Hidden at lg+ because the side
             peek to the right already shows what's coming, so the layered
@@ -231,7 +234,7 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
       </div>
 
       {/* Right peek — desktop only. Shows the next card up, dimmed/locked. */}
-      <div className="hidden lg:block w-32 xl:w-40 h-full flex-shrink-0">
+      <div className="hidden lg:block w-28 xl:w-32 h-[70%] flex-shrink-0">
         {peek[0] && <SidePeekCard item={peek[0]} label="Siguiente" />}
       </div>
     </div>
