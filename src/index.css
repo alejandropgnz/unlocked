@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Fonts via Google Fonts CSS API — Google rotates versioned font URLs
+   periodically (the v18 hash gets retired), so we let their CSS endpoint
+   resolve the current URLs instead of hardcoding them. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@400;700&display=swap");
+
 @theme inline {
   --color-bg: #0e0e14;
   --color-surface: #16161f;
@@ -20,22 +25,6 @@
   color-scheme: dark;
   --font-inter: "Inter", system-ui, sans-serif;
   --font-jetbrains-mono: "JetBrains Mono", ui-monospace, monospace;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("https://rsms.me/inter/font-files/InterVariable.woff2") format("woff2-variations");
-  font-weight: 100 900;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4xD-IQ-PuZJJXxfpAO-Lf0Q.woff2") format("woff2");
-  font-weight: 100 900;
-  font-display: swap;
-  font-style: normal;
 }
 
 html, body {
