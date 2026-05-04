@@ -46,7 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="es" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-bg text-white antialiased">
         <Script
-          defer
+          strategy="afterInteractive"
           data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? "unlocked-rgcv.vercel.app"}
           src="https://plausible.io/js/script.js"
         />

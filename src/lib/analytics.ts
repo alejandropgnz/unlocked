@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import type { Json } from "@/types/database";
 
 export async function logEvent(
   name: string,
@@ -13,7 +14,7 @@ export async function logEvent(
     } = await supabase.auth.getUser();
     await supabase.from("events").insert({
       name,
-      properties: properties as never,
+      properties: properties as Json,
       user_id: user?.id ?? null,
     });
   } catch (e) {

@@ -90,8 +90,8 @@ export function AdjudicateModal({
               href={`/u/me`}
               prefetch={false}
               onClick={(e) => {
-                // Best-effort jump to the user's own profile via SiteHeader's @username link.
-                // Falls back to home — the SiteHeader links to /u/[username] on next page load.
+                // Best-effort jump to the user's profile via NavBar's @username link.
+                // Falls back to home; the public profile is reachable via the @username link in the global nav.
                 e.preventDefault();
                 window.location.href = "/";
               }}
