@@ -40,7 +40,16 @@
       "Bash(git branch *)",
       "Bash(python3 -c \"import sys, json; d=json.load\\(sys.stdin\\); print\\(d['version']\\)\")",
       "Bash(curl -s http://localhost:5173)",
-      "Bash(git -C /c/Users/alexp/Desktop/Webs/unlocked status)"
+      "Bash(git -C /c/Users/alexp/Desktop/Webs/unlocked status)",
+      "Bash(git -C /c/Users/alexp/Desktop/Webs/unlocked add supabase/migrations/20260504000007_propose_rate_limit.sql src/hooks/)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('deps:', list\\(d['dependencies'].keys\\(\\)\\)\\); print\\('devdeps:', list\\(d.get\\('devDependencies',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(curl -s http://localhost:5174)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(node --check api/_lib/supabase-fetch.js)",
+      "Bash(node --check api/_lib/og-helpers.js)",
+      "Bash(node --check api/og-achievement.js)",
+      "Bash(node --check api/og-unlock.js)",
+      "Bash(node --check api/og-profile.js)"
     ]
   }
 }

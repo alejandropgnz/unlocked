@@ -32,6 +32,17 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Auth provider — mirrors Wisheem's pattern:
+ * - `loading` becomes false IMMEDIATELY after the initial getSession resolves.
+ *   It's NOT blocked by the profile fetch.
+ * - `profileLoading` is independent and managed by a separate effect that
+ *   reacts to `user.id` changes. If the profile fetch hangs or fails, the
+ *   rest of the app keeps working.
+ *
+ * This prevents the "stuck loading forever" bug we saw when profile fetch
+ * stalled (HMR, network blips, etc.) — auth state always settles fast.
+ */
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -39,73 +50,67 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
 
-  const fetchProfile = async (userId: string): Promise<Profile | null> => {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("id, username, display_name, avatar_url, bio, top5, is_admin")
-      .eq("id", userId)
-      .maybeSingle();
-    if (error) {
-      logger.error("auth: profile load failed", error);
-      return null;
-    }
-    return data ?? null;
-  };
+  // Auth state — never blocks on profile.
+  useEffect(() => {
+    void supabase.auth.getSession().then(({ data: { session: s } }) => {
+      setSession(s);
+      setUser(s?.user ?? null);
+      setLoading(false);
+    }).catch((e) => {
+      logger.error("getSession failed", e);
+      setLoading(false);
+    });
 
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+      setUser(s?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Profile fetch — independent effect that reacts to user.id changes.
   useEffect(() => {
     let cancelled = false;
 
-    const init = async () => {
+    const fetchAndSet = async () => {
+      if (!user) {
+        setProfile(null);
+        setProfileLoading(false);
+        return;
+      }
+      setProfileLoading(true);
       try {
-        const { data: { session: s } } = await supabase.auth.getSession();
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("id, username, display_name, avatar_url, bio, top5, is_admin")
+          .eq("id", user.id)
+          .maybeSingle();
         if (cancelled) return;
-        setSession(s);
-        setUser(s?.user ?? null);
-        if (s?.user) {
-          setProfileLoading(true);
-          try {
-            const p = await fetchProfile(s.user.id);
-            if (cancelled) return;
-            setProfile(p);
-          } finally {
-            if (!cancelled) setProfileLoading(false);
-          }
+        if (error) {
+          logger.error("auth: profile load failed", error);
+          setProfile(null);
+        } else {
+          setProfile(data ?? null);
         }
       } catch (e) {
-        logger.error("auth init failed", e);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-    void init();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, s) => {
-      if (cancelled) return;
-      try {
-        setSession(s);
-        setUser(s?.user ?? null);
-        if (s?.user) {
-          setProfileLoading(true);
-          try {
-            const p = await fetchProfile(s.user.id);
-            if (cancelled) return;
-            setProfile(p);
-          } finally {
-            if (!cancelled) setProfileLoading(false);
-          }
-        } else {
+        if (!cancelled) {
+          logger.error("auth: profile fetch threw", e);
           setProfile(null);
         }
-      } catch (e) {
-        logger.error("auth state change failed", e);
+      } finally {
+        if (!cancelled) setProfileLoading(false);
       }
-    });
+    };
+    void fetchAndSet();
 
     return () => {
       cancelled = true;
-      subscription.unsubscribe();
     };
-  }, []);
+  }, [user]);
 
   const signInWithGoogle = async (next?: string) => {
     const redirectTo = `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
@@ -121,7 +126,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) {
+    if (error && error.name !== "AuthSessionMissingError") {
       logger.error("signOut failed", error);
       throw error;
     }
@@ -129,8 +134,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const refreshProfile = async () => {
     if (!user) return;
-    const p = await fetchProfile(user.id);
-    setProfile(p);
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, username, display_name, avatar_url, bio, top5, is_admin")
+      .eq("id", user.id)
+      .maybeSingle();
+    if (error) {
+      logger.error("refreshProfile failed", error);
+      return;
+    }
+    setProfile(data ?? null);
   };
 
   return (
