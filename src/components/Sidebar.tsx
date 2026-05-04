@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { Home, Flame, Sparkles, User, Shield } from "lucide-react";
+import { Trophy, Flame, Sparkles, User, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/cn";
 
 interface SidebarItem {
   to: string;
   label: string;
-  icon: typeof Home;
+  icon: typeof Trophy;
   end?: boolean;
 }
 
@@ -14,7 +14,7 @@ export function Sidebar() {
   const { user, profile } = useAuth();
 
   const items: SidebarItem[] = [
-    { to: "/", label: "Home", icon: Home, end: true },
+    { to: "/", label: "Logros", icon: Trophy, end: true },
     { to: "/descubrir", label: "Descubrir", icon: Flame },
     { to: "/crear", label: "Crear", icon: Sparkles },
   ];

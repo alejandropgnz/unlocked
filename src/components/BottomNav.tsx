@@ -14,7 +14,7 @@ export function BottomNav() {
   const path = useLocation().pathname;
 
   const tabs: Tab[] = [
-    { href: "/", label: "Home", emoji: "🏠", matches: (p) => p === "/" },
+    { href: "/", label: "Logros", emoji: "🏆", matches: (p) => p === "/" },
     { href: "/descubrir", label: "Descubrir", emoji: "🔥", matches: (p) => p.startsWith("/descubrir") },
     { href: "/crear", label: "Crear", emoji: "✨", matches: (p) => p.startsWith("/crear") },
     {

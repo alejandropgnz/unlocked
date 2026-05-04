@@ -31,7 +31,10 @@ export default function Home() {
   return (
     <section className="min-h-screen max-w-7xl mx-auto">
       <header className="px-4 sm:px-6 lg:px-8 pt-6 pb-4">
-        <p className="text-muted text-sm md:text-base">
+        <h1 className="text-2xl md:text-3xl font-black tracking-tighter">
+          Todos los logros
+        </h1>
+        <p className="text-muted text-sm md:text-base mt-1">
           Colecciona los logros más absurdos de tu vida.
         </p>
       </header>
