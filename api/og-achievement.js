@@ -4,7 +4,7 @@
 import { ImageResponse } from "@vercel/og";
 import { createElement as h } from "react";
 import { supabaseFetchOne } from "./_lib/supabase-fetch.js";
-import { TIER_COLORS, TIER_BORDER_GRADIENT, rarityTier, tierLabel, getInterFont } from "./_lib/og-helpers.js";
+import { TIER_COLORS, TIER_BORDER_GRADIENT, rarityTier, getInterFont } from "./_lib/og-helpers.js";
 
 export const config = { runtime: "edge" };
 
@@ -124,14 +124,13 @@ export function buildIndividualLayout({ emoji, title, rarityPercent, unlockCount
             {
               style: {
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "flex-end",
                 fontSize: 20,
                 fontWeight: 700,
                 letterSpacing: 4,
                 color: tierColor,
               },
             },
-            h("div", null, "★ " + tierLabel(tier)),
             h("div", null, rarityPercent.toFixed(2) + "%"),
           ),
           h("div", { style: { fontSize: 220, textAlign: "center", margin: "60px 0" } }, emoji),

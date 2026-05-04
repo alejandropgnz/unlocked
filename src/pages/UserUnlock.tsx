@@ -5,7 +5,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { ShareCardModal } from "@/components/ShareCardModal";
-import { rarityTier, tierBorderClass, tierLabel, tierTextColor } from "@/lib/rarity";
+import { rarityTier, tierBorderClass, tierTextColor } from "@/lib/rarity";
 
 export default function UserUnlock() {
   const { username, slug } = useParams<{ username: string; slug: string }>();
@@ -66,7 +66,7 @@ export default function UserUnlock() {
             className="text-[10px] font-bold tracking-[3px] uppercase"
             style={{ color: tierColor }}
           >
-            ★ {tierLabel(tier)} · {rarityPercent.toFixed(2)}%
+            <span className="font-mono">{rarityPercent.toFixed(2)}%</span> lo tienen
           </div>
           <div className="text-7xl md:text-8xl mt-4">{achievement.emoji}</div>
           <h1 className="mt-4 text-2xl md:text-4xl font-black tracking-tighter">

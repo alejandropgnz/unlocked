@@ -8,7 +8,7 @@ import {
 } from "framer-motion";
 import { useAdjudicate } from "@/hooks/useAdjudicate";
 import { trackEvent } from "@/hooks/useTrack";
-import { rarityTier, tierLabel, tierTextColor } from "@/lib/rarity";
+import { rarityTier, tierTextColor } from "@/lib/rarity";
 
 export interface SwipeItem {
   id: string;
@@ -56,10 +56,9 @@ function TopCard({
       className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-8 flex flex-col select-none cursor-grab active:cursor-grabbing"
     >
       <div
-        className="flex justify-between items-center text-[10px] font-bold tracking-[2.5px]"
+        className="flex justify-end items-center text-[10px] font-bold tracking-[2.5px]"
         style={{ color: tierColor }}
       >
-        <span>★ {tierLabel(tier)}</span>
         <span className="font-mono">{item.rarityPercent.toFixed(2)}%</span>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center text-center">

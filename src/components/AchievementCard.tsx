@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import {
   rarityTier,
   tierBorderClass,
-  tierLabel,
   tierTextColor,
   type Tier,
 } from "@/lib/rarity";
@@ -45,10 +44,9 @@ export function AchievementCard({
     >
       <div className={`bg-surface rounded-[16px] ${sizing.padding} h-full flex flex-col`}>
         <div
-          className="flex justify-between items-center text-[9px] font-bold tracking-[2.5px]"
+          className="flex justify-end items-center text-[9px] font-bold tracking-[2.5px]"
           style={{ color: tierColor }}
         >
-          <span>★ {tierLabel(tier)}</span>
           <span className="font-mono">{rarityPercent.toFixed(2)}%</span>
         </div>
         <div className={`${sizing.emoji} text-center my-3`}>{emoji}</div>

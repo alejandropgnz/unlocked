@@ -4,7 +4,7 @@
 import { ImageResponse } from "@vercel/og";
 import { createElement as h } from "react";
 import { supabaseFetchOne, supabaseFetchMany } from "./_lib/supabase-fetch.js";
-import { TIER_COLORS, rarityTier, tierLabel, getInterFont } from "./_lib/og-helpers.js";
+import { TIER_COLORS, rarityTier, getInterFont } from "./_lib/og-helpers.js";
 
 export const config = { runtime: "edge" };
 
@@ -243,7 +243,7 @@ function buildTop5Layout({ username, displayName, avatarUrl, totalUnlocks, rares
             textTransform: "uppercase",
           },
         },
-        "★ " + tierLabel(tier) + " · " + it.rarityPercent.toFixed(2) + "%",
+        it.rarityPercent.toFixed(2) + "% lo tienen",
       ),
     );
   }
@@ -284,7 +284,7 @@ function buildTop5Layout({ username, displayName, avatarUrl, totalUnlocks, rares
               textTransform: "uppercase",
             },
           },
-          "★ " + tierLabel(tier) + " · " + it.rarityPercent.toFixed(2) + "%",
+          it.rarityPercent.toFixed(2) + "% lo tienen",
         ),
       ),
     );

@@ -19,17 +19,6 @@ export function rarityTier(percent: number, ctx?: RarityContext): Tier {
   return "legendary";
 }
 
-const LABELS: Record<Tier, string> = {
-  common: "COMÚN",
-  rare: "RARO",
-  legendary: "LEGENDARY",
-  unique: "ÚNICO",
-};
-
-export function tierLabel(tier: Tier): string {
-  return LABELS[tier];
-}
-
 const BORDER_CLASSES: Record<Tier, string> = {
   common: "bg-grey",
   rare: "bg-violet",

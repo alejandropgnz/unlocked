@@ -9,7 +9,7 @@ import { AddStoryModal } from "@/components/AddStoryModal";
 import { StoriesList } from "@/components/StoriesList";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { rarityTier, tierBorderClass, tierLabel, tierTextColor } from "@/lib/rarity";
+import { rarityTier, tierBorderClass, tierTextColor } from "@/lib/rarity";
 
 export default function AchievementDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -57,7 +57,7 @@ export default function AchievementDetail() {
             className="text-[10px] font-bold tracking-[3px] uppercase"
             style={{ color: tierColor }}
           >
-            ★ {tierLabel(tier)} · {achievement.rarityPercent.toFixed(2)}%
+            <span className="font-mono">{achievement.rarityPercent.toFixed(2)}%</span> lo tienen
           </div>
           <div className="text-7xl md:text-8xl mt-4">{achievement.emoji}</div>
           <h1 className="mt-4 text-2xl md:text-4xl font-black tracking-tighter">

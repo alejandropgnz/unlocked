@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { rarityTier, tierBorderClass, tierLabel, type Tier } from "@/lib/rarity";
+import { rarityTier, tierBorderClass, type Tier } from "@/lib/rarity";
 
 describe("rarityTier", () => {
   it("returns common when percent > 10", () => {
@@ -26,15 +26,6 @@ describe("rarityTier", () => {
     // Showing it as "common" (grey) is misleading — it should be "legendary"
     // since literally no one else has unlocked it.
     expect(rarityTier(0)).toBe<Tier>("legendary");
-  });
-});
-
-describe("tierLabel", () => {
-  it("maps every tier to its display label", () => {
-    expect(tierLabel("common")).toBe("COMÚN");
-    expect(tierLabel("rare")).toBe("RARO");
-    expect(tierLabel("legendary")).toBe("LEGENDARY");
-    expect(tierLabel("unique")).toBe("ÚNICO");
   });
 });
 
