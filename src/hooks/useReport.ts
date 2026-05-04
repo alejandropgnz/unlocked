@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
+import { containsUrl } from "@/lib/validators";
 import { useAuth } from "@/contexts/AuthContext";
 
 const reportSchema = z.object({
@@ -27,6 +28,9 @@ export function useReport() {
       if (!user) throw new Error("No estás logueado");
       const parsed = reportSchema.safeParse(input);
       if (!parsed.success) throw new Error("Datos inválidos");
+      if (parsed.data.notes && containsUrl(parsed.data.notes)) {
+        throw new Error("No se permiten enlaces en las notas");
+      }
 
       const { error } = await supabase.from("reports").insert({
         target_type: parsed.data.targetType,
