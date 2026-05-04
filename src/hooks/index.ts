@@ -1,5 +1,7 @@
 export * from "./types";
 export { useAchievements } from "./useAchievements";
+export { useInfiniteAchievements } from "./useInfiniteAchievements";
+export { useIntersectionObserver } from "./useIntersectionObserver";
 export { useAchievement } from "./useAchievement";
 export { useUserProfile } from "./useUserProfile";
 export { useUserUnlocks } from "./useUserUnlocks";
