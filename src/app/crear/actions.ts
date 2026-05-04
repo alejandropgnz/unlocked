@@ -35,6 +35,7 @@ export async function proposeAchievement(formData: FormData): Promise<ProposeRes
     .from("achievements")
     .select("id", { count: "exact", head: true })
     .eq("created_by", user.id)
+    .eq("status", "pending")
     .gte("created_at", since);
   if ((count ?? 0) >= 3) {
     return { ok: false, error: "Máximo 3 propuestas por día" };

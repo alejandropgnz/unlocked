@@ -8,5 +8,6 @@ export function slugify(input: string): string {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
-    .slice(0, 80);
+    .slice(0, 80)
+    .replace(/^-|-$/g, "");
 }

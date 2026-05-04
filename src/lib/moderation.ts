@@ -60,9 +60,22 @@ export function isDuplicateTitle(
   const normCandidate = normalizeTitle(candidate);
   return existing.some((e) => {
     if (similarity(candidate, e) >= threshold) return true;
-    // Containment check: if the normalized candidate is a substring of an
-    // existing title (or vice versa), treat as duplicate regardless of length.
+    // Containment check: only apply if the shorter string is at least 60% the
+    // length of the longer one, to avoid false positives where a short title
+    // happens to be a substring of a much longer unrelated one.
     const normE = normalizeTitle(e);
-    return normE.includes(normCandidate) || normCandidate.includes(normE);
+    const lenA = normCandidate.length;
+    const lenB = normE.length;
+    const minLen = Math.min(lenA, lenB);
+    const maxLen = Math.max(lenA, lenB);
+    if (maxLen > 0) {
+      const ratio = minLen / maxLen;
+      if (ratio >= 0.6) {
+        if (normE.includes(normCandidate) || normCandidate.includes(normE)) {
+          return true;
+        }
+      }
+    }
+    return false;
   });
 }

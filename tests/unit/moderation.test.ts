@@ -67,4 +67,15 @@ describe("isDuplicateTitle", () => {
     expect(isDuplicateTitle("hola mundo", ["holaa mundo"], 0.99)).toBe(false);
     expect(isDuplicateTitle("hola mundo", ["holaa mundo"], 0.85)).toBe(true);
   });
+
+  it("does not flag short titles that are substrings of much longer ones", () => {
+    expect(
+      isDuplicateTitle("He visto el mar", [
+        "He visto el mar más bonito de mi vida en Croacia con mi novia",
+      ]),
+    ).toBe(false);
+    expect(
+      isDuplicateTitle("Amor", ["Amor de verano que no pudo ser"]),
+    ).toBe(false);
+  });
 });

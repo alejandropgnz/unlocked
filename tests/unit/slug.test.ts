@@ -27,4 +27,9 @@ describe("slugify", () => {
   it("returns an empty string for input with only punctuation/emoji", () => {
     expect(slugify("¡!?🚬")).toBe("");
   });
+
+  it("never ends with a hyphen even after length truncation", () => {
+    const long = "a".repeat(79) + " b";
+    expect(slugify(long).endsWith("-")).toBe(false);
+  });
 });
