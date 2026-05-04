@@ -58,7 +58,7 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
           placeholder="tu_username"
         />
       </div>
-      <div className="flex items-center justify-between text-xs">
+      <div className="flex items-center justify-between text-xs min-h-[28px]">
         <div className="flex items-center gap-2">
           <span className={dotClass} />
           <span
@@ -69,12 +69,16 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
               status === "invalid" && "text-red/80",
             )}
           >
-            {message || " "}
+            {message || " "}
           </span>
         </div>
-        <Button type="submit" size="sm" disabled={!canSubmit || changeMut.isPending}>
-          {changeMut.isPending ? "..." : "Guardar"}
-        </Button>
+        {/* Show button only when there's a valid change pending — keeps the
+            edit profile section quiet when nothing's been edited. */}
+        {canSubmit && (
+          <Button type="submit" size="sm" disabled={changeMut.isPending}>
+            {changeMut.isPending ? "..." : "Guardar"}
+          </Button>
+        )}
       </div>
     </form>
   );
