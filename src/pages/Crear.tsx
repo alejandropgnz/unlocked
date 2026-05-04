@@ -46,7 +46,7 @@ export default function Crear() {
         <div className="text-6xl mb-4">📨</div>
         <h1 className="text-3xl font-black tracking-tighter">En revisión</h1>
         <p className="text-muted mt-2 text-sm">
-          Si pasa la moderación, te lo adjudicamos automáticamente.
+          Si pasa la moderación, te lo desbloqueamos automáticamente.
         </p>
         <Link to="/" className="mt-6 inline-block underline">
           Volver al inicio
@@ -59,7 +59,7 @@ export default function Crear() {
     <section className="px-4 md:px-8 max-w-xl mx-auto py-8">
       <h1 className="text-3xl font-black tracking-tighter">Proponer un logro</h1>
       <p className="text-muted mt-2 text-sm">
-        Si lo aprobamos, todo el mundo podrá adjudicárselo. Tú lo recibirás automáticamente.
+        Si lo aprobamos, todo el mundo podrá desbloquearlo. Tú lo recibirás automáticamente.
       </p>
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div>

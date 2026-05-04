@@ -38,7 +38,7 @@ export function useAdjudicate() {
       if (unlockErr) {
         if (unlockErr.code === "23505") throw new Error("Ya tienes este logro");
         logger.error("adjudicate insert unlock", unlockErr);
-        throw new Error("No se pudo adjudicar");
+        throw new Error("No se pudo desbloquear");
       }
 
       // 2. Optional story

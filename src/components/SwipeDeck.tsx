@@ -55,27 +55,29 @@ function TopCard({
       whileTap={{ cursor: "grabbing" }}
       className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col select-none cursor-grab active:cursor-grabbing"
     >
-      <div className="text-center text-xs sm:text-sm shrink-0">
-        <span
-          className="font-mono font-bold tabular-nums"
+      <div className="text-center shrink-0 leading-tight">
+        <div
+          className="font-mono font-black tabular-nums text-2xl sm:text-3xl"
           style={{ color: tierColor }}
         >
           {item.rarityPercent.toFixed(2)}%
-        </span>{" "}
-        <span className="text-muted">de las personas tienen este logro</span>
+        </div>
+        <div className="text-muted text-xs sm:text-sm mt-1">
+          de las personas tienen este logro
+        </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center text-center min-h-0">
         <div className="text-7xl sm:text-8xl">{item.emoji}</div>
-        <div className="mt-5 sm:mt-6 text-xl sm:text-2xl md:text-3xl font-black tracking-tighter">
+        <div className="mt-5 sm:mt-6 text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter">
           {item.title}
         </div>
         <div className="mt-3 text-[11px] text-muted font-mono uppercase tracking-widest">
           {item.category} · {item.unlockCount.toLocaleString("es-ES")} desbloqueados
         </div>
       </div>
-      <div className="flex justify-between text-xs text-muted">
-        <span>← Pasar</span>
-        <span>Adjudicar →</span>
+      <div className="flex justify-between items-center font-black text-sm sm:text-base uppercase tracking-widest">
+        <span className="text-red">← Pasar</span>
+        <span className="text-gold">Desbloquear →</span>
       </div>
       <motion.div
         style={{ opacity: acceptOpacity }}
@@ -130,7 +132,7 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
         <div className="text-6xl mb-4">🎯</div>
         <h2 className="text-2xl font-black tracking-tighter">Has visto todo</h2>
         <p className="text-muted mt-2 text-sm">
-          {stats.kept} adjudicados · {stats.passed} pasados
+          {stats.kept} desbloqueados · {stats.passed} pasados
         </p>
         <Link
           to="/"
@@ -146,7 +148,7 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
   const peek = stack.slice(1, 3);
 
   return (
-    <div className="relative w-full max-w-sm mx-auto h-full max-h-[520px]">
+    <div className="relative w-full max-w-sm mx-auto h-full">
       {peek
         .slice()
         .reverse()

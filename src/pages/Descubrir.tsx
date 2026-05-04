@@ -55,7 +55,7 @@ export default function Descubrir() {
       <header className="hidden md:block text-center mb-8 shrink-0">
         <h1 className="text-3xl font-black tracking-tighter">Descubrir</h1>
         <p className="text-muted text-sm mt-1">
-          Desliza derecha para adjudicarte, izquierda para pasar.
+          Desliza derecha para desbloquear, izquierda para pasar.
         </p>
       </header>
 

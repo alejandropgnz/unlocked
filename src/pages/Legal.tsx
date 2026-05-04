@@ -22,7 +22,7 @@ export default function Legal() {
           <h2 className="text-xs uppercase tracking-widest text-muted mb-2">Datos que recogemos</h2>
           <ul className="list-disc list-inside space-y-1">
             <li>Datos de tu cuenta de Google (nombre, email, foto) para crear tu perfil.</li>
-            <li>Logros que adjudicas, historias que publicas y respuestas en foros.</li>
+            <li>Logros que desbloqueas, historias que publicas y respuestas en foros.</li>
             <li>Estadísticas anónimas de uso vía Plausible Analytics (sin cookies).</li>
           </ul>
         </section>
@@ -46,7 +46,7 @@ export default function Legal() {
         <section>
           <h2 className="text-xs uppercase tracking-widest text-muted mb-2">Términos de uso</h2>
           <p>
-            Al adjudicar logros y publicar contenido, te comprometes a no incluir datos
+            Al desbloquear logros y publicar contenido, te comprometes a no incluir datos
             personales ajenos, contenido ofensivo, ilegal o de odio. Nos reservamos el
             derecho a moderar y eliminar contenido sin previo aviso.
           </p>

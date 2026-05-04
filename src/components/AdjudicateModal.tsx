@@ -38,7 +38,7 @@ export function AdjudicateModal({
         to={`/login?next=${encodeURIComponent(`/l/${slug}`)}`}
         className="mt-8 w-full md:w-auto md:px-12 py-4 bg-white text-bg font-black rounded-full text-sm tracking-widest uppercase inline-block text-center hover:bg-gold transition"
       >
-        Adjudicar
+        Desbloquear
       </Link>
     );
   }
@@ -112,10 +112,10 @@ export function AdjudicateModal({
   return (
     <>
       <Button variant="primary" size="lg" onClick={() => setOpen(true)} className="mt-8">
-        Adjudicar
+        Desbloquear
       </Button>
       <Modal open={open} onClose={() => !adjudicateMut.isPending && setOpen(false)}>
-        <h3 className="text-xl font-black tracking-tighter">Adjudicar logro</h3>
+        <h3 className="text-xl font-black tracking-tighter">Desbloquear logro</h3>
         <p className="text-muted text-sm mt-2">¿Quieres contar la historia? (opcional)</p>
         <div className="mt-3">
           <Textarea
