@@ -1,21 +1,32 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserUnlocks } from "@/hooks/useUserUnlocks";
+import { useUpdateAvatar } from "@/hooks/useUpdateAvatar";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { AchievementGrid } from "@/components/AchievementGrid";
 import { AchievementCard } from "@/components/AchievementCard";
 import { ShareCardModal } from "@/components/ShareCardModal";
+import { AvatarUploader } from "@/components/AvatarUploader";
+import { BioForm } from "@/components/BioForm";
+import { Top5Editor } from "@/components/Top5Editor";
+import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 import type { UnlockedItem } from "@/hooks/types";
 
 export default function Profile() {
   const { username } = useParams<{ username: string }>();
   const [shareOpen, setShareOpen] = useState(false);
 
+  const { user, profile: authProfile } = useAuth();
   const { data: profile, isLoading: profileLoading, isError } = useUserProfile(username);
   const { data: unlocks, isLoading: unlocksLoading } = useUserUnlocks(profile?.id);
+  const updateAvatarMut = useUpdateAvatar();
+
+  const isOwner =
+    !!user && !!authProfile && !!username && authProfile.username === username;
 
   if (profileLoading) {
     return (
@@ -60,17 +71,48 @@ export default function Profile() {
 
   const collectionItems = unlocks ?? [];
 
+  // Data for Top5Editor (owner only)
+  const collectionForEditor = collectionItems.map((u) => ({
+    id: u.achievementId,
+    emoji: u.emoji,
+    title: u.title,
+  }));
+  const top5Ids: string[] = Array.isArray(profile.top5)
+    ? (profile.top5 as string[])
+    : [];
+  const top5ForEditor = top5Ids
+    .map((id) => collectionForEditor.find((c) => c.id === id))
+    .filter((x): x is { id: string; emoji: string; title: string } => !!x);
+
+  // Avatar initials fallback
+  const initials = (profile.display_name ?? profile.username ?? "?")
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
   return (
-    <section className="px-4 md:px-8 max-w-5xl mx-auto py-8">
+    <section className="px-4 md:px-8 max-w-5xl mx-auto py-8 space-y-10">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6 mb-8">
-        <Avatar src={profile.avatar_url} size="lg" />
+      <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+        {isOwner ? (
+          <AvatarUploader
+            userId={user.id}
+            value={authProfile.avatar_url ?? null}
+            onChange={(url) => updateAvatarMut.mutate(url)}
+            initials={initials}
+            size="lg"
+          />
+        ) : (
+          <Avatar src={profile.avatar_url} size="lg" />
+        )}
         <div className="flex-1">
           <h1 className="text-2xl md:text-3xl font-black tracking-tighter">
             {profile.display_name}
           </h1>
           <p className="text-muted text-sm">@{profile.username}</p>
-          {profile.bio && (
+          {!isOwner && profile.bio && (
             <p className="mt-2 text-sm max-w-sm">{profile.bio}</p>
           )}
           <div className="mt-3 flex items-center gap-4">
@@ -88,28 +130,53 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Top 5 */}
-      {top5Items.length > 0 && (
-        <div className="mb-10">
-          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">
-            Top 5
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {top5Items.map((item) => (
-              <AchievementCard
-                key={item.achievementId}
-                slug={item.slug}
-                title={item.title}
-                emoji={item.emoji}
-                rarityPercent={item.rarityPercent}
-                unlockCount={item.unlockCount}
-                category={item.category}
-                size="md"
-                href={`/u/${profile.username}/${item.slug}`}
-              />
-            ))}
-          </div>
+      {/* Bio editor (owner only) */}
+      {isOwner && (
+        <div>
+          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">Bio</h2>
+          <BioForm />
         </div>
+      )}
+
+      {/* Top 5 */}
+      {isOwner ? (
+        <div>
+          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">
+            Mi Top 5
+          </h2>
+          {unlocksLoading ? (
+            <div className="space-y-2">
+              {[0, 1, 2].map((i) => (
+                <Skeleton key={i} className="h-14 rounded-xl" />
+              ))}
+            </div>
+          ) : (
+            <Top5Editor initial={top5ForEditor} available={collectionForEditor} />
+          )}
+        </div>
+      ) : (
+        top5Items.length > 0 && (
+          <div>
+            <h2 className="text-xs uppercase tracking-widest text-muted mb-3">
+              Top 5
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {top5Items.map((item) => (
+                <AchievementCard
+                  key={item.achievementId}
+                  slug={item.slug}
+                  title={item.title}
+                  emoji={item.emoji}
+                  rarityPercent={item.rarityPercent}
+                  unlockCount={item.unlockCount}
+                  category={item.category}
+                  size="md"
+                  href={`/u/${profile.username}/${item.slug}`}
+                />
+              ))}
+            </div>
+          </div>
+        )
       )}
 
       {/* Full collection */}
@@ -138,6 +205,16 @@ export default function Profile() {
           />
         )}
       </div>
+
+      {/* Danger zone (owner only) */}
+      {isOwner && (
+        <div>
+          <h2 className="text-xs uppercase tracking-widest text-red mb-3">
+            Zona de peligro
+          </h2>
+          <DeleteAccountButton />
+        </div>
+      )}
 
       <ShareCardModal
         open={shareOpen}

@@ -26,7 +26,7 @@ Web viral de logros absurdos de la vida. Los users desbloquean logros ("mi padre
 
 ```
 src/
-  pages/           → Páginas (Home, AchievementDetail, Profile, UserUnlock, Yo, Crear, Admin, Descubrir, StoryThread, Legal, Login)
+  pages/           → Páginas (Home, AchievementDetail, Profile, UserUnlock, Crear, Admin, Descubrir, StoryThread, Legal, Login)
   components/      → Componentes de feature (AchievementCard, AdjudicateModal, SwipeDeck, ShareCardModal, …)
   components/ui/   → Sistema de diseño primitivos (Button, Input, Textarea, Modal, Card, Tabs, …)
   hooks/           → Hooks de datos por dominio (useAchievement, useAchievements, useUnlocks, useStories, useReplies, useReactions, useTop5, useReport)

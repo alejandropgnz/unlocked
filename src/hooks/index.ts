@@ -25,5 +25,6 @@ export {
 } from "./useAdmin";
 export type { PendingItem, OpenReportItem } from "./useAdmin";
 export { useSaveBio, useSaveTop5, useDeleteAccount } from "./useYo";
+export { useUpdateAvatar } from "./useUpdateAvatar";
 export { trackEvent } from "./useTrack";
 export { useAddStory } from "./useAddStory";

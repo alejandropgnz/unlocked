@@ -18,10 +18,12 @@ export function BottomNav() {
     { href: "/descubrir", label: "Descubrir", emoji: "🔥", matches: (p) => p.startsWith("/descubrir") },
     { href: "/crear", label: "Crear", emoji: "✨", matches: (p) => p.startsWith("/crear") },
     {
-      href: user && profile ? "/yo" : "/login",
+      href: user && profile ? `/u/${profile.username}` : "/login",
       label: user && profile ? "Yo" : "Entrar",
       emoji: "👤",
-      matches: (p) => p.startsWith("/yo") || p.startsWith("/login"),
+      matches: (p) =>
+        (user && profile ? p === `/u/${profile.username}` : false) ||
+        p.startsWith("/login"),
     },
   ];
 

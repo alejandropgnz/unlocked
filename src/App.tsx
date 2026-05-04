@@ -16,7 +16,6 @@ const AchievementDetail = lazy(() => import("./pages/AchievementDetail"));
 const Profile = lazy(() => import("./pages/Profile"));
 const UserUnlock = lazy(() => import("./pages/UserUnlock"));
 const StoryThread = lazy(() => import("./pages/StoryThread"));
-const Yo = lazy(() => import("./pages/Yo"));
 const Crear = lazy(() => import("./pages/Crear"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Descubrir = lazy(() => import("./pages/Descubrir"));
@@ -80,14 +79,6 @@ export default function App() {
                   element={
                     <ProtectedRoute>
                       <Crear />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/yo"
-                  element={
-                    <ProtectedRoute>
-                      <Yo />
                     </ProtectedRoute>
                   }
                 />

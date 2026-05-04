@@ -18,7 +18,7 @@ export function NavBar() {
           <Link to="/admin" className="hover:text-gold transition">Admin</Link>
         )}
         {user && profile ? (
-          <Link to="/yo" className="hover:text-gold transition font-bold">
+          <Link to={`/u/${profile.username}`} className="hover:text-gold transition font-bold">
             @{profile.username}
           </Link>
         ) : (
