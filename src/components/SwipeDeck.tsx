@@ -22,6 +22,12 @@ export interface SwipeItem {
 }
 
 const SWIPE_THRESHOLD = 100;
+// Flick velocity (px/sec) that counts as a swipe even if the drag didn't
+// travel far. Matches the "fast flick" feel from Tinder/Hinge.
+const VELOCITY_THRESHOLD = 600;
+// How far the card flies off-screen during the exit animation. Has to clear
+// the viewport on big monitors so it doesn't pop back into view mid-fade.
+const EXIT_DISTANCE = 1200;
 
 function TopCard({
   item,
@@ -37,21 +43,43 @@ function TopCard({
   const tier = rarityTier(item.rarityPercent);
   const tierColor = tierTextColor(tier);
 
+  // null = idle/draggable. Once set, the card animates off-screen and the
+  // parent is notified after the exit completes (so the next card slides in
+  // only after the old one is fully gone — no instant pop).
+  const [exiting, setExiting] = useState<"left" | "right" | null>(null);
+
   const handleDragEnd = (
     _e: PointerEvent | MouseEvent | TouchEvent,
     info: PanInfo,
   ) => {
+    if (exiting) return;
     const dx = info.offset.x;
-    if (dx > SWIPE_THRESHOLD) onSwipe("right");
-    else if (dx < -SWIPE_THRESHOLD) onSwipe("left");
+    const vx = info.velocity.x;
+    // Either crossed the position threshold OR was a fast flick.
+    if (dx > SWIPE_THRESHOLD || vx > VELOCITY_THRESHOLD) setExiting("right");
+    else if (dx < -SWIPE_THRESHOLD || vx < -VELOCITY_THRESHOLD) setExiting("left");
+    // else: dragConstraints + dragElastic snap it back to center.
   };
 
   return (
     <motion.div
-      drag="x"
+      drag={exiting ? false : "x"}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.7}
       onDragEnd={handleDragEnd}
+      animate={
+        exiting
+          ? {
+              x: exiting === "right" ? EXIT_DISTANCE : -EXIT_DISTANCE,
+              opacity: 0,
+              rotate: exiting === "right" ? 25 : -25,
+            }
+          : undefined
+      }
+      transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
+      onAnimationComplete={() => {
+        if (exiting) onSwipe(exiting);
+      }}
       style={{ x, rotate }}
       whileTap={{ cursor: "grabbing" }}
       className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col select-none cursor-grab active:cursor-grabbing"

@@ -44,7 +44,7 @@ export function useUsernameAvailability(
         };
       }
       if (isCurrent) {
-        return { status: "current", message: "Tu username actual" };
+        return { status: "current", message: "" };
       }
       try {
         const { data, error } = await supabase
