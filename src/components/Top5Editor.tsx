@@ -92,9 +92,9 @@ export function Top5Editor({
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-xs uppercase tracking-widest text-muted mb-2">
-          Tu Top 5 (arrastra para ordenar)
-        </h3>
+        <p className="text-xs text-muted mb-2">
+          Arrastra para reordenar.
+        </p>
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext
             items={top5.map((i) => i.id)}

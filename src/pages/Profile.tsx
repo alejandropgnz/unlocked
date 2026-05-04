@@ -7,7 +7,6 @@ import { useUpdateAvatar } from "@/hooks/useUpdateAvatar";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { AchievementGrid } from "@/components/AchievementGrid";
 import { AchievementCard } from "@/components/AchievementCard";
 import { ShareCardModal } from "@/components/ShareCardModal";
 import { AvatarUploader } from "@/components/AvatarUploader";
@@ -31,18 +30,13 @@ export default function Profile() {
 
   if (profileLoading) {
     return (
-      <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
-        <div className="flex items-center gap-4 mb-8">
+      <section className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-6 md:py-8">
+        <div className="flex flex-col items-center md:flex-row md:items-start gap-4">
           <Skeleton className="w-24 h-24 rounded-full" />
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 space-y-2 w-full">
             <Skeleton className="h-6 w-40" />
             <Skeleton className="h-4 w-28" />
           </div>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {[0, 1, 2].map((i) => (
-            <Skeleton key={i} className="h-[260px] rounded-[18px]" />
-          ))}
         </div>
       </section>
     );
@@ -50,7 +44,7 @@ export default function Profile() {
 
   if (isError || !profile) {
     return (
-      <section className="px-4 md:px-8 max-w-3xl mx-auto py-8">
+      <section className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-8">
         <p className="text-red">Perfil no encontrado.</p>
         <Link to="/" className="mt-4 inline-block text-sm underline">
           Volver al inicio
@@ -61,7 +55,6 @@ export default function Profile() {
 
   const totalUnlocks = unlocks?.length ?? 0;
 
-  // Build top5 items from unlocks by matching profile.top5 IDs
   const top5Items: UnlockedItem[] = [];
   if (profile.top5 && unlocks) {
     for (const id of profile.top5 as string[]) {
@@ -72,7 +65,6 @@ export default function Profile() {
 
   const collectionItems = unlocks ?? [];
 
-  // Data for Top5Editor (owner only)
   const collectionForEditor = collectionItems.map((u) => ({
     id: u.achievementId,
     emoji: u.emoji,
@@ -85,7 +77,6 @@ export default function Profile() {
     .map((id) => collectionForEditor.find((c) => c.id === id))
     .filter((x): x is { id: string; emoji: string; title: string } => !!x);
 
-  // Avatar initials fallback
   const initials = (profile.display_name ?? profile.username ?? "?")
     .split(" ")
     .map((w) => w[0])
@@ -94,82 +85,80 @@ export default function Profile() {
     .slice(0, 2);
 
   return (
-    <section className="px-4 md:px-8 max-w-5xl mx-auto py-8 space-y-10">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
-        {isOwner ? (
-          <AvatarUploader
-            userId={user.id}
-            value={authProfile.avatar_url ?? null}
-            onChange={(url) => updateAvatarMut.mutate(url)}
-            initials={initials}
-            size="lg"
-          />
-        ) : (
-          <Avatar src={profile.avatar_url} size="lg" />
-        )}
-        <div className="flex-1">
-          <h1 className="text-2xl md:text-3xl font-black tracking-tighter">
+    <section className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-6 md:py-8 space-y-10 md:space-y-12">
+      {/* ===== Header ===== */}
+      <header className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-4 md:gap-6">
+        <div className="shrink-0">
+          {isOwner ? (
+            <AvatarUploader
+              userId={user.id}
+              value={authProfile.avatar_url ?? null}
+              onChange={(url) => updateAvatarMut.mutate(url)}
+              initials={initials}
+              size="lg"
+            />
+          ) : (
+            <Avatar src={profile.avatar_url} size="lg" />
+          )}
+        </div>
+        <div className="flex-1 min-w-0 w-full">
+          <h1 className="text-2xl md:text-3xl font-black tracking-tighter break-words">
             {profile.display_name}
           </h1>
           <p className="text-muted text-sm">@{profile.username}</p>
           {!isOwner && profile.bio && (
-            <p className="mt-2 text-sm max-w-sm">{profile.bio}</p>
+            <p className="mt-3 text-sm">{profile.bio}</p>
           )}
-          <div className="mt-3 flex items-center gap-4">
-            <span className="text-sm font-mono text-muted">
-              {totalUnlocks.toLocaleString("es-ES")} logros
+          <div className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-sm">
+            <span className="font-mono text-muted">
+              {totalUnlocks.toLocaleString("es-ES")} {totalUnlocks === 1 ? "logro" : "logros"}
             </span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShareOpen(true)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setShareOpen(true)}>
               Compartir colección
             </Button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Username editor (owner only) */}
+      {/* ===== Edit (owner only): username + bio side by side on desktop ===== */}
       {isOwner && (
-        <div>
-          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">Username</h2>
-          <UsernameForm currentUsername={profile.username} />
-        </div>
-      )}
-
-      {/* Bio editor (owner only) */}
-      {isOwner && (
-        <div>
-          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">Bio</h2>
-          <BioForm />
-        </div>
-      )}
-
-      {/* Top 5 */}
-      {isOwner ? (
-        <div>
-          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">
-            Mi Top 5
-          </h2>
-          {unlocksLoading ? (
-            <div className="space-y-2">
-              {[0, 1, 2].map((i) => (
-                <Skeleton key={i} className="h-14 rounded-xl" />
-              ))}
+        <section className="space-y-6">
+          <h2 className="text-xs uppercase tracking-widest text-muted">Editar perfil</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="text-[11px] uppercase tracking-widest text-muted mb-2 block">
+                Username
+              </label>
+              <UsernameForm currentUsername={profile.username} />
             </div>
+            <div>
+              <label className="text-[11px] uppercase tracking-widest text-muted mb-2 block">
+                Bio
+              </label>
+              <BioForm />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== Top 5 ===== */}
+      {(isOwner || top5Items.length > 0) && (
+        <section>
+          <h2 className="text-xs uppercase tracking-widest text-muted mb-3">
+            {isOwner ? "Mi Top 5" : "Top 5"}
+          </h2>
+          {isOwner ? (
+            unlocksLoading ? (
+              <div className="space-y-2">
+                {[0, 1, 2].map((i) => (
+                  <Skeleton key={i} className="h-14 rounded-xl" />
+                ))}
+              </div>
+            ) : (
+              <Top5Editor initial={top5ForEditor} available={collectionForEditor} />
+            )
           ) : (
-            <Top5Editor initial={top5ForEditor} available={collectionForEditor} />
-          )}
-        </div>
-      ) : (
-        top5Items.length > 0 && (
-          <div>
-            <h2 className="text-xs uppercase tracking-widest text-muted mb-3">
-              Top 5
-            </h2>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 justify-items-start">
               {top5Items.map((item) => (
                 <AchievementCard
                   key={item.achievementId}
@@ -184,45 +173,54 @@ export default function Profile() {
                 />
               ))}
             </div>
-          </div>
-        )
+          )}
+        </section>
       )}
 
-      {/* Full collection */}
-      <div>
+      {/* ===== Full collection ===== */}
+      <section>
         <h2 className="text-xs uppercase tracking-widest text-muted mb-3">
-          Colección completa
+          Colección {totalUnlocks > 0 && `(${totalUnlocks})`}
         </h2>
-        {unlocksLoading && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {unlocksLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <Skeleton key={i} className="h-[260px] rounded-[18px]" />
             ))}
           </div>
+        ) : collectionItems.length === 0 ? (
+          <p className="text-muted text-sm">
+            {isOwner
+              ? "Aún no has desbloqueado nada. Empieza explorando la home."
+              : "Aún no tiene logros."}
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 justify-items-start">
+            {collectionItems.map((u) => (
+              <AchievementCard
+                key={u.achievementId}
+                slug={u.slug}
+                title={u.title}
+                emoji={u.emoji}
+                rarityPercent={u.rarityPercent}
+                unlockCount={u.unlockCount}
+                category={u.category}
+                size="md"
+                href={`/u/${profile.username}/${u.slug}`}
+              />
+            ))}
+          </div>
         )}
-        {!unlocksLoading && (
-          <AchievementGrid
-            items={collectionItems.map((u) => ({
-              slug: u.slug,
-              title: u.title,
-              emoji: u.emoji,
-              rarityPercent: u.rarityPercent,
-              unlockCount: u.unlockCount,
-              category: u.category,
-            }))}
-            emptyMessage="Aún no tiene logros."
-          />
-        )}
-      </div>
+      </section>
 
-      {/* Danger zone (owner only) */}
+      {/* ===== Danger zone (owner only) ===== */}
       {isOwner && (
-        <div>
+        <section>
           <h2 className="text-xs uppercase tracking-widest text-red mb-3">
             Zona de peligro
           </h2>
           <DeleteAccountButton />
-        </div>
+        </section>
       )}
 
       <ShareCardModal
