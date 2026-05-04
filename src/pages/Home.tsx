@@ -7,11 +7,8 @@ export default function Home() {
 
   return (
     <section className="min-h-screen">
-      <header className="px-4 md:px-8 pt-10 pb-8">
-        <h1 className="text-5xl md:text-7xl font-black tracking-tightest bg-gradient-to-br from-red via-gold to-violet bg-clip-text text-transparent leading-none">
-          UNLOCKED
-        </h1>
-        <p className="text-muted mt-2 text-sm md:text-base">
+      <header className="px-3 md:px-4 pt-6 pb-4">
+        <p className="text-muted text-sm md:text-base">
           Colecciona los logros más absurdos de tu vida.
         </p>
       </header>
@@ -25,7 +22,7 @@ export default function Home() {
       )}
 
       {isError && (
-        <p className="px-4 md:px-8 text-red">No se pudieron cargar los logros.</p>
+        <p className="px-3 md:px-4 text-red">No se pudieron cargar los logros.</p>
       )}
 
       {items && (
