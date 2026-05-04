@@ -89,7 +89,6 @@ export const proposeAchievementSchema = z.object({
       },
       { message: "Entre 1 y 3 emojis" },
     ),
-  description: z.string().trim().max(200),
   category: z.enum([
     "familia",
     "verguenza",
@@ -99,6 +98,8 @@ export const proposeAchievementSchema = z.object({
     "random",
     "salud",
     "viajes",
+    "amigos",
+    "relaciones",
   ]),
 });
 

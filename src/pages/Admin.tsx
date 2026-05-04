@@ -70,9 +70,6 @@ export default function Admin() {
                 <div className="text-4xl">{p.emoji}</div>
                 <div className="flex-1">
                   <div className="font-black">{p.title}</div>
-                  {p.description && (
-                    <div className="text-muted text-sm mt-1">{p.description}</div>
-                  )}
                   <div className="text-xs text-muted mt-2">
                     @{p.proposerUsername ?? "?"} · {p.category}
                   </div>

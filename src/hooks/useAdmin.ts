@@ -8,7 +8,6 @@ export interface PendingItem {
   id: string;
   title: string;
   emoji: string;
-  description: string | null;
   category: string;
   proposerUsername: string | null;
 }
@@ -27,7 +26,6 @@ interface PendingRow {
   id: string;
   title: string;
   emoji: string;
-  description: string | null;
   category: string;
   profiles: { username: string } | null;
 }
@@ -50,7 +48,7 @@ export function useAdminPending() {
       const { data, error } = await supabase
         .from("achievements")
         .select(
-          "id, title, emoji, description, category, profiles!achievements_created_by_fkey(username)",
+          "id, title, emoji, category, profiles!achievements_created_by_fkey(username)",
         )
         .eq("status", "pending")
         .order("created_at", { ascending: true });
@@ -60,7 +58,6 @@ export function useAdminPending() {
         id: p.id,
         title: p.title,
         emoji: p.emoji,
-        description: p.description,
         category: p.category,
         proposerUsername: p.profiles?.username ?? null,
       }));

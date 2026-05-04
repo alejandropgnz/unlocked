@@ -2,24 +2,29 @@ import type { AchievementCategory } from "@/hooks/types";
 
 const CATEGORIES: { value: AchievementCategory; label: string; emoji: string }[] = [
   { value: "familia", label: "Familia", emoji: "👨‍👩‍👧" },
+  { value: "amigos", label: "Amigos", emoji: "👯" },
+  { value: "amor", label: "Amor", emoji: "💔" },
+  { value: "relaciones", label: "Relaciones", emoji: "💑" },
+  { value: "trabajo", label: "Trabajo", emoji: "💼" },
+  { value: "viajes", label: "Viajes", emoji: "✈️" },
   { value: "verguenza", label: "Vergüenza", emoji: "😬" },
   { value: "resaca", label: "Resaca", emoji: "🍻" },
-  { value: "amor", label: "Amor", emoji: "💔" },
-  { value: "trabajo", label: "Trabajo", emoji: "💼" },
-  { value: "random", label: "Random", emoji: "🎲" },
   { value: "salud", label: "Salud", emoji: "🤕" },
-  { value: "viajes", label: "Viajes", emoji: "✈️" },
+  { value: "random", label: "Random", emoji: "🎲" },
 ];
 
 export function CategoryPicker({
+  id,
   name,
   defaultValue,
 }: {
+  id?: string;
   name: string;
   defaultValue?: string;
 }) {
   return (
     <select
+      id={id}
       name={name}
       defaultValue={defaultValue ?? ""}
       required

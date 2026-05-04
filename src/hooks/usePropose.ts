@@ -13,7 +13,6 @@ import { useAuth } from "@/contexts/AuthContext";
 export interface ProposeInput {
   title: string;
   emoji: string;
-  description: string;
   category: string;
 }
 
@@ -35,16 +34,10 @@ export function usePropose() {
       const parsed = proposeAchievementSchema.safeParse(input);
       if (!parsed.success) throw new Error("Datos inválidos");
 
-      if (
-        containsBlockedWord(parsed.data.title) ||
-        containsBlockedWord(parsed.data.description)
-      ) {
+      if (containsBlockedWord(parsed.data.title)) {
         throw new Error("Texto contiene palabras prohibidas");
       }
-      if (
-        containsUrl(parsed.data.title) ||
-        containsUrl(parsed.data.description)
-      ) {
+      if (containsUrl(parsed.data.title)) {
         throw new Error("No se permiten enlaces");
       }
 
@@ -74,7 +67,6 @@ export function usePropose() {
         slug,
         title: parsed.data.title,
         emoji: parsed.data.emoji,
-        description: parsed.data.description,
         category: parsed.data.category,
         created_by: user.id,
         status: "pending",

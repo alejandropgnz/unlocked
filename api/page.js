@@ -65,13 +65,12 @@ export default async function handler(req) {
       if (!SLUG_RE.test(slug)) return new Response("Bad slug", { status: 400 });
 
       const ach = await supabaseFetchOne(
-        `achievements?slug=eq.${encodeURIComponent(slug)}&status=eq.approved&select=title,description,emoji`,
+        `achievements?slug=eq.${encodeURIComponent(slug)}&status=eq.approved&select=title,emoji`,
       );
       if (!ach) return new Response("Not found", { status: 404 });
 
       const title = `${ach.emoji} ${ach.title} · Unlocked`;
-      const description =
-        ach.description || "Colecciona los logros más absurdos de tu vida.";
+      const description = "Colecciona los logros más absurdos de tu vida.";
       const ogImage = `${SITE_URL}/api/og-achievement?slug=${encodeURIComponent(slug)}`;
       const canonical = `${SITE_URL}/l/${slug}`;
       return new Response(htmlShell({ title, description, ogImage, canonical }), {

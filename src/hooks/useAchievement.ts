@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import type { AchievementDetail, AchievementWithRarity } from "./types";
+import type { AchievementSummary, AchievementWithRarity } from "./types";
 
 export function useAchievement(slug: string | undefined) {
   return useQuery({
     queryKey: ["achievement", slug],
-    queryFn: async (): Promise<(AchievementWithRarity & { description: string | null }) | null> => {
+    queryFn: async (): Promise<AchievementWithRarity | null> => {
       const { data, error } = await supabase
         .from("achievements")
-        .select("id, slug, title, emoji, description, category, unlock_count")
+        .select("id, slug, title, emoji, category, unlock_count")
         .eq("slug", slug!)
         .eq("status", "approved")
         .maybeSingle();
@@ -22,7 +22,7 @@ export function useAchievement(slug: string | undefined) {
         .maybeSingle();
 
       return {
-        ...(data as AchievementDetail),
+        ...(data as AchievementSummary),
         rarityPercent: Number(rarity?.rarity_percent ?? 0),
       };
     },

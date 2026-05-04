@@ -48,7 +48,6 @@ export type Database = {
           slug: string;
           title: string;
           emoji: string;
-          description: string | null;
           category: Database["public"]["Enums"]["achievement_category"];
           created_by: string | null;
           status: Database["public"]["Enums"]["achievement_status"];
@@ -60,7 +59,6 @@ export type Database = {
           slug: string;
           title: string;
           emoji: string;
-          description?: string | null;
           category: Database["public"]["Enums"]["achievement_category"];
           created_by?: string | null;
           status?: Database["public"]["Enums"]["achievement_status"];
@@ -72,7 +70,6 @@ export type Database = {
           slug?: string;
           title?: string;
           emoji?: string;
-          description?: string | null;
           category?: Database["public"]["Enums"]["achievement_category"];
           created_by?: string | null;
           status?: Database["public"]["Enums"]["achievement_status"];

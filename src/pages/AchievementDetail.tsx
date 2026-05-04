@@ -63,12 +63,7 @@ export default function AchievementDetail() {
           <h1 className="mt-4 text-2xl md:text-4xl font-black tracking-tighter">
             {achievement.title}
           </h1>
-          {achievement.description && (
-            <p className="mt-3 text-muted text-sm md:text-base max-w-sm">
-              {achievement.description}
-            </p>
-          )}
-          <div className="mt-4 flex gap-4 text-xs text-muted font-mono uppercase tracking-widest">
+<div className="mt-4 flex gap-4 text-xs text-muted font-mono uppercase tracking-widest">
             <span>{achievement.category}</span>
             <span>·</span>
             <span>{achievement.unlock_count.toLocaleString("es-ES")} desbloqueados</span>

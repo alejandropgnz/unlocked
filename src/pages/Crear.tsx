@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { usePropose } from "@/hooks/usePropose";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
 import { CategoryPicker } from "@/components/CategoryPicker";
 import { isEmojiOnly, emojiCount } from "@/lib/validators";
 import { cn } from "@/lib/cn";
@@ -33,7 +32,6 @@ export default function Crear() {
       {
         title: String(fd.get("title") ?? ""),
         emoji: String(fd.get("emoji") ?? ""),
-        description: String(fd.get("description") ?? ""),
         category: String(fd.get("category") ?? ""),
       },
       { onSuccess: () => setDone(true) },
@@ -61,27 +59,47 @@ export default function Crear() {
       <p className="text-muted mt-2 text-sm">
         Si lo aprobamos, todo el mundo podrá desbloquearlo. Tú lo recibirás automáticamente.
       </p>
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+      <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+        {/* Each field uses the same vertical layout: label above, control
+            below, hint underneath. Keeps the form rhythm consistent. */}
         <div>
-          <label className="text-xs uppercase tracking-widest text-muted">Título</label>
-          <div className="mt-1">
-            <Input name="title" maxLength={80} required placeholder="Ej: Me dormí en una boda" />
-          </div>
+          <label
+            htmlFor="title"
+            className="block text-xs uppercase tracking-widest text-muted mb-1.5"
+          >
+            Título
+          </label>
+          <Input
+            id="title"
+            name="title"
+            maxLength={80}
+            required
+            placeholder="Ej: Me dormí en una boda"
+          />
         </div>
+
         <div>
-          <label className="text-xs uppercase tracking-widest text-muted">Emoji</label>
+          <label
+            htmlFor="emoji"
+            className="block text-xs uppercase tracking-widest text-muted mb-1.5"
+          >
+            Emoji
+          </label>
           <input
+            id="emoji"
             name="emoji"
             value={emoji}
             onChange={(e) => setEmoji(e.target.value)}
             maxLength={32}
             required
+            inputMode="text"
+            autoComplete="off"
             placeholder="😴"
-            className="mt-1 w-32 bg-bg border border-white/10 rounded-xl p-3 text-2xl text-center focus:border-gold focus:outline-none"
+            className="w-full bg-bg border border-white/10 rounded-xl p-3 text-2xl text-center focus:border-gold focus:outline-none"
           />
           <p
             className={cn(
-              "text-[10px] mt-1",
+              "text-[10px] mt-1.5",
               trimmed.length === 0
                 ? "text-muted"
                 : emojiValid
@@ -92,25 +110,17 @@ export default function Crear() {
             {emojiHint}
           </p>
         </div>
+
         <div>
-          <label className="text-xs uppercase tracking-widest text-muted">
-            Descripción (opcional)
+          <label
+            htmlFor="category"
+            className="block text-xs uppercase tracking-widest text-muted mb-1.5"
+          >
+            Categoría
           </label>
-          <div className="mt-1">
-            <Textarea
-              name="description"
-              maxLength={200}
-              rows={3}
-              placeholder="Una línea explicándolo..."
-            />
-          </div>
+          <CategoryPicker id="category" name="category" />
         </div>
-        <div>
-          <label className="text-xs uppercase tracking-widest text-muted">Categoría</label>
-          <div className="mt-1">
-            <CategoryPicker name="category" />
-          </div>
-        </div>
+
         <Button
           type="submit"
           size="block"

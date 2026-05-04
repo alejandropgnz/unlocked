@@ -137,42 +137,15 @@ function StaticCard({ item, depth }: { item: SwipeItem; depth: number }) {
   );
 }
 
-/**
- * Side peek shown on desktop (lg+) — flanks the active card with the
- * previously-swiped item on the left and the upcoming one on the right.
- * Heavy dark overlay + reduced opacity so it reads as "locked / inactive"
- * and never competes with the active card for attention.
- */
-function SidePeekCard({ item, label }: { item: SwipeItem; label: string }) {
-  return (
-    <div className="relative h-full bg-surface border border-white/10 rounded-3xl p-4 flex flex-col select-none pointer-events-none overflow-hidden opacity-70">
-      <div className="text-center text-[10px] uppercase tracking-widest text-muted shrink-0">
-        {label}
-      </div>
-      <div className="flex-1 flex flex-col items-center justify-center text-center min-h-0">
-        <div className="text-5xl">{item.emoji}</div>
-        <div className="mt-3 text-sm font-black tracking-tighter leading-tight line-clamp-3">
-          {item.title}
-        </div>
-      </div>
-      {/* "Locked" overlay — sits above the content but lets the emoji + title
-          show through dimly. */}
-      <div className="absolute inset-0 rounded-3xl bg-black/55" />
-    </div>
-  );
-}
-
 export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
   const adjudicateMut = useAdjudicate();
   const passMut = usePass();
   const [stack, setStack] = useState<SwipeItem[]>(initial);
-  const [lastSwiped, setLastSwiped] = useState<SwipeItem | null>(null);
   const [stats, setStats] = useState({ kept: 0, passed: 0 });
 
   const handleSwipe = (dir: "left" | "right") => {
     const top = stack[0];
     if (!top) return;
-    setLastSwiped(top); // remember it for the desktop "Anterior" preview
     setStack((s) => s.slice(1));
     if (dir === "right") {
       setStats((s) => ({ ...s, kept: s.kept + 1 }));
@@ -207,36 +180,14 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
   const peek = stack.slice(1, 3);
 
   return (
-    // items-center so the smaller side peeks can be vertically centered
-    // alongside the full-height active card without forcing them to stretch.
-    <div className="relative w-full h-full flex items-center justify-center gap-4 lg:gap-6">
-      {/* Left peek — desktop only (lg+). Shows the previously-swiped card,
-          dimmed/locked, so the user has spatial context of "what just was".
-          Sized smaller (h-[70%]) so the active center card stays the focus. */}
-      <div className="hidden lg:block w-28 xl:w-32 h-[70%] flex-shrink-0">
-        {lastSwiped && <SidePeekCard item={lastSwiped} label="Anterior" />}
-      </div>
-
-      {/* Center deck — the active card stack, full parent height. */}
-      <div className="relative w-full max-w-sm h-full flex-shrink-0">
-        {/* Decorative stacked-behind cards. Hidden at lg+ because the side
-            peek to the right already shows what's coming, so the layered
-            stack would be visually redundant on desktop. */}
-        <div className="lg:hidden">
-          {peek
-            .slice()
-            .reverse()
-            .map((item, idx) => (
-              <StaticCard key={item.id} item={item} depth={peek.length - idx} />
-            ))}
-        </div>
-        <TopCard key={top.id} item={top} onSwipe={handleSwipe} />
-      </div>
-
-      {/* Right peek — desktop only. Shows the next card up, dimmed/locked. */}
-      <div className="hidden lg:block w-28 xl:w-32 h-[70%] flex-shrink-0">
-        {peek[0] && <SidePeekCard item={peek[0]} label="Siguiente" />}
-      </div>
+    <div className="relative w-full max-w-sm mx-auto h-full">
+      {peek
+        .slice()
+        .reverse()
+        .map((item, idx) => (
+          <StaticCard key={item.id} item={item} depth={peek.length - idx} />
+        ))}
+      <TopCard key={top.id} item={top} onSwipe={handleSwipe} />
     </div>
   );
 }

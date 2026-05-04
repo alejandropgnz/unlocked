@@ -19,10 +19,6 @@ export type AchievementSummary = Pick<
   "id" | "slug" | "title" | "emoji" | "category" | "unlock_count"
 >;
 
-export type AchievementDetail = AchievementSummary & {
-  description: string | null;
-};
-
 export type AchievementWithRarity = AchievementSummary & {
   rarityPercent: number;
 };
