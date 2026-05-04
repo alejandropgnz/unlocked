@@ -24,10 +24,17 @@ export interface AchievementCardProps {
 // w-full + max-w lets cards fill narrow grid cells on mobile (where 2 cols ×
 // 200px + gap + page padding overflows a 375px viewport) while still capping
 // width on larger viewports so cards don't stretch into giant rectangles.
+// w-full + max-w lets cards fill narrow grid cells on mobile (where 2 cols ×
+// 200px + gap + page padding overflows a 375px viewport) while still capping
+// width on larger viewports so cards don't stretch into giant rectangles.
+// emojiBox is a FIXED-HEIGHT slot for the emoji line so cards line up
+// horizontally regardless of how many emojis the achievement has — without
+// it, 1-emoji cards have a taller emoji row than 3-emoji ones, and the title
+// row drifts up/down across the grid.
 const SIZES = {
-  sm: { card: "w-full max-w-[140px]", title: "text-xs", padding: "p-3" },
-  md: { card: "w-full max-w-[200px]", title: "text-sm", padding: "p-4" },
-  lg: { card: "w-full max-w-[230px]", title: "text-base", padding: "p-5" },
+  sm: { card: "w-full max-w-[140px]", title: "text-xs", padding: "p-3", emojiBox: "h-10" },
+  md: { card: "w-full max-w-[200px]", title: "text-sm", padding: "p-4", emojiBox: "h-14" },
+  lg: { card: "w-full max-w-[230px]", title: "text-base", padding: "p-5", emojiBox: "h-16" },
 } as const;
 
 // Emoji size scales with how many emojis there are so 3 emojis fit on one line
@@ -73,14 +80,28 @@ export function AchievementCard({
           sizing.padding,
         )}
       >
+        {/* Top row — owned check on the left (when unlocked), rarity % on
+            the right. Both sit inside the inner padded box so they line up
+            with the bottom row (category | count) and respect the card's
+            content padding. */}
         <div
-          className="flex justify-end items-center text-[9px] font-bold tracking-[2.5px]"
+          className="flex justify-between items-center text-[9px] font-bold tracking-[2.5px]"
           style={{ color: tierColor }}
         >
+          <span aria-hidden className="text-gold/70 inline-flex">
+            {isUnlocked ? (
+              <Check className="w-3.5 h-3.5" strokeWidth={3} aria-label="Ya lo tienes" />
+            ) : null}
+          </span>
           <span className="font-mono">{rarityPercent.toFixed(2)}%</span>
         </div>
-        <div className={cn("text-center my-3 whitespace-nowrap leading-none", emojiClass)}>
-          {emoji}
+        <div
+          className={cn(
+            "flex items-center justify-center my-3 whitespace-nowrap leading-none",
+            sizing.emojiBox,
+          )}
+        >
+          <span className={emojiClass}>{emoji}</span>
         </div>
         <h3
           className={cn(
@@ -105,18 +126,6 @@ export function AchievementCard({
           />
         )}
       </div>
-
-      {/* Owned indicator — tiny check in the top-LEFT (the % rarity already
-          lives top-right). The dark overlay above does the heavy lifting;
-          this is just a quiet confirmation glyph, not a sticker. */}
-      {isUnlocked && (
-        <div
-          className="absolute top-2 left-2 z-10 pointer-events-none"
-          aria-label="Ya lo tienes"
-        >
-          <Check className="w-3.5 h-3.5 text-gold/70" strokeWidth={3} />
-        </div>
-      )}
     </Link>
   );
 }
