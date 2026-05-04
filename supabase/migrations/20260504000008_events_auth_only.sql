@@ -2,6 +2,7 @@
 -- Replaces the over-permissive `with check (true)` from migration 006.
 
 drop policy if exists "events: anyone can insert" on events;
+drop policy if exists "events: authenticated insert only" on events;
 
 create policy "events: authenticated insert only"
   on events for insert
