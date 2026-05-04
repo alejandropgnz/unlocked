@@ -138,7 +138,7 @@ export function OgCardTop5({
                 textTransform: "uppercase",
               }}
             >
-              mas raro
+              más raro
             </div>
           </div>
         )}

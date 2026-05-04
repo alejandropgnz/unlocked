@@ -50,7 +50,7 @@ export async function GET(
         rarityPercent={Number(rarity?.rarity_percent ?? 0)}
         unlockCount={achievement.unlock_count}
         category={achievement.category}
-        username="unlocked"
+        username=""
       />
     ),
     { width: 1080, height: 1920 },

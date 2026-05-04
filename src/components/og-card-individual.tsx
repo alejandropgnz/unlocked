@@ -35,7 +35,7 @@ export function OgCardIndividual({
   const tierColor = TIER_HEX[tier];
   const rarityStr = `${rarityPercent.toFixed(2)}%`;
   const unlockStr = `${unlockCount.toLocaleString("es-ES")} unlocked`;
-  const handleStr = `@${username} · unlocked.app`;
+  const handleStr = username ? `@${username} · unlocked.app` : "unlocked.app";
   const tierStr = `★ ${tierLabel(tier)}`;
 
   return (

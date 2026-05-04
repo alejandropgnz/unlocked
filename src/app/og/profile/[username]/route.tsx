@@ -37,24 +37,23 @@ export async function GET(
 
   if (error || !profile) return new Response("Not found", { status: 404 });
 
-  const { count: totalUnlocks } = await supabase
-    .from("unlocks")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", profile.id);
-
   const top5Ids = (profile.top5 ?? []).filter((id): id is string => typeof id === "string");
-  let top5: { emoji: string; title: string; rarityPercent: number }[] = [];
 
-  // Need rarity for everything either rendered or used as "rarest"
-  const { data: rarityRows } = await supabase
-    .from("achievement_rarity")
-    .select("id, rarity_percent")
-    .returns<RarityRow[]>();
-  const rarityById = new Map<string, number>();
-  for (const r of rarityRows ?? []) {
-    if (r.id != null) rarityById.set(r.id, Number(r.rarity_percent ?? 0));
-  }
+  // Fetch the user's unlocks with the achievements they reference (used for "rarest" + total)
+  const { data: unlocksData } = await supabase
+    .from("unlocks")
+    .select("achievements!inner(id, emoji, title, unlock_count)")
+    .eq("user_id", profile.id)
+    .returns<{ achievements: AchievementRow | null }[]>();
 
+  const userAchievements: AchievementRow[] = (unlocksData ?? [])
+    .map((u) => u.achievements)
+    .filter((a): a is AchievementRow => a != null);
+
+  const totalUnlocks = userAchievements.length;
+
+  // Top-5 details (only fetch the rows we need)
+  let top5Details: AchievementRow[] = [];
   if (top5Ids.length > 0) {
     const { data: top5Rows } = await supabase
       .from("achievements")
@@ -62,32 +61,53 @@ export async function GET(
       .in("id", top5Ids)
       .returns<AchievementRow[]>();
     const byId = new Map((top5Rows ?? []).map((r) => [r.id, r] as const));
-    top5 = top5Ids
+    top5Details = top5Ids
       .map((id) => byId.get(id))
-      .filter((r): r is AchievementRow => r != null)
-      .map((r) => ({
-        emoji: r.emoji,
-        title: r.title,
-        rarityPercent: rarityById.get(r.id) ?? 0,
-      }));
+      .filter((r): r is AchievementRow => r != null);
   }
 
-  // Find the rarest unlocked achievement (lowest rarity_percent among the user's unlocks)
-  const { data: rarestRows } = await supabase
-    .from("unlocks")
-    .select("achievements!inner(id, emoji, title, unlock_count)")
-    .eq("user_id", profile.id)
-    .order("achievements(unlock_count)", { ascending: true })
-    .limit(1)
-    .returns<{ achievements: AchievementRow | null }[]>();
-  const rarestAchievement = rarestRows?.[0]?.achievements ?? null;
-  const rarest = rarestAchievement
-    ? {
-        emoji: rarestAchievement.emoji,
-        title: rarestAchievement.title,
-        rarityPercent: rarityById.get(rarestAchievement.id) ?? 0,
+  // Single scoped rarity query (top-5 + collection)
+  const relevantIds = Array.from(
+    new Set([...top5Ids, ...userAchievements.map((a) => a.id)]),
+  );
+  const rarityById = new Map<string, number>();
+  if (relevantIds.length > 0) {
+    const { data: rarityRows } = await supabase
+      .from("achievement_rarity")
+      .select("id, rarity_percent")
+      .in("id", relevantIds)
+      .returns<RarityRow[]>();
+    for (const r of rarityRows ?? []) {
+      if (r.id != null) rarityById.set(r.id, Number(r.rarity_percent ?? 0));
+    }
+  }
+
+  const top5 = top5Details.map((r) => ({
+    emoji: r.emoji,
+    title: r.title,
+    rarityPercent: rarityById.get(r.id) ?? 0,
+  }));
+
+  // Rarest = lowest rarity_percent among the user's unlocks (correct, not approximated)
+  let rarest: { emoji: string; title: string; rarityPercent: number } | undefined = undefined;
+  if (userAchievements.length > 0) {
+    let lowest = Number.POSITIVE_INFINITY;
+    let pick: AchievementRow | null = null;
+    for (const a of userAchievements) {
+      const p = rarityById.get(a.id) ?? 100;
+      if (p < lowest) {
+        lowest = p;
+        pick = a;
       }
-    : undefined;
+    }
+    if (pick) {
+      rarest = {
+        emoji: pick.emoji,
+        title: pick.title,
+        rarityPercent: rarityById.get(pick.id) ?? 0,
+      };
+    }
+  }
 
   return new ImageResponse(
     (
@@ -95,7 +115,7 @@ export async function GET(
         username={profile.username}
         displayName={profile.display_name}
         avatarUrl={profile.avatar_url ?? undefined}
-        totalUnlocks={totalUnlocks ?? 0}
+        totalUnlocks={totalUnlocks}
         rarest={rarest}
         top5={top5}
       />
