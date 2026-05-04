@@ -1,0 +1,52 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/l/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|Discordbot|LinkedInBot|Slackbot|TelegramBot|Pinterestbot|Embedly|redditbot|Bingbot|Googlebot).*"
+        }
+      ],
+      "destination": "/api/page?path=/l/:slug"
+    },
+    {
+      "source": "/u/:username/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|Discordbot|LinkedInBot|Slackbot|TelegramBot|Pinterestbot|Embedly|redditbot|Bingbot|Googlebot).*"
+        }
+      ],
+      "destination": "/api/page?path=/u/:username/:slug"
+    },
+    {
+      "source": "/u/:username",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|Discordbot|LinkedInBot|Slackbot|TelegramBot|Pinterestbot|Embedly|redditbot|Bingbot|Googlebot).*"
+        }
+      ],
+      "destination": "/api/page?path=/u/:username"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/og-(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, s-maxage=600, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ]
+}
