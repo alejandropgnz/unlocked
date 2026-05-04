@@ -1,14 +1,14 @@
 import { z } from "zod";
 
-// Patterns for detecting URLs in plain-text fields (stories, replies, bio).
-// Strategy: flag explicit protocols and www., but for bare domains require
-// the TLD to be followed by "/" or end-of-string to avoid false positives
-// on Spanish sentence-ending patterns like "recordamos.cierto".
+// Patterns for detecting URLs in plain-text fields (stories, replies, bio, notes).
+// Strict: any `word.word` without spaces between the dot is rejected. Catches
+// real URLs (google.com), shorteners (bit.ly), and URL-like patterns even with
+// non-standard TLDs (my.site, evento.especial). False positives on intentional
+// dotted abbreviations are rare in Spanish casual writing.
 const URL_PATTERNS = [
   /\bhttps?:\/\//i,
   /\bwww\./i,
-  /\b(?:t\.me|bit\.ly|tinyurl\.com|goo\.gl|youtu\.be|discord\.gg|tiktok\.com)\b/i,
-  /[\w-]+\.(com|es|net|org|io|app|co|me|tv|gg|dev|xyz|info|biz|tk|ml|ga|cf|to|ly)(?:\/|$)/i,
+  /\w{2,}\.\w{2,}/, // any word.word with both sides 2+ alphanumeric chars
 ];
 
 export function containsUrl(text: string): boolean {
