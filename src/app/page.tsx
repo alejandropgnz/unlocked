@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { AchievementGrid, type GridItem } from "@/components/achievement-grid";
+import { SiteHeader } from "@/components/site-header";
 import type { Database } from "@/types/database";
 
 type AchievementRow = Database["public"]["Tables"]["achievements"]["Row"];
@@ -35,8 +36,9 @@ export default async function HomePage() {
       rarity: rarityRes.error,
     });
     return (
-      <main className="min-h-screen p-8">
-        <p className="text-red">No se pudieron cargar los logros.</p>
+      <main className="min-h-screen">
+        <SiteHeader />
+        <p className="px-4 md:px-8 text-red">No se pudieron cargar los logros.</p>
       </main>
     );
   }
@@ -57,14 +59,7 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen">
-      <header className="px-4 md:px-8 pt-10 pb-8">
-        <h1 className="text-5xl md:text-7xl font-black tracking-tightest bg-gradient-to-br from-red via-gold to-violet bg-clip-text text-transparent leading-none">
-          UNLOCKED
-        </h1>
-        <p className="text-muted mt-2 text-sm md:text-base">
-          Colecciona los logros más absurdos de tu vida.
-        </p>
-      </header>
+      <SiteHeader />
       <AchievementGrid items={items} />
     </main>
   );
