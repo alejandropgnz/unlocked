@@ -8,6 +8,7 @@ import {
   tierLabel,
   tierTextColor,
 } from "@/lib/rarity";
+import { AdjudicateModal } from "@/components/adjudicate-modal";
 
 export const revalidate = 60;
 
@@ -56,6 +57,22 @@ export default async function AchievementPage({
     .returns<RarityRow[]>()
     .maybeSingle();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let alreadyUnlocked = false;
+  if (user) {
+    const { data: existing } = await supabase
+      .from("unlocks")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("achievement_id", achievement.id)
+      .returns<{ id: string }[]>()
+      .maybeSingle();
+    alreadyUnlocked = !!existing;
+  }
+
   const rarityPercent = Number(rarityRow?.rarity_percent ?? 0);
   const tier = rarityTier(rarityPercent);
   const tierColor = tierTextColor(tier);
@@ -99,12 +116,12 @@ export default async function AchievementPage({
             </div>
           </div>
 
-          <button
-            disabled
-            className="mt-8 w-full md:w-auto md:px-12 py-4 bg-white text-bg font-black rounded-full text-sm tracking-widest uppercase opacity-50 cursor-not-allowed"
-          >
-            Adjudicar (próximamente)
-          </button>
+          <AdjudicateModal
+            achievementId={achievement.id}
+            slug={slug}
+            isLoggedIn={!!user}
+            alreadyUnlocked={alreadyUnlocked}
+          />
         </div>
       </div>
     </main>

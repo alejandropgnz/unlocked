@@ -256,6 +256,7 @@ export type Database = {
           total_users: number | null;
           rarity_percent: number | null;
         };
+        Relationships: [];
       };
     };
     Functions: Record<string, never>;
