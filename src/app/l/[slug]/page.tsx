@@ -170,6 +170,11 @@ export default async function AchievementPage({
     myReaction: myReactionByStoryId.get(s.id) ?? 0,
   }));
 
+  stories.sort((a, b) => {
+    if (a.isOwn !== b.isOwn) return a.isOwn ? -1 : 1;
+    return b.score - a.score;
+  });
+
   const rarityPercent = Number(rarityRow?.rarity_percent ?? 0);
   const tier = rarityTier(rarityPercent);
   const tierColor = tierTextColor(tier);
