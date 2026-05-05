@@ -411,7 +411,7 @@ function StoriesCardBody() {
           Cada logro tiene historias.
         </h2>
         <p className="text-muted text-xs sm:text-sm mt-2">
-          La gente cuenta cómo lo consiguió.
+          La gente puede contar cómo lo consiguió.
         </p>
       </div>
 
