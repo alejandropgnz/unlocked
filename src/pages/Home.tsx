@@ -4,6 +4,7 @@ import { Search, X } from "lucide-react";
 import { useInfiniteAchievements } from "@/hooks/useInfiniteAchievements";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { useUserUnlocks } from "@/hooks/useUserUnlocks";
+import { useUserPasses } from "@/hooks/useUserPasses";
 import { useAuth } from "@/contexts/AuthContext";
 import { AchievementGrid } from "@/components/AchievementGrid";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -42,6 +43,7 @@ export default function Home() {
     isFetchingNextPage,
   } = useInfiniteAchievements({ query, category });
   const { data: ownedUnlocks } = useUserUnlocks(user?.id);
+  const { data: passedIds } = useUserPasses(user?.id);
 
   const sentinelRef = useIntersectionObserver(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -53,6 +55,10 @@ export default function Home() {
   const ownedSet = useMemo(
     () => new Set((ownedUnlocks ?? []).map((u) => u.achievementId)),
     [ownedUnlocks],
+  );
+  const passedSet = useMemo(
+    () => new Set(passedIds ?? []),
+    [passedIds],
   );
 
   // Helper that mutates the URL params atomically (drops empty values so we
@@ -180,6 +186,7 @@ export default function Home() {
                 unlockCount: a.unlock_count,
                 category: a.category,
                 isUnlocked: ownedSet.has(a.id),
+                isPassed: passedSet.has(a.id),
               }))}
             />
           )}

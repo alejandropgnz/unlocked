@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Check } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import {
   rarityTier,
   tierBorderClass,
@@ -18,7 +18,13 @@ export interface AchievementCardProps {
   category: string;
   size?: "sm" | "md" | "lg";
   href?: string;
+  /** Already in the user's collection (right-swiped). Shows a gold check. */
   isUnlocked?: boolean;
+  /** Already passed in /descubrir (left-swiped). Shows a muted minus.
+   *  Visually softer than the X used elsewhere — just "you've seen this
+   *  and skipped it", no judgment. Only one of unlocked/passed is shown
+   *  if both happen to be true (unlocked wins). */
+  isPassed?: boolean;
 }
 
 // w-full + max-w lets cards fill narrow grid cells on mobile (where 2 cols ×
@@ -56,6 +62,7 @@ export function AchievementCard({
   size = "md",
   href,
   isUnlocked = false,
+  isPassed = false,
 }: AchievementCardProps) {
   const tier: Tier = rarityTier(rarityPercent);
   const sizing = SIZES[size];
@@ -80,17 +87,27 @@ export function AchievementCard({
           sizing.padding,
         )}
       >
-        {/* Top row — owned check on the left (when unlocked), rarity % on
-            the right. Both sit inside the inner padded box so they line up
-            with the bottom row (category | count) and respect the card's
-            content padding. */}
+        {/* Top row — interaction indicator on the left (check / minus),
+            rarity % on the right. Both sit inside the inner padded box so
+            they line up with the bottom row (category | count). Unlocked
+            takes priority over passed if both happen to be true. */}
         <div
           className="flex justify-between items-center text-[9px] font-bold tracking-[2.5px]"
           style={{ color: tierColor }}
         >
-          <span aria-hidden className="text-gold/70 inline-flex">
+          <span className="inline-flex">
             {isUnlocked ? (
-              <Check className="w-3.5 h-3.5" strokeWidth={3} aria-label="Ya lo tienes" />
+              <Check
+                className="w-3.5 h-3.5 text-gold/70"
+                strokeWidth={3}
+                aria-label="Ya lo tienes"
+              />
+            ) : isPassed ? (
+              <Minus
+                className="w-3.5 h-3.5 text-muted"
+                strokeWidth={3}
+                aria-label="Pasaste este logro"
+              />
             ) : null}
           </span>
           <span className="font-mono">{rarityPercent.toFixed(2)}%</span>
@@ -116,12 +133,17 @@ export function AchievementCard({
           <span className="font-mono">{unlockCount.toLocaleString("es-ES")}</span>
         </div>
 
-        {/* Dark overlay over the inner content when owned — emoji and text
-            stay readable but the whole card visually recedes vs the unowned
-            ones, so unowned achievements are the natural focus of attention. */}
-        {isUnlocked && (
+        {/* Dark overlay when the user has interacted with this card. Unlocked
+            (right-swipe) gets a heavier 45% to read as "owned"; passed
+            (left-swipe) gets a lighter 30% to recede gently without feeling
+            rejected. Cards the user hasn't touched stay full-strength so
+            they remain the natural focus. */}
+        {(isUnlocked || isPassed) && (
           <div
-            className="absolute inset-0 rounded-[16px] bg-black/45 pointer-events-none"
+            className={cn(
+              "absolute inset-0 rounded-[16px] pointer-events-none",
+              isUnlocked ? "bg-black/45" : "bg-black/30",
+            )}
             aria-hidden
           />
         )}

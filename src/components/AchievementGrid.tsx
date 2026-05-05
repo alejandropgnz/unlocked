@@ -8,6 +8,7 @@ interface GridItem {
   unlockCount: number;
   category: string;
   isUnlocked?: boolean;
+  isPassed?: boolean;
 }
 
 export function AchievementGrid({
