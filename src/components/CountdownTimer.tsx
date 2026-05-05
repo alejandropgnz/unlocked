@@ -47,41 +47,34 @@ export function LaunchDate({ target }: { target: Date }) {
   }
 
   return (
-    <div className="flex justify-center items-end gap-3 sm:gap-5">
+    <div className="flex justify-center gap-2 sm:gap-3">
       <Cell value={parts.days} label="días" />
-      <Sep />
       <Cell value={parts.hours} label="horas" />
-      <Sep />
       <Cell value={parts.minutes} label="min" />
-      <Sep />
       <Cell value={parts.seconds} label="seg" />
     </div>
   );
 }
 
+/**
+ * Each unit gets its own bordered tile — gives the countdown a "designed"
+ * feel without any gradient/glow trick. Solid borders, solid bg, brand
+ * indigo on the digits to match the CTA button below.
+ */
 function Cell({ value, label }: { value: number; label: string }) {
   return (
-    <div className="flex flex-col items-center min-w-[3.25rem] sm:min-w-[4.25rem]">
-      <span
-        className="font-black font-mono tabular-nums leading-none text-white"
-        style={{ fontSize: "clamp(1.85rem, 5vw, 3rem)" }}
-      >
-        {String(value).padStart(2, "0")}
-      </span>
-      <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-muted mt-2">
+    <div className="flex flex-col items-center">
+      <div className="bg-bg border-2 border-grey rounded-xl px-3 py-2 sm:px-4 sm:py-3 min-w-[3.5rem] sm:min-w-[4.25rem] flex items-center justify-center">
+        <span
+          className="font-black font-mono tabular-nums leading-none text-indigo"
+          style={{ fontSize: "clamp(1.75rem, 4.5vw, 2.5rem)" }}
+        >
+          {String(value).padStart(2, "0")}
+        </span>
+      </div>
+      <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-muted font-bold mt-2">
         {label}
       </span>
     </div>
-  );
-}
-
-function Sep() {
-  return (
-    <span
-      className="font-black text-grey leading-none flex items-end pb-7 sm:pb-9"
-      style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}
-    >
-      :
-    </span>
   );
 }
