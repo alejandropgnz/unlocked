@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { Check, Minus } from "lucide-react";
 import {
@@ -52,7 +53,7 @@ const EMOJI_SIZE: Record<"sm" | "md" | "lg", Record<1 | 2 | 3, string>> = {
   lg: { 1: "text-6xl", 2: "text-5xl", 3: "text-4xl" },
 };
 
-export function AchievementCard({
+function AchievementCardImpl({
   slug,
   title,
   emoji,
@@ -151,3 +152,8 @@ export function AchievementCard({
     </Link>
   );
 }
+
+// Memoize so the infinite-scroll grid doesn't re-render every existing card
+// when a new page lands. With 200+ cards mounted at once this matters — each
+// card's render walks tier/emoji-count/etc, cheap individually but additive.
+export const AchievementCard = memo(AchievementCardImpl);

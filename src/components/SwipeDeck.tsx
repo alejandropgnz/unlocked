@@ -97,10 +97,34 @@ function TopCard({
         </div>
       </div>
 
-      {/* Bottom row — pasar / desbloquear hints. Pinned to bottom padding. */}
-      <div className="absolute bottom-6 sm:bottom-8 inset-x-6 sm:inset-x-8 flex justify-between items-center font-black text-sm sm:text-base uppercase tracking-widest">
-        <span className="text-red">← Pasar</span>
-        <span className="text-gold">Desbloquear →</span>
+      {/* Bottom row — pasar / desbloquear. Now clickable: tap either label
+          to trigger the same fly-off animation as dragging in that
+          direction. Drag still works as before for users who prefer
+          gestures. stopPropagation prevents framer-motion's drag from
+          intercepting the click as the start of a gesture. */}
+      <div className="absolute bottom-6 sm:bottom-8 inset-x-6 sm:inset-x-8 flex justify-between items-center font-black text-sm sm:text-base uppercase tracking-widest z-10">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!exiting) setExiting("left");
+          }}
+          disabled={!!exiting}
+          className="text-red hover:text-white transition disabled:opacity-50 cursor-pointer"
+        >
+          ← Pasar
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!exiting) setExiting("right");
+          }}
+          disabled={!!exiting}
+          className="text-gold hover:text-white transition disabled:opacity-50 cursor-pointer"
+        >
+          Desbloquear →
+        </button>
       </div>
 
       {/* Middle cluster — emoji + title + meta. Absolutely centered on the

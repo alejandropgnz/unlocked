@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
  */
 export function useIntersectionObserver(
   onIntersect: () => void,
-  options: IntersectionObserverInit = { rootMargin: "600px" },
+  options: IntersectionObserverInit = { rootMargin: "1200px" },
 ) {
   const ref = useRef<HTMLDivElement | null>(null);
   const callbackRef = useRef(onIntersect);

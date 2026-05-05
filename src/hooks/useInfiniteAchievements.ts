@@ -1,9 +1,9 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import type { AchievementSummary, AchievementWithRarity } from "./types";
 import type { Database } from "@/types/database";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 48;
 
 type Category = Database["public"]["Enums"]["achievement_category"];
 
@@ -20,18 +20,24 @@ interface InfiniteAchievementsFilters {
 }
 
 /**
- * Paginated home grid. Returns achievements approved, sorted by popularity
- * (unlock_count desc) with `id` as stable tiebreaker. Each page = 24 items.
+ * Paginated home grid. Returns approved achievements, sorted by popularity
+ * (unlock_count desc) with `id` as stable tiebreaker. Each page = 48 items.
  *
  * Optional filters narrow the result set server-side. The query key includes
  * the filters so changing them naturally restarts pagination from page 0.
  *
  * Use with `useIntersectionObserver` at the bottom of the grid to trigger
  * `fetchNextPage()` as the user scrolls.
+ *
+ * Performance note: rarity_percent is computed client-side from unlock_count
+ * and total profiles count — that count is cached separately under the
+ * key ['profiles', 'total-count']. This removes the per-page N+1 query that
+ * used to hit achievement_rarity for every batch.
  */
 export function useInfiniteAchievements(
   filters: InfiniteAchievementsFilters = {},
 ) {
+  const queryClient = useQueryClient();
   const q = filters.query?.trim() ?? "";
   const cat = filters.category ?? null;
 
@@ -63,22 +69,30 @@ export function useInfiniteAchievements(
         .range(from, to);
       if (error) throw error;
 
-      const ids = (rows ?? []).map((r) => r.id);
-      const rarityById = new Map<string, number>();
-      if (ids.length > 0) {
-        const { data: rarityRows } = await supabase
-          .from("achievement_rarity")
-          .select("id, rarity_percent")
-          .in("id", ids);
-        for (const r of rarityRows ?? []) {
-          if (r.id != null) rarityById.set(r.id, Number(r.rarity_percent ?? 0));
-        }
-      }
+      // Read total_users from cache (or fetch once + cache forever-ish). This
+      // replaces the per-page join against achievement_rarity.
+      const totalUsers =
+        queryClient.getQueryData<number>(["profiles", "total-count"]) ??
+        (await queryClient.fetchQuery({
+          queryKey: ["profiles", "total-count"],
+          queryFn: async () => {
+            const { count } = await supabase
+              .from("profiles")
+              .select("*", { count: "exact", head: true });
+            return count ?? 0;
+          },
+          staleTime: 60_000,
+        }));
 
-      const items: AchievementWithRarity[] = (rows ?? []).map((r) => ({
-        ...(r as AchievementSummary),
-        rarityPercent: rarityById.get(r.id) ?? 0,
-      }));
+      const items: AchievementWithRarity[] = (rows ?? []).map((r) => {
+        const summary = r as AchievementSummary;
+        const pct =
+          totalUsers > 0
+            ? Math.round((summary.unlock_count / totalUsers) * 100 * 10000) /
+              10000
+            : 0;
+        return { ...summary, rarityPercent: pct };
+      });
 
       // If we got fewer than PAGE_SIZE rows, this was the last page.
       const nextPage =
