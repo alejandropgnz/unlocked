@@ -60,6 +60,21 @@ const SWIPE_THRESHOLD = 100;
 const VELOCITY_THRESHOLD = 600;
 const EXIT_DISTANCE = 1200;
 
+/* Peek cards stacked behind the active one, same pattern as the real
+ * Descubrir SwipeDeck. Hardcoded values (not random per render) so cards
+ * don't twitch when state updates for other reasons. */
+const PEEK_PRESETS = [
+  { rotate: -3.5, x: -8, y: 8, scale: 0.95, opacity: 0.7 },
+  { rotate: 5, x: 10, y: 16, scale: 0.91, opacity: 0.45 },
+  { rotate: -2.5, x: -4, y: 24, scale: 0.87, opacity: 0.25 },
+] as const;
+
+const PEEK_CARDS: ExampleLogro[] = [
+  { emoji: "🛌", title: "He pasado un finde sin dormir", rarityPercent: 12.4, category: "salud" },
+  { emoji: "📱", title: "Stalkeé el insta de mi ex a las 3am", rarityPercent: 22.7, category: "relaciones" },
+  { emoji: "💼", title: "He llorado en el baño de la oficina", rarityPercent: 14.3, category: "trabajo" },
+];
+
 export default function ComingSoon() {
   const [step, setStep] = useState(0);
 
@@ -104,6 +119,14 @@ export default function ComingSoon() {
               so the card always fits exactly. max-h caps it on tall phones
               so it doesn't blow up to 800px+. */}
           <div className="relative mt-5 sm:mt-6 flex-1 min-h-0 max-h-[620px]">
+            {/* Peek stack behind the active card — same pattern as the real
+                Descubrir deck. Hidden on the final CTA card since you're
+                no longer "in the deck", you're at the destination. */}
+            {step < 3 &&
+              PEEK_CARDS.map((card, idx) => (
+                <PeekCard key={idx} card={card} depth={idx + 1} />
+              ))}
+
             <AnimatePresence mode="wait" initial={false}>
               {step === 0 && (
                 <SwipeCard key="hero" onSwipe={advance}>
@@ -176,6 +199,34 @@ function ProgressBar({
         />
       </div>
     </div>
+  );
+}
+
+/* ─────────────────── peek cards (decorative stack behind) ───────────── */
+
+function PeekCard({
+  card,
+  depth,
+}: {
+  card: ExampleLogro;
+  depth: number;
+}) {
+  const preset = PEEK_PRESETS[depth - 1] ?? PEEK_PRESETS[PEEK_PRESETS.length - 1];
+  return (
+    <motion.div
+      style={{
+        scale: preset.scale,
+        x: preset.x,
+        y: preset.y,
+        rotate: preset.rotate,
+        opacity: preset.opacity,
+      }}
+      className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl pointer-events-none"
+    >
+      <div className="flex flex-col items-center justify-center text-center h-full p-6">
+        <div className="text-7xl">{card.emoji}</div>
+      </div>
+    </motion.div>
   );
 }
 
