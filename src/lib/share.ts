@@ -3,11 +3,11 @@ export function captionForUnlock(
   rarityPercent: number,
   username: string,
 ): string {
-  return `Acabo de desbloquear: ${title} (solo el ${rarityPercent.toFixed(2)}% lo tiene 💀) — descubre los tuyos en unlocked.app/u/${username}`;
+  return `Acabo de desbloquear: ${title} (solo el ${rarityPercent.toFixed(2)}% lo tiene 💀) — descubre los tuyos en unlocky.app/u/${username}`;
 }
 
 export function captionForProfile(username: string, total: number): string {
-  return `Mi colección de ${total} ${total === 1 ? "logro" : "logros"} absurdos en Unlocked. Ven a por los tuyos: unlocked.app/u/${username}`;
+  return `Mi colección de ${total} ${total === 1 ? "logro" : "logros"} absurdos en Unlocky. Ven a por los tuyos: unlocky.app/u/${username}`;
 }
 
 export function whatsappShare(text: string): string {

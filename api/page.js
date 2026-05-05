@@ -9,10 +9,7 @@ export const config = { runtime: "edge" };
 const SLUG_RE = /^[a-z0-9-]{1,80}$/i;
 const USERNAME_RE = /^[a-z0-9_]{3,20}$/i;
 
-const SITE_URL =
-  process.env.SITE_URL ||
-  process.env.VITE_SITE_URL ||
-  "https://unlocked-rgcv.vercel.app";
+const SITE_URL = process.env.VITE_SITE_URL || "https://unlocky.app";
 
 function escapeHtml(value) {
   return String(value)
@@ -39,7 +36,7 @@ function htmlShell({ title, description, ogImage, canonical }) {
 <meta property="og:image:width" content="1080" />
 <meta property="og:image:height" content="1920" />
 <meta property="og:url" content="${escapeHtml(canonical)}" />
-<meta property="og:site_name" content="Unlocked" />
+<meta property="og:site_name" content="Unlocky" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${escapeHtml(title)}" />
 <meta name="twitter:description" content="${escapeHtml(description)}" />
@@ -48,7 +45,7 @@ function htmlShell({ title, description, ogImage, canonical }) {
 <body>
 <h1>${escapeHtml(title)}</h1>
 <p>${escapeHtml(description)}</p>
-<p><a href="${escapeHtml(canonical)}">Ver en Unlocked</a></p>
+<p><a href="${escapeHtml(canonical)}">Ver en Unlocky</a></p>
 </body>
 </html>`;
 }
@@ -69,7 +66,7 @@ export default async function handler(req) {
       );
       if (!ach) return new Response("Not found", { status: 404 });
 
-      const title = `${ach.emoji} ${ach.title} · Unlocked`;
+      const title = `${ach.emoji} ${ach.title} · Unlocky`;
       const description = "Colecciona los logros más absurdos de tu vida.";
       const ogImage = `${SITE_URL}/api/og-achievement?slug=${encodeURIComponent(slug)}`;
       const canonical = `${SITE_URL}/l/${slug}`;
@@ -103,8 +100,8 @@ export default async function handler(req) {
       );
       if (!unlock) return new Response("Not found", { status: 404 });
 
-      const title = `${ach.emoji} ${profile.display_name} desbloqueó: ${ach.title} · Unlocked`;
-      const description = `@${profile.username} en Unlocked.`;
+      const title = `${ach.emoji} ${profile.display_name} desbloqueó: ${ach.title} · Unlocky`;
+      const description = `@${profile.username} en Unlocky.`;
       const ogImage = `${SITE_URL}/api/og-unlock?username=${encodeURIComponent(username)}&slug=${encodeURIComponent(slug)}`;
       const canonical = `${SITE_URL}/u/${username}/${slug}`;
       return new Response(htmlShell({ title, description, ogImage, canonical }), {
@@ -124,9 +121,9 @@ export default async function handler(req) {
       );
       if (!profile) return new Response("Not found", { status: 404 });
 
-      const title = `@${profile.username} · Unlocked`;
+      const title = `@${profile.username} · Unlocky`;
       const description =
-        profile.bio || `${profile.display_name} colecciona logros absurdos en Unlocked.`;
+        profile.bio || `${profile.display_name} colecciona logros absurdos en Unlocky.`;
       const ogImage = `${SITE_URL}/api/og-profile?username=${encodeURIComponent(username)}`;
       const canonical = `${SITE_URL}/u/${username}`;
       return new Response(htmlShell({ title, description, ogImage, canonical }), {
@@ -136,7 +133,7 @@ export default async function handler(req) {
     }
 
     // Default: home / fallback — serve a minimal HTML so crawlers get something
-    const title = "Unlocked — your weird life · achieved";
+    const title = "Unlocky — colecciona los logros más absurdos de tu vida";
     const description = "Colecciona los logros más absurdos de tu vida.";
     const ogImage = `${SITE_URL}/og-default.png`;
     const canonical = SITE_URL + path;

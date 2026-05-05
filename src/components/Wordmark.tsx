@@ -13,7 +13,7 @@ const SIZES = {
 };
 
 /**
- * Brand wordmark "UNLOCKED". Inter Black, tight tracking. Reusable across
+ * Brand wordmark "UNLOCKY". Inter Black, tight tracking. Reusable across
  * NavBar, Footer, MobileTopBar so brand changes happen in one place.
  */
 export function Wordmark({ size = "md", className }: WordmarkProps) {
@@ -25,7 +25,7 @@ export function Wordmark({ size = "md", className }: WordmarkProps) {
         className,
       )}
     >
-      UNLOCKED
+      UNLOCKY
     </span>
   );
 }

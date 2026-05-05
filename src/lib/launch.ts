@@ -6,8 +6,8 @@
 // the weekend so day-1 visitors share Saturday/Sunday peak hours.
 export const LAUNCH_DATE = new Date("2026-05-22T18:00:00+02:00");
 
-const PREVIEW_TOKEN = "unlocked2026";
-const STORAGE_KEY = "unlocked.preview";
+const PREVIEW_TOKEN = "unlocky2026";
+const STORAGE_KEY = "unlocky.preview";
 
 /**
  * Has the product launched? Server-controlled via the VITE_LAUNCHED env

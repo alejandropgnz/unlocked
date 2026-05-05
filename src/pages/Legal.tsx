@@ -23,7 +23,7 @@ export default function Legal() {
       <article className="mt-6 space-y-8 text-sm leading-relaxed">
         <header>
           <h1 className="text-3xl font-black tracking-tighter">
-            Aviso legal y política de privacidad
+            Aviso legal y política de privacidad de Unlocky
           </h1>
           <p className="text-muted text-xs mt-2">
             Última actualización: {ULTIMA_ACTUALIZACION}
@@ -36,8 +36,8 @@ export default function Legal() {
           </h2>
           <p>
             <strong>{RESPONSABLE}</strong>, persona física residente en
-            España, opera el sitio web <em>Unlocked</em> como proyecto
-            personal independiente.
+            España, opera el sitio web <em>Unlocky</em> (unlocky.app) como
+            proyecto personal independiente.
           </p>
           <p className="mt-2">
             Contacto:{" "}
@@ -219,7 +219,7 @@ export default function Legal() {
           </h2>
           <p>
             Al apuntarte a la lista de espera aceptas estos términos.
-            <em> Unlocked </em>se reserva el derecho a actualizar esta
+            <em> Unlocky </em>se reserva el derecho a actualizar esta
             política cuando se lance el producto. Notificaremos cualquier
             cambio sustancial por email a los suscriptores.
           </p>

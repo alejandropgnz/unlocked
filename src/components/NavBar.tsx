@@ -13,7 +13,7 @@ export function NavBar() {
 
   return (
     <nav className="hidden md:flex items-center justify-between px-6 lg:px-8 py-4 border-b border-white/5">
-      <Link to="/" aria-label="Unlocked — Inicio">
+      <Link to="/" aria-label="Unlocky — Inicio">
         <Wordmark size="md" />
       </Link>
       <div className="flex items-center gap-4 text-sm">

@@ -18,12 +18,12 @@ export function Footer() {
     <footer className="hidden md:block border-t border-white/5 mt-12 py-10 px-6 lg:px-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <Link to="/" aria-label="Unlocked — Inicio" className="hover:text-gold transition">
+          <Link to="/" aria-label="Unlocky — Inicio" className="hover:text-gold transition">
             <Wordmark size="md" />
           </Link>
           <div className="flex gap-2">
             <a
-              href="https://instagram.com/unlockedapp"
+              href="https://instagram.com/unlockyapp"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -32,7 +32,7 @@ export function Footer() {
               <Instagram className="w-4 h-4" />
             </a>
             <a
-              href="https://twitter.com/unlockedapp"
+              href="https://twitter.com/unlockyapp"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Twitter"
@@ -50,7 +50,7 @@ export function Footer() {
 
         <div className="pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted">
-            © {year} Unlocked · Hecho en España
+            © {year} Unlocky · Hecho en España
           </p>
           <div className="flex items-center gap-4">
             <Link
@@ -60,10 +60,10 @@ export function Footer() {
               Privacidad y términos
             </Link>
             <a
-              href="mailto:hola@unlocked.app"
+              href="mailto:hola@unlocky.app"
               className="text-xs text-muted hover:text-white transition"
             >
-              hola@unlocked.app
+              hola@unlocky.app
             </a>
           </div>
         </div>

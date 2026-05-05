@@ -76,11 +76,11 @@ export function buildIndividualLayout({ emoji, title, rarityPercent, unlockCount
     h(
       "div",
       { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
-      h("div", { style: { fontSize: 32, fontWeight: 900, letterSpacing: -1, color: "#fff" } }, "UNLOCKED"),
+      h("div", { style: { fontSize: 32, fontWeight: 900, letterSpacing: -1, color: "#fff" } }, "UNLOCKY"),
       h(
         "div",
         { style: { fontSize: 18, letterSpacing: 4, color: "rgba(255,255,255,0.4)", textTransform: "uppercase" } },
-        "your weird life · achieved",
+        "logros absurdos · coleccionados",
       ),
     ),
     // Card body wrapper
@@ -164,7 +164,7 @@ export function buildIndividualLayout({ emoji, title, rarityPercent, unlockCount
               },
             },
             h("div", null, category),
-            h("div", null, unlockCount.toLocaleString("es-ES") + " unlocked"),
+            h("div", null, unlockCount.toLocaleString("es-ES") + " lo tienen"),
           ),
         ),
       ),
@@ -195,7 +195,7 @@ export function buildIndividualLayout({ emoji, title, rarityPercent, unlockCount
       h(
         "div",
         { style: { fontSize: 22, color: "rgba(255,255,255,0.7)" } },
-        username ? "@" + username + " · unlocked.app" : "unlocked.app",
+        username ? "@" + username + " · unlocky.app" : "unlocky.app",
       ),
     ),
   );

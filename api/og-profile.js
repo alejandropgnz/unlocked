@@ -378,7 +378,7 @@ function buildTop5Layout({ username, displayName, avatarUrl, totalUnlocks, rares
         },
       },
       "hazte tu pasaporte en ",
-      h("span", { style: { color: "#fff" } }, "unlocked.app"),
+      h("span", { style: { color: "#fff" } }, "unlocky.app"),
     ),
   );
 }

@@ -102,7 +102,7 @@ export function MobileTopBar() {
       ) : (
         // Default — wordmark on the left + (optional) page title + (optional) lupa
         <>
-          <Link to="/" aria-label="Unlocked — Inicio" className="relative z-10">
+          <Link to="/" aria-label="Unlocky — Inicio" className="relative z-10">
             <Wordmark size="sm" />
           </Link>
           {pageTitle && (

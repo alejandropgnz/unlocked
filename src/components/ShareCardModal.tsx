@@ -80,7 +80,7 @@ export function ShareCardModal({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `unlocked-${data.username}.png`;
+    a.download = `unlocky-${data.username}.png`;
     document.body.appendChild(a);
     a.click();
     a.remove();

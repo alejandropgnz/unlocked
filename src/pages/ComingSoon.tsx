@@ -638,7 +638,7 @@ function CTACard({ onSubmitted }: { onSubmitted: () => void }) {
                 className="mt-0.5 shrink-0 accent-indigo cursor-pointer"
               />
               <span>
-                Acepto que me avisen por email del lanzamiento de Unlocked.
+                Acepto que me avisen por email del lanzamiento de Unlocky.
                 Más info en{" "}
                 <a
                   href="/legal"
