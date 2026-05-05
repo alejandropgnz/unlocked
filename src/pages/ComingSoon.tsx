@@ -272,7 +272,9 @@ function SwipeCard({
     <motion.div
       drag={exiting ? false : "x"}
       dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.7}
+      dragElastic={0.55}
+      dragSnapToOrigin
+      dragMomentum={false}
       onDragEnd={handleDragEnd}
       initial={{ opacity: 0, y: 24 }}
       animate={
