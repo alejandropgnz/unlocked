@@ -83,19 +83,23 @@ export default function ComingSoon() {
         )}
       </header>
 
-      {/* Body — fills remaining viewport between header and footer with
-          NO empty centering gap. The card area (flex-1 inside the inner
-          column) absorbs whatever vertical space is left after the
-          progress bar, so the layout feels purposeful on phones tall and
-          short alike, and there's never a scrollbar.
+      {/* Body — centered vertically. Card has a viewport-aware fixed
+          height so it never feels sparse (no huge inner gaps) nor
+          overflows on small phones. The leftover space splits as small
+          margins above the progress bar and below the card, which on
+          standard phones is ~30-50px each — perceived as breathing,
+          not as empty zones.
           Atmospheric wall of cards lives INSIDE main so it never bleeds
           into the header/footer zones. */}
-      <main className="relative flex-1 flex flex-col px-4 pt-3 pb-6">
+      <main className="relative flex-1 flex flex-col items-center justify-center px-4 py-3">
         <LandingBackground />
-        <div className="relative z-10 w-full max-w-md mx-auto flex flex-col flex-1 min-h-0">
+        <div className="relative z-10 w-full max-w-md flex flex-col">
           <ProgressBar step={step} total={HINTS.length} hint={HINTS[step]} />
 
-          <div className="relative flex-1 mt-5 sm:mt-6 min-h-0">
+          <div
+            className="relative mt-5 sm:mt-6"
+            style={{ height: "min(620px, calc(100dvh - 200px))" }}
+          >
             <AnimatePresence mode="wait" initial={false}>
               {step === 0 && (
                 <SwipeCard key="hero" onSwipe={advance}>
@@ -253,12 +257,12 @@ function HeroCardBody() {
       </p>
 
       {/* Middle. No forced <br/>'s — let the title wrap naturally based on
-          the card width. The indigo span stays inline and recolors only
-          its own words wherever they fall. */}
+          the card width. Bigger font on mobile so the title dominates the
+          card and doesn't feel lost in empty space. */}
       <div className="flex-1 flex flex-col items-center justify-center min-h-0">
         <h1
           className="font-black tracking-tighter leading-[1.05]"
-          style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}
+          style={{ fontSize: "clamp(2.25rem, 6vw, 3rem)" }}
         >
           Deja de trackear hábitos.{" "}
           <span className="text-indigo">Empieza a coleccionar</span> tus logros absurdos.
