@@ -66,11 +66,11 @@ export default function ComingSoon() {
   const advance = () => setStep((s) => Math.min(s + 1, 3));
   const skipToCTA = () => setStep(3);
 
+  // h-screen + h-[100dvh] (NOT min-h-) so the column is exactly viewport
+  // height; combined with overflow-hidden, anything taller than the
+  // viewport gets clipped instead of pushing the body to scroll. The
+  // landing must always fit on a single screen.
   return (
-    {/* h-screen + h-[100dvh] (NOT min-h-) so the column is exactly viewport
-        height; combined with overflow-hidden, anything taller than the
-        viewport gets clipped instead of pushing the body to scroll. The
-        landing must always fit on a single screen. */}
     <div className="h-screen h-[100dvh] bg-bg text-white flex flex-col overflow-hidden">
       {/* Header — wordmark left, "Apúntate" skip pill right (only visible
           while we're not already on the CTA card). */}
