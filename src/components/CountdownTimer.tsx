@@ -47,7 +47,7 @@ export function LaunchDate({ target }: { target: Date }) {
   }
 
   return (
-    <div className="flex justify-center gap-3 sm:gap-5">
+    <div className="flex justify-center items-end gap-3 sm:gap-5">
       <Cell value={parts.days} label="días" />
       <Sep />
       <Cell value={parts.hours} label="horas" />
@@ -61,11 +61,21 @@ export function LaunchDate({ target }: { target: Date }) {
 
 function Cell({ value, label }: { value: number; label: string }) {
   return (
-    <div className="flex flex-col items-center min-w-[3.5rem] sm:min-w-[4.5rem]">
-      <span className="text-3xl sm:text-5xl font-black font-mono tabular-nums text-white leading-none">
+    <div className="flex flex-col items-center min-w-[3.25rem] sm:min-w-[4.25rem]">
+      {/* Gradient foil on the digits — same red→gold→violet that the
+          legendary tier uses, so the countdown reads as part of the
+          product's coleccionable visual language. */}
+      <span
+        className="font-black font-mono tabular-nums leading-none bg-clip-text text-transparent"
+        style={{
+          fontSize: "clamp(1.85rem, 5vw, 3rem)",
+          backgroundImage:
+            "linear-gradient(135deg, #FF6B6B 0%, #C9A961 50%, #A78BFA 100%)",
+        }}
+      >
         {String(value).padStart(2, "0")}
       </span>
-      <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-muted mt-1.5">
+      <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-muted mt-2">
         {label}
       </span>
     </div>
@@ -74,7 +84,10 @@ function Cell({ value, label }: { value: number; label: string }) {
 
 function Sep() {
   return (
-    <span className="text-2xl sm:text-4xl font-black text-muted/40 leading-none flex items-center pt-1">
+    <span
+      className="font-black text-muted/30 leading-none flex items-end pb-7 sm:pb-9"
+      style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}
+    >
       :
     </span>
   );
