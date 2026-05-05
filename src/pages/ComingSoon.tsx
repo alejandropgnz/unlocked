@@ -381,21 +381,29 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
 
 interface MockStory {
   username: string;
+  avatarEmoji: string;
+  avatarBg: string;
   body: string;
 }
 
 const MOCK_STORIES: MockStory[] = [
   {
     username: "alex_perez",
-    body: "Era 2003. Mi padre dijo que iba al estanco. Aún espero el cambio.",
+    avatarEmoji: "👨🏻",
+    avatarBg: "#6366F1",
+    body: "Era 2003. Mi padre dijo que iba al estanco. Aún espero el cambio. 🚬",
   },
   {
     username: "marina_g",
-    body: "Mi madre me lo cuenta con humor pero veo que se le cae la sonrisa al final.",
+    avatarEmoji: "👩🏽‍🦱",
+    avatarBg: "#E8BD55",
+    body: "Mi madre me lo cuenta con humor pero veo que se le cae la sonrisa al final. 🥲",
   },
   {
     username: "joaquin_v",
-    body: "El mío sí volvió. Pero con otra mujer. ¿Cuenta?",
+    avatarEmoji: "🧔🏼",
+    avatarBg: "#A78BFA",
+    body: "El mío sí volvió. Pero con otra mujer. ¿Cuenta? 😂",
   },
 ];
 
@@ -426,12 +434,14 @@ function StoriesCardBody() {
 }
 
 function MockStoryRow({ story }: { story: MockStory }) {
-  const initial = story.username[0]?.toUpperCase() ?? "?";
   return (
     <div className="bg-bg border border-grey rounded-xl p-3">
       <div className="flex items-center gap-2 mb-1.5">
-        <div className="w-6 h-6 rounded-full bg-grey flex items-center justify-center text-[10px] font-bold shrink-0">
-          {initial}
+        <div
+          className="w-7 h-7 rounded-full flex items-center justify-center text-base shrink-0 leading-none"
+          style={{ backgroundColor: story.avatarBg }}
+        >
+          {story.avatarEmoji}
         </div>
         <span className="text-[11px] font-mono text-muted">@{story.username}</span>
       </div>
