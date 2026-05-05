@@ -1,37 +1,289 @@
 import { useEffect, useMemo, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+  type PanInfo,
+} from "framer-motion";
 import { useJoinWaitlist } from "@/hooks/useJoinWaitlist";
 import { LaunchDate } from "@/components/CountdownTimer";
-import { LandingMiniSwipe, type MiniCard } from "@/components/LandingMiniSwipe";
-import { FloatingCards } from "@/components/FloatingCards";
 import { LAUNCH_DATE } from "@/lib/launch";
 import { Wordmark } from "@/components/Wordmark";
+import { rarityTier, tierTextColor } from "@/lib/rarity";
 import { cn } from "@/lib/cn";
 
-const SAMPLE_CARDS: MiniCard[] = [
+/* ────────────────────────────────────────────────────────────────────────
+ * The landing IS the product's swipe deck. 4 cards in sequence:
+ *   0 → Hero (the pitch)
+ *   1 → Example logro #1 (legendary, hooks attention)
+ *   2 → Example logro #2 (common, recognizable)
+ *   3 → CTA (email + countdown)
+ *
+ * Progress bar at the top with a hint that changes per step (narrative,
+ * not "page 2/4" infantilization). Skip pill in the header jumps anyone
+ * who doesn't want to play straight to the CTA.
+ * ──────────────────────────────────────────────────────────────────────── */
+
+const HINTS = [
+  "¿Qué es esto?",
+  "Un ejemplo, no es marketing",
+  "Ya casi lo tienes",
+  "Tu email y listo",
+] as const;
+
+interface ExampleLogro {
+  emoji: string;
+  title: string;
+  rarityPercent: number;
+  category: string;
+}
+
+const EXAMPLES: [ExampleLogro, ExampleLogro] = [
   {
-    id: "sample-1",
     emoji: "🚬",
     title: "Mi padre se fue a por tabaco y no volvió",
     rarityPercent: 0.04,
     category: "familia",
   },
   {
-    id: "sample-2",
-    emoji: "💼",
-    title: "He llorado en el baño de la oficina",
-    rarityPercent: 8.4,
+    emoji: "🤮",
+    title: "He vomitado en la cena de empresa",
+    rarityPercent: 8.2,
     category: "trabajo",
-  },
-  {
-    id: "sample-3",
-    emoji: "📱",
-    title: "He stalkeado a mi ex en modo incógnito a las 3am",
-    rarityPercent: 22.7,
-    category: "relaciones",
   },
 ];
 
+/* ─────────────── swipe gesture constants (mirrors SwipeDeck) ─────────── */
+const SWIPE_THRESHOLD = 100;
+const VELOCITY_THRESHOLD = 600;
+const EXIT_DISTANCE = 1200;
+
 export default function ComingSoon() {
+  const [step, setStep] = useState(0);
+
+  const advance = () => setStep((s) => Math.min(s + 1, 3));
+  const skipToCTA = () => setStep(3);
+
+  return (
+    <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col">
+      {/* Header — wordmark left, "Apúntate" skip pill right (only visible
+          while we're not already on the CTA card). */}
+      <header className="px-4 sm:px-6 py-4 flex items-center justify-between shrink-0">
+        <Wordmark size="sm" />
+        {step < 3 && (
+          <button
+            type="button"
+            onClick={skipToCTA}
+            className="text-[11px] uppercase tracking-widest font-bold text-muted hover:text-white px-3 py-1.5 rounded-full border-2 border-grey hover:border-white"
+          >
+            Apúntate
+          </button>
+        )}
+      </header>
+
+      {/* Body — single column, centered, fills remaining viewport */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 pb-6">
+        <div className="w-full max-w-md">
+          <ProgressBar step={step} total={HINTS.length} hint={HINTS[step]} />
+
+          <div className="relative mt-5 sm:mt-6 h-[460px] sm:h-[540px]">
+            <AnimatePresence mode="wait" initial={false}>
+              {step === 0 && (
+                <SwipeCard key="hero" onSwipe={advance}>
+                  <HeroCardBody />
+                </SwipeCard>
+              )}
+              {step === 1 && (
+                <SwipeCard key="ex0" onSwipe={advance}>
+                  <ExampleCardBody example={EXAMPLES[0]} />
+                </SwipeCard>
+              )}
+              {step === 2 && (
+                <SwipeCard key="ex1" onSwipe={advance}>
+                  <ExampleCardBody example={EXAMPLES[1]} />
+                </SwipeCard>
+              )}
+              {step === 3 && <CTACard key="cta" />}
+            </AnimatePresence>
+          </div>
+        </div>
+      </main>
+
+      <footer className="shrink-0 px-4 py-4 border-t border-grey text-[11px] text-muted text-center">
+        Hecho en España · 2026 ·{" "}
+        <a href="/legal" className="hover:text-white underline-offset-2 hover:underline">
+          Privacidad
+        </a>
+      </footer>
+    </div>
+  );
+}
+
+/* ────────────────────────────── progress bar ─────────────────────────── */
+
+function ProgressBar({
+  step,
+  total,
+  hint,
+}: {
+  step: number;
+  total: number;
+  hint: string;
+}) {
+  const pct = ((step + 1) / total) * 100;
+  return (
+    <div className="w-full">
+      <div className="flex justify-between items-center mb-2 min-h-[1.25rem]">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={hint}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.18 }}
+            className="text-sm font-bold tracking-tight"
+          >
+            {hint}
+          </motion.span>
+        </AnimatePresence>
+        <span className="text-[11px] text-muted font-mono tabular-nums tracking-widest">
+          {step + 1}/{total}
+        </span>
+      </div>
+      <div className="h-[3px] bg-grey rounded-full overflow-hidden">
+        <motion.div
+          className="h-full bg-gold rounded-full"
+          initial={false}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.4, ease: [0.22, 0.61, 0.36, 1] }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────── swipeable card wrapper (cards 0-2) ──────────────── */
+
+function SwipeCard({
+  onSwipe,
+  children,
+}: {
+  onSwipe: () => void;
+  children: React.ReactNode;
+}) {
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-300, 0, 300], [-15, 0, 15]);
+  const [exiting, setExiting] = useState<"left" | "right" | null>(null);
+
+  const handleDragEnd = (
+    _e: PointerEvent | MouseEvent | TouchEvent,
+    info: PanInfo,
+  ) => {
+    if (exiting) return;
+    const dx = info.offset.x;
+    const vx = info.velocity.x;
+    if (dx > SWIPE_THRESHOLD || vx > VELOCITY_THRESHOLD) setExiting("right");
+    else if (dx < -SWIPE_THRESHOLD || vx < -VELOCITY_THRESHOLD)
+      setExiting("left");
+  };
+
+  return (
+    <motion.div
+      drag={exiting ? false : "x"}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.7}
+      onDragEnd={handleDragEnd}
+      initial={{ opacity: 0, y: 24 }}
+      animate={
+        exiting
+          ? {
+              x: exiting === "right" ? EXIT_DISTANCE : -EXIT_DISTANCE,
+              opacity: 0,
+              rotate: exiting === "right" ? 25 : -25,
+            }
+          : { opacity: 1, y: 0 }
+      }
+      exit={{ opacity: 0, y: -16 }}
+      transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
+      onAnimationComplete={() => {
+        if (exiting) onSwipe();
+      }}
+      style={{ x, rotate }}
+      whileTap={{ cursor: "grabbing" }}
+      className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl select-none cursor-grab active:cursor-grabbing"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ─────────────────────────── card bodies ─────────────────────────────── */
+
+function HeroCardBody() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-8">
+      <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold mb-4">
+        Viernes 22 de mayo · Hecho en España
+      </p>
+      <h1
+        className="font-black tracking-tighter leading-[1.05]"
+        style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}
+      >
+        Deja de trackear hábitos.
+        <br />
+        <span className="text-gold">Empieza a coleccionar</span>
+        <br />
+        tus logros absurdos.
+      </h1>
+      <p className="text-muted text-sm mt-5 max-w-xs">
+        Desliza para ver de qué va.
+      </p>
+      <div className="mt-3 text-2xl text-muted animate-pulse">→</div>
+    </div>
+  );
+}
+
+function ExampleCardBody({ example }: { example: ExampleLogro }) {
+  const tier = rarityTier(example.rarityPercent);
+  const tierColor = tierTextColor(tier);
+  return (
+    <>
+      {/* Top — rarity %, just like the real product card */}
+      <div className="absolute top-6 sm:top-8 inset-x-6 sm:inset-x-8 text-center leading-tight">
+        <div
+          className="font-mono font-black tabular-nums text-2xl sm:text-3xl"
+          style={{ color: tierColor }}
+        >
+          {example.rarityPercent.toFixed(2)}%
+        </div>
+        <div className="text-muted text-xs sm:text-sm mt-1">
+          de las personas tienen este logro
+        </div>
+      </div>
+
+      {/* Bottom hint — drives the question forward */}
+      <div className="absolute bottom-6 sm:bottom-8 inset-x-6 sm:inset-x-8 text-center font-black text-sm uppercase tracking-widest text-muted">
+        ¿Soy yo o eres tú?
+      </div>
+
+      {/* Center — emoji + title */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-6 sm:px-8">
+        <div className="text-7xl sm:text-8xl">{example.emoji}</div>
+        <div className="mt-5 sm:mt-6 text-2xl sm:text-3xl font-black tracking-tighter">
+          {example.title}
+        </div>
+        <div className="mt-3 text-[11px] text-muted font-mono uppercase tracking-widest">
+          {example.category}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ──────────────────────────── CTA card ───────────────────────────────── */
+
+function CTACard() {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState<null | "new" | "already">(null);
   const joinMut = useJoinWaitlist();
@@ -46,15 +298,7 @@ export default function ComingSoon() {
     return `${day} ${dayNum} de ${month} · ${hh}:${mm} CET`;
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    joinMut.mutate(email, {
-      onSuccess: ({ alreadyOnList }) => {
-        setDone(alreadyOnList ? "already" : "new");
-      },
-    });
-  };
-
+  // Auto-focus the email input on desktop only (intrusive on mobile keyboards)
   useEffect(() => {
     if (window.matchMedia("(min-width: 768px)").matches) {
       const el = document.getElementById("waitlist-email");
@@ -62,141 +306,82 @@ export default function ComingSoon() {
     }
   }, []);
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    joinMut.mutate(email, {
+      onSuccess: ({ alreadyOnList }) =>
+        setDone(alreadyOnList ? "already" : "new"),
+    });
+  };
+
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col relative overflow-hidden">
-      {/* No background gradient, no glows, no translucency. Per design call
-          on this landing: zero fades anywhere. Cards + solid color blocks
-          carry the visual. */}
-
-      {/* Wordmark — minimal, doesn't compete with the hero */}
-      <header className="relative z-10 px-4 sm:px-6 lg:px-8 pt-5 md:pt-7 pb-2 flex justify-center md:justify-start shrink-0">
-        <Wordmark size="md" />
-      </header>
-
-      {/* Hero block fills the remaining viewport so the email form stays
-          above the fold on standard laptops + phones. Mini-swipe lives
-          below as a "scroll for more" tease.
-          Floating mock cards live INSIDE this section absolutely
-          positioned, behind the text (z-0), so they "frame" the pitch
-          without crowding it. Hidden on mobile by FloatingCards itself. */}
-      <section className="relative flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-        <FloatingCards />
-        <div className="relative z-10 max-w-3xl mx-auto w-full">
-          <div className="text-center">
-            {/* Eyebrow kept minimal: just date + locale. No volume claim,
-                no "primera red de" framing — those read as info-product
-                copy and the page is supposed to feel like a product, not
-                a course launch. */}
-            <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold mb-3 sm:mb-4">
-              Viernes 22 de mayo · Hecho en España
-            </p>
-
-            {/* Title uses clamp() so it scales smoothly across viewports
-                without breakpoint jumps. */}
-            <h1
-              className="font-black tracking-tighter leading-[1.02]"
-              style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)" }}
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
+      className="absolute inset-0 bg-surface border-2 border-gold rounded-3xl p-6 sm:p-8 flex flex-col"
+    >
+      {done ? (
+        <div className="m-auto text-center">
+          <div className="text-6xl mb-3">📬</div>
+          <p className="text-xl sm:text-2xl font-black tracking-tight">
+            {done === "already" ? "Ya estabas en la lista." : "Te tenemos."}
+          </p>
+          <p className="text-muted text-sm mt-2">
+            Te escribimos {launchLabel.split(" · ")[0]} a las{" "}
+            {launchLabel.split(" · ")[1]?.split(" ")[0]}.
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="text-center pt-2">
+            <h2
+              className="font-black tracking-tighter leading-tight"
+              style={{ fontSize: "clamp(1.5rem, 4.5vw, 2rem)" }}
             >
-              Deja de trackear hábitos.
-              <br />
-              <span className="text-gold">Empieza a coleccionar</span>
-              <br />
-              tus logros absurdos.
-            </h1>
-
-            <p
-              className="text-muted mt-4 sm:mt-5 max-w-xl mx-auto leading-relaxed"
-              style={{ fontSize: "clamp(0.85rem, 1.5vw, 1.05rem)" }}
-            >
-              <em>"Mi padre se fue a por tabaco y no volvió"</em>,{" "}
-              <em>"1 finde sin dormir"</em>,{" "}
-              <em>"vomité en la cena de empresa"</em>. ¿Soy yo o eres tú?
+              Apúntate y te aviso<br />
+              cuando salga.
+            </h2>
+            <p className="text-muted text-sm mt-3 max-w-xs mx-auto">
+              Te escribo una vez, el día que salga. Y ya.
             </p>
           </div>
 
-          {/* Countdown */}
-          <div className="mt-7 sm:mt-9 md:mt-10">
+          {/* Countdown - small, factual, not the focal point */}
+          <div className="my-auto py-6">
             <LaunchDate target={LAUNCH_DATE} />
-            <p className="text-center text-[11px] sm:text-xs text-muted uppercase tracking-widest mt-3">
+            <p className="text-center text-[11px] text-muted uppercase tracking-widest mt-3">
               {launchLabel}
             </p>
           </div>
 
-          {/* Email capture */}
-          <div className="mt-7 sm:mt-9 md:mt-10 max-w-md mx-auto">
-            {done ? (
-              <div className="text-center bg-surface border-2 border-gold rounded-2xl p-6">
-                <div className="text-5xl mb-2">📬</div>
-                <p className="text-base sm:text-lg font-black tracking-tight">
-                  {done === "already"
-                    ? "Ya estabas en la lista."
-                    : "Te tenemos."}
-                </p>
-                <p className="text-muted text-sm mt-2">
-                  Te avisaremos el {launchLabel.split(" · ")[0]} a las{" "}
-                  {launchLabel.split(" · ")[1]?.split(" ")[0]}.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    id="waitlist-email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    inputMode="email"
-                    placeholder="tu@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    maxLength={120}
-                    className="flex-1 bg-surface border-2 border-grey rounded-full px-5 py-3.5 text-sm focus:border-gold focus:outline-none placeholder:text-muted"
-                  />
-                  <button
-                    type="submit"
-                    disabled={joinMut.isPending || email.trim().length < 5}
-                    className={cn(
-                      "rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase",
-                      "bg-gold text-bg hover:bg-white",
-                      "disabled:bg-grey disabled:text-muted disabled:cursor-not-allowed",
-                    )}
-                  >
-                    {joinMut.isPending ? "..." : "Avísame"}
-                  </button>
-                </div>
-                <p className="text-center text-[11px] text-muted">
-                  Te escribimos una vez, el día que salga. Y ya.
-                </p>
-              </form>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Mini-swipe demo — below the fold */}
-      <section className="relative z-10 px-4 sm:px-6 lg:px-8 pt-12 md:pt-16 pb-12 md:pb-20">
-        <div className="max-w-3xl mx-auto w-full border-t border-grey pt-12 md:pt-14">
-          <div className="text-center mb-8">
-            <p className="text-[10px] uppercase tracking-[3px] text-muted">
-              · Pruébalo ·
-            </p>
-            <h2 className="text-xl sm:text-2xl font-black tracking-tighter mt-2">
-              Desliza si te identificas, ignora si no.
-            </h2>
-          </div>
-          <LandingMiniSwipe cards={SAMPLE_CARDS} />
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="relative z-10 px-4 sm:px-6 lg:px-8 py-6 border-t border-grey">
-        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
-          <span>Hecho en España · 2026</span>
-          <a href="/legal" className="hover:text-white transition">
-            Privacidad
-          </a>
-        </div>
-      </footer>
-    </div>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <input
+              id="waitlist-email"
+              type="email"
+              required
+              autoComplete="email"
+              inputMode="email"
+              placeholder="tu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              maxLength={120}
+              className="w-full bg-bg border-2 border-grey rounded-full px-5 py-3.5 text-sm focus:border-gold focus:outline-none placeholder:text-muted"
+            />
+            <button
+              type="submit"
+              disabled={joinMut.isPending || email.trim().length < 5}
+              className={cn(
+                "w-full rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase",
+                "bg-gold text-bg hover:bg-white",
+                "disabled:bg-grey disabled:text-muted disabled:cursor-not-allowed",
+              )}
+            >
+              {joinMut.isPending ? "..." : "Avísame"}
+            </button>
+          </form>
+        </>
+      )}
+    </motion.div>
   );
 }
