@@ -153,7 +153,7 @@ function ProgressBar({
       </div>
       <div className="h-[3px] bg-grey rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gold rounded-full"
+          className="h-full bg-indigo rounded-full"
           initial={false}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.4, ease: [0.22, 0.61, 0.36, 1] }}
@@ -252,7 +252,7 @@ function HeroCardBody() {
         >
           Deja de trackear hábitos.
           <br />
-          <span className="text-gold">Empieza a coleccionar</span>
+          <span className="text-indigo">Empieza a coleccionar</span>
           <br />
           tus logros absurdos.
         </h1>
@@ -342,7 +342,7 @@ function CTACard() {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
-      className="absolute inset-0 bg-surface border-2 border-gold rounded-3xl p-8 sm:p-10 flex flex-col"
+      className="absolute inset-0 bg-surface border-2 border-indigo rounded-3xl p-8 sm:p-10 flex flex-col"
     >
       {done ? (
         <div className="m-auto text-center">
@@ -388,17 +388,17 @@ function CTACard() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               maxLength={120}
-              className="w-full bg-bg border-2 border-grey rounded-full px-5 py-3.5 text-sm focus:border-gold focus:outline-none placeholder:text-muted"
+              className="w-full bg-bg border-2 border-grey rounded-full px-5 py-3.5 text-sm focus:border-indigo focus:outline-none placeholder:text-muted"
             />
             <button
               type="submit"
               disabled={joinMut.isPending}
               className={cn(
                 "w-full rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase",
-                // Always full gold so the CTA never reads as "muted/dim".
+                // Always full indigo so the CTA never reads as "muted/dim".
                 // HTML5 required + email type guards empty/invalid submits;
                 // we don't need a visual disabled state for that.
-                "bg-gold text-bg hover:bg-white disabled:cursor-wait",
+                "bg-indigo text-bg hover:bg-white disabled:cursor-wait",
               )}
             >
               {joinMut.isPending ? "..." : "Avísame"}
