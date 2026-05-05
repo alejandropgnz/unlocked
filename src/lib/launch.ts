@@ -10,12 +10,18 @@ const PREVIEW_TOKEN = "unlocked2026";
 const STORAGE_KEY = "unlocked.preview";
 
 /**
- * Has the product launched? Either an explicit env-var override, or the
- * LAUNCH_DATE has passed. Pure function — no React, no state.
+ * Has the product launched? Server-controlled via the VITE_LAUNCHED env
+ * var only — NOT auto-flipped by the client clock.
+ *
+ * Why no Date.now() check: the client clock is user-tampable. A motivated
+ * visitor could push their system date past LAUNCH_DATE and bypass the
+ * gate. Trusting only the build-time env var means the team controls
+ * cutover by toggling Vercel and redeploying (≈10s) — no surprise leaks.
+ *
+ * LAUNCH_DATE remains exported for display purposes only (countdown UI).
  */
 export function isLaunched(): boolean {
-  if (import.meta.env.VITE_LAUNCHED === "true") return true;
-  return Date.now() >= LAUNCH_DATE.getTime();
+  return import.meta.env.VITE_LAUNCHED === "true";
 }
 
 /**
