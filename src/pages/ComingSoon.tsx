@@ -83,15 +83,19 @@ export default function ComingSoon() {
         )}
       </header>
 
-      {/* Body — single column, centered, fills remaining viewport. The
-          atmospheric wall of cards lives INSIDE here so it never bleeds
+      {/* Body — fills remaining viewport between header and footer with
+          NO empty centering gap. The card area (flex-1 inside the inner
+          column) absorbs whatever vertical space is left after the
+          progress bar, so the layout feels purposeful on phones tall and
+          short alike, and there's never a scrollbar.
+          Atmospheric wall of cards lives INSIDE main so it never bleeds
           into the header/footer zones. */}
-      <main className="relative flex-1 flex flex-col items-center justify-center px-4 pb-6">
+      <main className="relative flex-1 flex flex-col px-4 pt-3 pb-6">
         <LandingBackground />
-        <div className="relative z-10 w-full max-w-md">
+        <div className="relative z-10 w-full max-w-md mx-auto flex flex-col flex-1 min-h-0">
           <ProgressBar step={step} total={HINTS.length} hint={HINTS[step]} />
 
-          <div className="relative mt-5 sm:mt-6 h-[460px] sm:h-[540px]">
+          <div className="relative flex-1 mt-5 sm:mt-6 min-h-0">
             <AnimatePresence mode="wait" initial={false}>
               {step === 0 && (
                 <SwipeCard key="hero" onSwipe={advance}>
