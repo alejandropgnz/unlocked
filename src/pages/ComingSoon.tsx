@@ -112,15 +112,15 @@ export default function ComingSoon() {
           not as empty zones.
           Atmospheric wall of cards lives INSIDE main so it never bleeds
           into the header/footer zones. */}
-      <main className="relative flex-1 min-h-0 flex flex-col items-center px-4 py-3">
+      <main className="relative flex-1 min-h-0 flex flex-col items-center justify-center px-4 py-3">
         <LandingBackground />
-        <div className="relative z-10 w-full max-w-md flex flex-col flex-1 min-h-0">
+        <div className="relative z-10 w-full max-w-md flex flex-col">
           <ProgressBar step={step} total={HINTS.length} hint={HINTS[step]} />
 
-          {/* flex-1 absorbs whatever's left after header + progress + footer
-              so the card always fits exactly. max-h caps it on tall phones
-              so it doesn't blow up to 800px+. */}
-          <div className="relative mt-5 sm:mt-6 flex-1 min-h-0 max-h-[620px]">
+          {/* Card sized tightly so inner content doesn't stretch sparsely.
+              Mobile max 520, sm bumps to 580. Excess viewport space stays
+              outside the card (above/below via main's justify-center). */}
+          <div className="relative mt-5 sm:mt-6 h-[520px] sm:h-[580px] max-h-[calc(100dvh-180px)]">
             {/* Peek stack behind the active card — same pattern as the real
                 Descubrir deck. Hidden on the final CTA card since you're
                 no longer "in the deck", you're at the destination. */}
