@@ -57,6 +57,23 @@ const EXAMPLES: [ExampleLogro, ExampleLogro] = [
   },
 ];
 
+// Post-submit bonus deck — 2 extra logros to scratch the swipe itch
+// before the goodbye card. Different categories from the main examples.
+const BONUS_LOGROS: ExampleLogro[] = [
+  {
+    emoji: "🎤",
+    title: "Hablé 5 minutos en Teams sin saber que estaba muteado",
+    rarityPercent: 19.2,
+    category: "trabajo",
+  },
+  {
+    emoji: "🎂",
+    title: "Felicité un cumple un día tarde y disimulé",
+    rarityPercent: 28.5,
+    category: "amigos",
+  },
+];
+
 /* ─────────────── swipe gesture constants (mirrors SwipeDeck) ─────────── */
 const SWIPE_THRESHOLD = 100;
 const VELOCITY_THRESHOLD = 600;
@@ -80,8 +97,12 @@ const PEEK_CARDS: ExampleLogro[] = [
 export default function ComingSoon() {
   const [step, setStep] = useState(0);
 
-  const advance = () => setStep((s) => Math.min(s + 1, 4));
+  // Steps 0-4 = main flow (hero, ex, ex, stories, CTA).
+  // Steps 5-7 = post-submit bonus (2 bonus logros + goodbye).
+  // CTACard advances to 5 itself on successful submit.
+  const advance = () => setStep((s) => Math.min(s + 1, 7));
   const skipToCTA = () => setStep(4);
+  const inBonus = step >= 5;
 
   // h-screen + h-[100dvh] (NOT min-h-) so the column is exactly viewport
   // height; combined with overflow-hidden, anything taller than the
@@ -115,15 +136,31 @@ export default function ComingSoon() {
       <main className="relative flex-1 min-h-0 flex flex-col items-center justify-center px-4 py-3">
         <LandingBackground />
         <div className="relative z-10 w-full max-w-md flex flex-col">
-          <ProgressBar step={step} total={HINTS.length} hint={HINTS[step]} />
+          {/* Progress bar only shows during the main flow (steps 0-4).
+              In the post-submit bonus, the user already converted —
+              the bar would be misleading (5/5 done) or confusing
+              (6/8?). Cleaner to drop it and let the bonus feel like
+              an unstructured epilogue. */}
+          {!inBonus && (
+            <ProgressBar
+              step={step}
+              total={HINTS.length}
+              hint={HINTS[step]}
+            />
+          )}
 
           {/* Card sized tightly so inner content doesn't stretch sparsely.
               Mobile max 520, sm bumps to 580. Excess viewport space stays
               outside the card (above/below via main's justify-center). */}
-          <div className="relative mt-5 sm:mt-6 h-[520px] sm:h-[580px] max-h-[calc(100dvh-180px)]">
+          <div
+            className={cn(
+              "relative h-[520px] sm:h-[580px] max-h-[calc(100dvh-180px)]",
+              !inBonus && "mt-5 sm:mt-6",
+            )}
+          >
             {/* Peek stack behind the active card — same pattern as the real
-                Descubrir deck. Hidden on the final CTA card since you're
-                no longer "in the deck", you're at the destination. */}
+                Descubrir deck. Hidden from the CTA onward — once you're
+                at the destination (or past it), no more deck behind. */}
             {step < 4 &&
               PEEK_CARDS.map((card, idx) => (
                 <PeekCard key={idx} card={card} depth={idx + 1} />
@@ -150,7 +187,21 @@ export default function ComingSoon() {
                   <StoriesCardBody />
                 </SwipeCard>
               )}
-              {step === 4 && <CTACard key="cta" />}
+              {step === 4 && <CTACard key="cta" onSubmitted={advance} />}
+              {step === 5 && (
+                <SwipeCard key="bonus0" onSwipe={advance}>
+                  <BonusCardBody
+                    example={BONUS_LOGROS[0]}
+                    intro="Te tenemos. Mira un par más mientras esperas."
+                  />
+                </SwipeCard>
+              )}
+              {step === 6 && (
+                <SwipeCard key="bonus1" onSwipe={advance}>
+                  <BonusCardBody example={BONUS_LOGROS[1]} />
+                </SwipeCard>
+              )}
+              {step === 7 && <GoodbyeCard key="goodbye" />}
             </AnimatePresence>
           </div>
         </div>
@@ -479,10 +530,9 @@ function MockStoryRow({ story }: { story: MockStory }) {
 
 /* ──────────────────────────── CTA card ───────────────────────────────── */
 
-function CTACard() {
+function CTACard({ onSubmitted }: { onSubmitted: () => void }) {
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
-  const [done, setDone] = useState<null | "new" | "already">(null);
   const joinMut = useJoinWaitlist();
 
   const launchLabel = useMemo(() => {
@@ -525,9 +575,12 @@ function CTACard() {
     e.preventDefault();
     if (!consent) return; // belt-and-braces; button is also disabled
     joinMut.mutate(email, {
-      onSuccess: ({ alreadyOnList }) => {
-        setDone(alreadyOnList ? "already" : "new");
+      onSuccess: () => {
         fireConfetti();
+        // Hand off to parent — it advances to the bonus deck (steps 5-7).
+        // Quick delay so the confetti has a beat to register before the
+        // card transitions out.
+        setTimeout(onSubmitted, 350);
       },
     });
   };
@@ -539,20 +592,7 @@ function CTACard() {
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
       className="absolute inset-0 bg-surface border-2 border-indigo rounded-3xl p-8 sm:p-10 flex flex-col"
     >
-      {done ? (
-        <div className="m-auto text-center">
-          <div className="text-6xl mb-3">📬</div>
-          <p className="text-xl sm:text-2xl font-black tracking-tight">
-            {done === "already" ? "Ya estabas en la lista." : "Te tenemos."}
-          </p>
-          <p className="text-muted text-sm mt-2">
-            Te escribimos {launchLabel.split(" · ")[0]} a las{" "}
-            {launchLabel.split(" · ")[1]?.split(" ")[0]}.
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="text-center shrink-0">
+      <div className="text-center shrink-0">
             <h2
               className="font-black tracking-tighter leading-tight"
               style={{ fontSize: "clamp(1.5rem, 4.5vw, 2rem)" }}
@@ -624,8 +664,91 @@ function CTACard() {
               {joinMut.isPending ? "..." : "Avísame"}
             </button>
           </form>
-        </>
+    </motion.div>
+  );
+}
+
+/* ─────────────────── bonus card body — post-submit deck ──────────────── */
+
+function BonusCardBody({
+  example,
+  intro,
+}: {
+  example: ExampleLogro;
+  intro?: string;
+}) {
+  const tier = rarityTier(example.rarityPercent);
+  const tierColor = tierTextColor(tier);
+  return (
+    <div className="absolute inset-0 flex flex-col text-center p-7 sm:p-9">
+      {/* Optional intro line — only on the first bonus card to bridge
+          the user from "I just submitted" to "here's something extra". */}
+      {intro && (
+        <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-indigo font-bold shrink-0 mb-2">
+          {intro}
+        </p>
       )}
+
+      {/* Top — rarity */}
+      <div className="leading-tight shrink-0">
+        <div
+          className="font-mono font-black tabular-nums text-2xl sm:text-3xl"
+          style={{ color: tierColor }}
+        >
+          {example.rarityPercent.toFixed(2)}%
+        </div>
+        <div className="text-muted text-xs sm:text-sm mt-1">
+          de las personas tienen este logro
+        </div>
+      </div>
+
+      {/* Middle — emoji + title + category */}
+      <div className="flex-1 flex flex-col items-center justify-center min-h-0">
+        <div className="text-7xl sm:text-8xl">{example.emoji}</div>
+        <div className="mt-4 sm:mt-5 text-xl sm:text-2xl font-black tracking-tighter leading-tight">
+          {example.title}
+        </div>
+        <div className="mt-3 text-[11px] text-muted font-mono uppercase tracking-widest">
+          {example.category}
+        </div>
+      </div>
+
+      <div className="font-black text-sm uppercase tracking-widest text-muted shrink-0">
+        ¿Te suena?
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────── goodbye card — final post-bonus screen ──────────── */
+
+function GoodbyeCard() {
+  const launchLabel = useMemo(() => {
+    const d = LAUNCH_DATE;
+    const day = d.toLocaleDateString("es-ES", { weekday: "long" });
+    const dayNum = d.getDate();
+    const month = d.toLocaleDateString("es-ES", { month: "long" });
+    return `${day} ${dayNum} de ${month}`;
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
+      className="absolute inset-0 bg-surface border-2 border-indigo rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center text-center"
+    >
+      <div className="text-6xl mb-4">📬</div>
+      <h2
+        className="font-black tracking-tighter leading-tight"
+        style={{ fontSize: "clamp(1.5rem, 4.5vw, 2rem)" }}
+      >
+        Nos vemos el {launchLabel}.
+      </h2>
+      <p className="text-muted text-sm mt-3 max-w-xs">
+        Te escribimos al email ese día. Mientras, ya puedes cerrar la
+        pestaña tranquilo.
+      </p>
     </motion.div>
   );
 }
