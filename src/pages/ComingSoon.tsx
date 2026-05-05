@@ -6,6 +6,7 @@ import {
   useTransform,
   type PanInfo,
 } from "framer-motion";
+import confetti from "canvas-confetti";
 import { useJoinWaitlist } from "@/hooks/useJoinWaitlist";
 import { LaunchDate } from "@/components/CountdownTimer";
 import { LandingBackground } from "@/components/LandingBackground";
@@ -461,6 +462,25 @@ function CTACard() {
     if (window.matchMedia("(min-width: 768px)").matches) {
       const el = document.getElementById("waitlist-email");
       el?.focus();
+    }
+  }, []);
+
+  // Confetti when the user lands on the CTA card. Marks the "you arrived"
+  // moment with a small celebration — same particle palette as the
+  // landing's accents (indigo + gold + violet + red). Wrapped in try/catch
+  // because canvas-confetti can throw on browsers that don't support
+  // canvas (rare).
+  useEffect(() => {
+    try {
+      confetti({
+        particleCount: 110,
+        spread: 75,
+        startVelocity: 38,
+        origin: { y: 0.55 },
+        colors: ["#6366F1", "#E8BD55", "#A78BFA", "#FF6B6B", "#FFFFFF"],
+      });
+    } catch {
+      // ignore — never let confetti block the CTA
     }
   }, []);
 
