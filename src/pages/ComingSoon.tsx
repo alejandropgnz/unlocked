@@ -473,6 +473,7 @@ function MockStoryRow({ story }: { story: MockStory }) {
 
 function CTACard() {
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [done, setDone] = useState<null | "new" | "already">(null);
   const joinMut = useJoinWaitlist();
 
@@ -515,6 +516,7 @@ function CTACard() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!consent) return; // belt-and-braces; button is also disabled
     joinMut.mutate(email, {
       onSuccess: ({ alreadyOnList }) =>
         setDone(alreadyOnList ? "already" : "new"),
@@ -574,15 +576,39 @@ function CTACard() {
               maxLength={120}
               className="w-full bg-bg border-2 border-grey rounded-full px-5 py-3.5 text-sm focus:border-indigo focus:outline-none placeholder:text-muted"
             />
+
+            {/* GDPR consent — explicit, granular. Submit is disabled until
+                the user checks it. The wording covers the launch alert
+                AND future product comms so we can email beyond day 1. */}
+            <label className="flex items-start gap-2 text-left text-[11px] text-muted cursor-pointer leading-relaxed">
+              <input
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                className="mt-0.5 shrink-0 accent-indigo cursor-pointer"
+              />
+              <span>
+                Acepto recibir el aviso del lanzamiento y comunicaciones
+                puntuales sobre Unlocked. Más info en{" "}
+                <a
+                  href="/legal"
+                  className="underline hover:text-white"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacidad
+                </a>
+                .
+              </span>
+            </label>
+
             <button
               type="submit"
-              disabled={joinMut.isPending}
+              disabled={joinMut.isPending || !consent}
               className={cn(
                 "w-full rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase",
-                // Always full indigo so the CTA never reads as "muted/dim".
-                // HTML5 required + email type guards empty/invalid submits;
-                // we don't need a visual disabled state for that.
-                "bg-indigo text-bg hover:bg-white disabled:cursor-wait",
+                "bg-indigo text-bg hover:bg-white",
+                "disabled:bg-grey disabled:text-muted disabled:cursor-not-allowed",
               )}
             >
               {joinMut.isPending ? "..." : "Avísame"}
