@@ -746,8 +746,7 @@ function GoodbyeCard() {
         Nos vemos el {launchLabel}.
       </h2>
       <p className="text-muted text-sm mt-3 max-w-xs">
-        Te escribimos al email ese día. Mientras, ya puedes cerrar la
-        pestaña tranquilo.
+        Te escribimos al email ese día.
       </p>
     </motion.div>
   );
