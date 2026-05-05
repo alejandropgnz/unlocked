@@ -238,7 +238,7 @@ function SwipeCard({
 
 function HeroCardBody() {
   return (
-    <div className="absolute inset-0 flex flex-col text-center p-6 sm:p-8">
+    <div className="absolute inset-0 flex flex-col text-center p-7 sm:p-9">
       {/* Top */}
       <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold shrink-0">
         Viernes 22 de mayo · Hecho en España
@@ -271,7 +271,7 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
   const tier = rarityTier(example.rarityPercent);
   const tierColor = tierTextColor(tier);
   return (
-    <div className="absolute inset-0 flex flex-col text-center p-6 sm:p-8">
+    <div className="absolute inset-0 flex flex-col text-center p-7 sm:p-9">
       {/* Top — rarity */}
       <div className="leading-tight shrink-0">
         <div
@@ -342,7 +342,7 @@ function CTACard() {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
-      className="absolute inset-0 bg-surface border-2 border-gold rounded-3xl p-6 sm:p-8 flex flex-col"
+      className="absolute inset-0 bg-surface border-2 border-gold rounded-3xl p-7 sm:p-9 flex flex-col"
     >
       {done ? (
         <div className="m-auto text-center">
@@ -393,11 +393,13 @@ function CTACard() {
             />
             <button
               type="submit"
-              disabled={joinMut.isPending || email.trim().length < 5}
+              disabled={joinMut.isPending}
               className={cn(
                 "w-full rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase",
-                "bg-gold text-bg hover:bg-white",
-                "disabled:bg-grey disabled:text-muted disabled:cursor-not-allowed",
+                // Always full gold so the CTA never reads as "muted/dim".
+                // HTML5 required + email type guards empty/invalid submits;
+                // we don't need a visual disabled state for that.
+                "bg-gold text-bg hover:bg-white disabled:cursor-wait",
               )}
             >
               {joinMut.isPending ? "..." : "Avísame"}
