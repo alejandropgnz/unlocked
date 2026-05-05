@@ -62,16 +62,9 @@ export function LaunchDate({ target }: { target: Date }) {
 function Cell({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center min-w-[3.25rem] sm:min-w-[4.25rem]">
-      {/* Gradient foil on the digits — same red→gold→violet that the
-          legendary tier uses, so the countdown reads as part of the
-          product's coleccionable visual language. */}
       <span
-        className="font-black font-mono tabular-nums leading-none bg-clip-text text-transparent"
-        style={{
-          fontSize: "clamp(1.85rem, 5vw, 3rem)",
-          backgroundImage:
-            "linear-gradient(135deg, #FF6B6B 0%, #C9A961 50%, #A78BFA 100%)",
-        }}
+        className="font-black font-mono tabular-nums leading-none text-gold"
+        style={{ fontSize: "clamp(1.85rem, 5vw, 3rem)" }}
       >
         {String(value).padStart(2, "0")}
       </span>
@@ -85,7 +78,7 @@ function Cell({ value, label }: { value: number; label: string }) {
 function Sep() {
   return (
     <span
-      className="font-black text-muted/30 leading-none flex items-end pb-7 sm:pb-9"
+      className="font-black text-grey leading-none flex items-end pb-7 sm:pb-9"
       style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}
     >
       :

@@ -64,9 +64,9 @@ export default function ComingSoon() {
 
   return (
     <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col relative overflow-hidden">
-      {/* No background gradient. Floating cards + foil-gradient title carry
-          the visual weight; the page itself stays plain dark so nothing
-          reads as "fade". */}
+      {/* No background gradient, no glows, no translucency. Per design call
+          on this landing: zero fades anywhere. Cards + solid color blocks
+          carry the visual. */}
 
       {/* Wordmark — minimal, doesn't compete with the hero */}
       <header className="relative z-10 px-4 sm:px-6 lg:px-8 pt-5 md:pt-7 pb-2 flex justify-center md:justify-start shrink-0">
@@ -96,15 +96,7 @@ export default function ComingSoon() {
             >
               Deja de trackear hábitos.
               <br />
-              <span
-                className="bg-clip-text text-transparent"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(135deg, #FF6B6B 0%, #C9A961 50%, #A78BFA 100%)",
-                }}
-              >
-                Empieza a coleccionar
-              </span>
+              <span className="text-gold">Empieza a coleccionar</span>
               <br />
               tus logros absurdos.
             </h1>
@@ -130,7 +122,7 @@ export default function ComingSoon() {
           {/* Email capture */}
           <div className="mt-7 sm:mt-9 md:mt-10 max-w-md mx-auto">
             {done ? (
-              <div className="text-center bg-surface/80 backdrop-blur-sm border border-gold/40 rounded-2xl p-6 shadow-[0_0_40px_-10px_rgba(201,169,97,0.3)]">
+              <div className="text-center bg-surface border-2 border-gold rounded-2xl p-6">
                 <div className="text-5xl mb-2">📬</div>
                 <p className="text-base sm:text-lg font-black tracking-tight">
                   {done === "already"
@@ -155,16 +147,15 @@ export default function ComingSoon() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     maxLength={120}
-                    className="flex-1 bg-surface/80 backdrop-blur-sm border border-white/10 rounded-full px-5 py-3.5 text-sm focus:border-gold focus:outline-none placeholder:text-muted transition"
+                    className="flex-1 bg-surface border-2 border-grey rounded-full px-5 py-3.5 text-sm focus:border-gold focus:outline-none placeholder:text-muted"
                   />
                   <button
                     type="submit"
                     disabled={joinMut.isPending || email.trim().length < 5}
                     className={cn(
-                      "rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase transition",
-                      "bg-white text-bg hover:bg-gold hover:scale-[1.02] active:scale-100",
-                      "shadow-[0_0_30px_-5px_rgba(201,169,97,0.5)] hover:shadow-[0_0_40px_-5px_rgba(201,169,97,0.8)]",
-                      "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
+                      "rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase",
+                      "bg-gold text-bg hover:bg-white",
+                      "disabled:bg-grey disabled:text-muted disabled:cursor-not-allowed",
                     )}
                   >
                     {joinMut.isPending ? "..." : "Avísame"}
@@ -181,7 +172,7 @@ export default function ComingSoon() {
 
       {/* Mini-swipe demo — below the fold */}
       <section className="relative z-10 px-4 sm:px-6 lg:px-8 pt-12 md:pt-16 pb-12 md:pb-20">
-        <div className="max-w-3xl mx-auto w-full border-t border-white/5 pt-12 md:pt-14">
+        <div className="max-w-3xl mx-auto w-full border-t border-grey pt-12 md:pt-14">
           <div className="text-center mb-8">
             <p className="text-[10px] uppercase tracking-[3px] text-muted">
               · Pruébalo ·
@@ -195,7 +186,7 @@ export default function ComingSoon() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 px-4 sm:px-6 lg:px-8 py-6 border-t border-white/5">
+      <footer className="relative z-10 px-4 sm:px-6 lg:px-8 py-6 border-t border-grey">
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
           <span>Hecho en España · 2026</span>
           <a href="/legal" className="hover:text-white transition">

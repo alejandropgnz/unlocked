@@ -104,7 +104,7 @@ function MockCard({ card, className, tier }: Slot) {
       <div className="text-[10px] lg:text-[11px] font-black text-white text-center leading-tight tracking-tighter line-clamp-2 min-h-[2.4em]">
         {card.title}
       </div>
-      <div className="mt-2 lg:mt-3 pt-2 border-t border-white/10 text-[7px] lg:text-[8px] uppercase tracking-[2px] text-muted text-center">
+      <div className="mt-2 lg:mt-3 pt-2 border-t border-grey text-[7px] lg:text-[8px] uppercase tracking-[2px] text-muted text-center">
         {card.category}
       </div>
     </div>
