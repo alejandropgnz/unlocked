@@ -82,9 +82,10 @@ function TopCard({
       }}
       style={{ x, rotate }}
       whileTap={{ cursor: "grabbing" }}
-      className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col select-none cursor-grab active:cursor-grabbing"
+      className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-6 sm:p-8 select-none cursor-grab active:cursor-grabbing"
     >
-      <div className="text-center shrink-0 leading-tight">
+      {/* Top row — rarity. Pinned to the top padding. */}
+      <div className="absolute top-6 sm:top-8 inset-x-6 sm:inset-x-8 text-center leading-tight">
         <div
           className="font-mono font-black tabular-nums text-2xl sm:text-3xl"
           style={{ color: tierColor }}
@@ -95,7 +96,19 @@ function TopCard({
           de las personas tienen este logro
         </div>
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center text-center min-h-0">
+
+      {/* Bottom row — pasar / desbloquear hints. Pinned to bottom padding. */}
+      <div className="absolute bottom-6 sm:bottom-8 inset-x-6 sm:inset-x-8 flex justify-between items-center font-black text-sm sm:text-base uppercase tracking-widest">
+        <span className="text-red">← Pasar</span>
+        <span className="text-gold">Desbloquear →</span>
+      </div>
+
+      {/* Middle cluster — emoji + title + meta. Absolutely centered on the
+          ENTIRE card (not on the gap between top/bottom rows), so it sits
+          on the geometric center regardless of how big the rarity block
+          is vs the action hints. pointer-events-none so the drag still
+          works on the card body. */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-6 sm:px-8">
         <div className="text-7xl sm:text-8xl">{item.emoji}</div>
         <div className="mt-5 sm:mt-6 text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter">
           {item.title}
@@ -103,10 +116,6 @@ function TopCard({
         <div className="mt-3 text-[11px] text-muted font-mono uppercase tracking-widest">
           {item.category} · {item.unlockCount.toLocaleString("es-ES")} desbloqueados
         </div>
-      </div>
-      <div className="flex justify-between items-center font-black text-sm sm:text-base uppercase tracking-widest">
-        <span className="text-red">← Pasar</span>
-        <span className="text-gold">Desbloquear →</span>
       </div>
       <motion.div
         style={{ opacity: acceptOpacity }}
