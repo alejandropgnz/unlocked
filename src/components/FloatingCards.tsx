@@ -41,27 +41,27 @@ const TIER_COLORS = {
   legendary: "#C9A961",
 } as const;
 
-const TIER_GLOW = {
-  common: "0 20px 60px -20px rgba(58,58,74,0.6)",
-  rare: "0 20px 60px -15px rgba(99,102,241,0.45)",
-  legendary: "0 20px 60px -15px rgba(201,169,97,0.5)",
-} as const;
+// Tight, sharp drop shadow — reads as a physical card on a table, not a
+// glowy halo. Less "fade" feel than the previous tier-colored glows.
+const CARD_SHADOW =
+  "0 12px 30px -8px rgba(0,0,0,0.55), 0 4px 8px -2px rgba(0,0,0,0.4)";
 
-// Each slot is hand-tuned to leave the center column clear for the hero
-// text/form. % positions so layout scales with viewport.
+// Each slot is hand-tuned to keep cards clearly INSIDE the viewport
+// (away from the edges) and to leave the center column clear for the
+// hero text/form. % positions so layout scales with viewport.
 const SLOTS: Slot[] = [
-  // Top-left, leaning into the page
-  { card: CARDS[0], tier: "legendary", className: "absolute top-[8%] left-[3%] w-40 lg:w-44 -rotate-[10deg]" },
+  // Top-left
+  { card: CARDS[0], tier: "legendary", className: "absolute top-[10%] left-[8%] w-40 lg:w-44 -rotate-[10deg]" },
   // Top-right
-  { card: CARDS[2], tier: "rare", className: "absolute top-[14%] right-[4%] w-44 lg:w-48 rotate-[8deg]" },
-  // Mid-left, smaller
-  { card: CARDS[4], tier: "common", className: "absolute top-[44%] left-[1%] w-32 lg:w-36 -rotate-[6deg] opacity-80" },
-  // Mid-right, smaller
-  { card: CARDS[5], tier: "common", className: "absolute top-[40%] right-[1%] w-32 lg:w-36 rotate-[12deg] opacity-80" },
+  { card: CARDS[2], tier: "rare", className: "absolute top-[14%] right-[8%] w-44 lg:w-48 rotate-[8deg]" },
+  // Mid-left
+  { card: CARDS[4], tier: "common", className: "absolute top-[46%] left-[6%] w-32 lg:w-36 -rotate-[6deg]" },
+  // Mid-right
+  { card: CARDS[5], tier: "common", className: "absolute top-[42%] right-[6%] w-32 lg:w-36 rotate-[12deg]" },
   // Bottom-left
-  { card: CARDS[1], tier: "rare", className: "absolute bottom-[10%] left-[5%] w-36 lg:w-40 -rotate-[12deg]" },
+  { card: CARDS[1], tier: "rare", className: "absolute bottom-[12%] left-[10%] w-36 lg:w-40 -rotate-[12deg]" },
   // Bottom-right, biggest tilt
-  { card: CARDS[3], tier: "common", className: "absolute bottom-[6%] right-[6%] w-40 lg:w-44 rotate-[14deg]" },
+  { card: CARDS[3], tier: "common", className: "absolute bottom-[10%] right-[10%] w-40 lg:w-44 rotate-[14deg]" },
 ];
 
 export function FloatingCards() {
@@ -82,12 +82,14 @@ function MockCard({ card, className, tier }: Slot) {
   return (
     <div
       className={cn(
-        "rounded-2xl bg-surface/85 backdrop-blur-sm p-3 lg:p-4 border",
+        // Solid bg + sharp 2px tier border + tight drop shadow → reads as
+        // a physical card on a table rather than a translucent overlay.
+        "rounded-2xl bg-surface p-3 lg:p-4 border-2",
         className,
       )}
       style={{
-        borderColor: `${tierColor}55`,
-        boxShadow: TIER_GLOW[tier],
+        borderColor: tierColor,
+        boxShadow: CARD_SHADOW,
       }}
     >
       <div

@@ -64,18 +64,9 @@ export default function ComingSoon() {
 
   return (
     <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col relative overflow-hidden">
-      {/* Atmospheric background — single concentrated indigo→violet glow
-          centered behind the hero, plus a warm gold edge. Less haze than
-          before; the floating cards do most of the visual heavy lifting
-          now so the bg can stay restrained. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(ellipse 60% 50% at 50% 35%, rgba(99,102,241,0.20), transparent 70%), radial-gradient(ellipse 80% 40% at 50% 100%, rgba(201,169,97,0.10), transparent 70%)",
-        }}
-      />
+      {/* No background gradient. Floating cards + foil-gradient title carry
+          the visual weight; the page itself stays plain dark so nothing
+          reads as "fade". */}
 
       {/* Wordmark — minimal, doesn't compete with the hero */}
       <header className="relative z-10 px-4 sm:px-6 lg:px-8 pt-5 md:pt-7 pb-2 flex justify-center md:justify-start shrink-0">
