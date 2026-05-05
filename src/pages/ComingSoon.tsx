@@ -67,7 +67,11 @@ export default function ComingSoon() {
   const skipToCTA = () => setStep(3);
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col overflow-hidden">
+    {/* h-screen + h-[100dvh] (NOT min-h-) so the column is exactly viewport
+        height; combined with overflow-hidden, anything taller than the
+        viewport gets clipped instead of pushing the body to scroll. The
+        landing must always fit on a single screen. */}
+    <div className="h-screen h-[100dvh] bg-bg text-white flex flex-col overflow-hidden">
       {/* Header — wordmark left, "Apúntate" skip pill right (only visible
           while we're not already on the CTA card). */}
       <header className="px-4 sm:px-6 py-4 flex items-center justify-between shrink-0">
@@ -91,15 +95,15 @@ export default function ComingSoon() {
           not as empty zones.
           Atmospheric wall of cards lives INSIDE main so it never bleeds
           into the header/footer zones. */}
-      <main className="relative flex-1 flex flex-col items-center justify-center px-4 py-3">
+      <main className="relative flex-1 min-h-0 flex flex-col items-center px-4 py-3">
         <LandingBackground />
-        <div className="relative z-10 w-full max-w-md flex flex-col">
+        <div className="relative z-10 w-full max-w-md flex flex-col flex-1 min-h-0">
           <ProgressBar step={step} total={HINTS.length} hint={HINTS[step]} />
 
-          <div
-            className="relative mt-5 sm:mt-6"
-            style={{ height: "min(620px, calc(100dvh - 200px))" }}
-          >
+          {/* flex-1 absorbs whatever's left after header + progress + footer
+              so the card always fits exactly. max-h caps it on tall phones
+              so it doesn't blow up to 800px+. */}
+          <div className="relative mt-5 sm:mt-6 flex-1 min-h-0 max-h-[620px]">
             <AnimatePresence mode="wait" initial={false}>
               {step === 0 && (
                 <SwipeCard key="hero" onSwipe={advance}>
