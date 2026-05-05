@@ -77,19 +77,18 @@ export default function Legal() {
           <h2 className="text-xs uppercase tracking-widest text-muted mb-2">
             3. Finalidad y base jurídica
           </h2>
-          <ul className="list-disc list-inside space-y-1">
-            <li>
-              <strong>Avisarte del lanzamiento del producto.</strong> Base:
-              tu consentimiento explícito (artículo 6.1.a GDPR), prestado al
-              marcar la casilla del formulario.
-            </li>
-            <li>
-              <strong>Enviarte comunicaciones puntuales sobre Unlocked</strong>
-              {" "}(novedades del producto, hitos relevantes). Base: el mismo
-              consentimiento. Puedes retirarlo en cualquier momento (sección
-              5).
-            </li>
-          </ul>
+          <p>
+            <strong>Única finalidad:</strong> avisarte por email del
+            lanzamiento del producto. Base jurídica: tu consentimiento
+            explícito (artículo 6.1.a GDPR), prestado al marcar la casilla
+            del formulario.
+          </p>
+          <p className="mt-3">
+            <strong>No te enviaremos newsletter, comunicaciones de
+            marketing ni promociones</strong> con esta dirección. Si en el
+            futuro quisiéramos enviarte cualquier otra comunicación, te
+            pediremos consentimiento separado.
+          </p>
           <p className="mt-3">
             <strong>No usamos tus datos</strong> para perfilarte, vendértelos
             ni cederlos a terceros con fines comerciales.

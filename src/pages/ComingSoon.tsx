@@ -586,9 +586,10 @@ function CTACard() {
               className="w-full bg-bg border-2 border-grey rounded-full px-5 py-3.5 text-sm focus:border-indigo focus:outline-none placeholder:text-muted"
             />
 
-            {/* GDPR consent — explicit, granular. Submit is disabled until
-                the user checks it. The wording covers the launch alert
-                AND future product comms so we can email beyond day 1. */}
+            {/* GDPR consent — narrow scope: ONLY the launch alert. We
+                cannot use this email for newsletters or any other comms
+                without separate consent later (handled at launch day if
+                we want to). */}
             <label className="flex items-start gap-2 text-left text-[11px] text-muted cursor-pointer leading-relaxed">
               <input
                 type="checkbox"
@@ -597,8 +598,8 @@ function CTACard() {
                 className="mt-0.5 shrink-0 accent-indigo cursor-pointer"
               />
               <span>
-                Acepto recibir el aviso del lanzamiento y comunicaciones
-                puntuales sobre Unlocked. Más info en{" "}
+                Acepto que me avisen por email del lanzamiento de Unlocked.
+                Más info en{" "}
                 <a
                   href="/legal"
                   className="underline hover:text-white"
