@@ -29,7 +29,8 @@ import { cn } from "@/lib/cn";
 const HINTS = [
   "¿Qué es esto?",
   "Un ejemplo, no es marketing",
-  "Ya casi lo tienes",
+  "Y otro",
+  "Y la mejor parte",
   "Tu email y listo",
 ] as const;
 
@@ -78,8 +79,8 @@ const PEEK_CARDS: ExampleLogro[] = [
 export default function ComingSoon() {
   const [step, setStep] = useState(0);
 
-  const advance = () => setStep((s) => Math.min(s + 1, 3));
-  const skipToCTA = () => setStep(3);
+  const advance = () => setStep((s) => Math.min(s + 1, 4));
+  const skipToCTA = () => setStep(4);
 
   // h-screen + h-[100dvh] (NOT min-h-) so the column is exactly viewport
   // height; combined with overflow-hidden, anything taller than the
@@ -91,7 +92,7 @@ export default function ComingSoon() {
           while we're not already on the CTA card). */}
       <header className="px-4 sm:px-6 py-4 flex items-center justify-between shrink-0">
         <Wordmark size="sm" />
-        {step < 3 && (
+        {step < 4 && (
           <button
             type="button"
             onClick={skipToCTA}
@@ -122,7 +123,7 @@ export default function ComingSoon() {
             {/* Peek stack behind the active card — same pattern as the real
                 Descubrir deck. Hidden on the final CTA card since you're
                 no longer "in the deck", you're at the destination. */}
-            {step < 3 &&
+            {step < 4 &&
               PEEK_CARDS.map((card, idx) => (
                 <PeekCard key={idx} card={card} depth={idx + 1} />
               ))}
@@ -143,7 +144,12 @@ export default function ComingSoon() {
                   <ExampleCardBody example={EXAMPLES[1]} />
                 </SwipeCard>
               )}
-              {step === 3 && <CTACard key="cta" />}
+              {step === 3 && (
+                <SwipeCard key="stories" onSwipe={advance}>
+                  <StoriesCardBody />
+                </SwipeCard>
+              )}
+              {step === 4 && <CTACard key="cta" />}
             </AnimatePresence>
           </div>
         </div>
@@ -366,6 +372,69 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
       <div className="font-black text-sm uppercase tracking-widest text-muted shrink-0">
         ¿Soy yo o eres tú?
       </div>
+    </div>
+  );
+}
+
+/* ───────────────── Stories card — shows the comments feature ────────── */
+
+interface MockStory {
+  username: string;
+  body: string;
+}
+
+const MOCK_STORIES: MockStory[] = [
+  {
+    username: "alex_perez",
+    body: "Era 2003. Mi padre dijo que iba al estanco. Aún espero el cambio.",
+  },
+  {
+    username: "marina_g",
+    body: "Mi madre me lo cuenta con humor pero veo que se le cae la sonrisa al final.",
+  },
+  {
+    username: "joaquin_v",
+    body: "El mío sí volvió. Pero con otra mujer. ¿Cuenta?",
+  },
+];
+
+function StoriesCardBody() {
+  return (
+    <div className="absolute inset-0 flex flex-col p-6 sm:p-7">
+      {/* Top — frame the feature */}
+      <div className="text-center shrink-0 mb-4 sm:mb-5">
+        <p className="text-[10px] uppercase tracking-[3px] text-muted font-bold mb-2">
+          Y la mejor parte
+        </p>
+        <h2 className="text-xl sm:text-2xl font-black tracking-tighter leading-tight">
+          Cada logro tiene historias.
+        </h2>
+        <p className="text-muted text-xs sm:text-sm mt-2">
+          La gente cuenta cómo lo consiguió.
+        </p>
+      </div>
+
+      {/* Mock thread — same shape as the real story page */}
+      <div className="space-y-2.5 sm:space-y-3 flex-1 min-h-0 overflow-hidden">
+        {MOCK_STORIES.map((s) => (
+          <MockStoryRow key={s.username} story={s} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MockStoryRow({ story }: { story: MockStory }) {
+  const initial = story.username[0]?.toUpperCase() ?? "?";
+  return (
+    <div className="bg-bg border border-grey rounded-xl p-3">
+      <div className="flex items-center gap-2 mb-1.5">
+        <div className="w-6 h-6 rounded-full bg-grey flex items-center justify-center text-[10px] font-bold shrink-0">
+          {initial}
+        </div>
+        <span className="text-[11px] font-mono text-muted">@{story.username}</span>
+      </div>
+      <p className="text-xs sm:text-[13px] leading-relaxed">{story.body}</p>
     </div>
   );
 }
