@@ -495,12 +495,11 @@ function CTACard() {
     }
   }, []);
 
-  // Confetti when the user lands on the CTA card. Marks the "you arrived"
-  // moment with a small celebration — same particle palette as the
-  // landing's accents (indigo + gold + violet + red). Wrapped in try/catch
-  // because canvas-confetti can throw on browsers that don't support
-  // canvas (rare).
-  useEffect(() => {
+  // Confetti fires on successful email submit (not on card mount). Marks
+  // the "thank you" moment so it feels rewarded, not just transactional.
+  // Wrapped in try/catch since canvas-confetti can throw on browsers
+  // without canvas (rare); never let it block the success path.
+  const fireConfetti = () => {
     try {
       confetti({
         particleCount: 110,
@@ -510,16 +509,18 @@ function CTACard() {
         colors: ["#6366F1", "#E8BD55", "#A78BFA", "#FF6B6B", "#FFFFFF"],
       });
     } catch {
-      // ignore — never let confetti block the CTA
+      // ignore
     }
-  }, []);
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!consent) return; // belt-and-braces; button is also disabled
     joinMut.mutate(email, {
-      onSuccess: ({ alreadyOnList }) =>
-        setDone(alreadyOnList ? "already" : "new"),
+      onSuccess: ({ alreadyOnList }) => {
+        setDone(alreadyOnList ? "already" : "new");
+        fireConfetti();
+      },
     });
   };
 
