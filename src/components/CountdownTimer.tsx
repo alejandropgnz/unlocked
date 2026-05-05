@@ -63,7 +63,7 @@ function Cell({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center min-w-[3.25rem] sm:min-w-[4.25rem]">
       <span
-        className="font-black font-mono tabular-nums leading-none text-gold"
+        className="font-black font-mono tabular-nums leading-none text-white"
         style={{ fontSize: "clamp(1.85rem, 5vw, 3rem)" }}
       >
         {String(value).padStart(2, "0")}

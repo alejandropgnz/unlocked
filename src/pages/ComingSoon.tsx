@@ -83,13 +83,16 @@ export default function ComingSoon() {
         <FloatingCards />
         <div className="relative z-10 max-w-3xl mx-auto w-full">
           <div className="text-center">
-            <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-gold font-bold mb-3 sm:mb-4">
-              Próximamente · +1M de logros y sumando · Todo en español
+            {/* Eyebrow kept minimal: just date + locale. No volume claim,
+                no "primera red de" framing — those read as info-product
+                copy and the page is supposed to feel like a product, not
+                a course launch. */}
+            <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold mb-3 sm:mb-4">
+              Viernes 22 de mayo · Hecho en España
             </p>
 
             {/* Title uses clamp() so it scales smoothly across viewports
-                without breakpoint jumps. Range is tuned so it never
-                overflows on 320px phones nor balloons on 27" desktops. */}
+                without breakpoint jumps. */}
             <h1
               className="font-black tracking-tighter leading-[1.02]"
               style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)" }}
@@ -105,8 +108,8 @@ export default function ComingSoon() {
               className="text-muted mt-4 sm:mt-5 max-w-xl mx-auto leading-relaxed"
               style={{ fontSize: "clamp(0.85rem, 1.5vw, 1.05rem)" }}
             >
-              La primera red de logros reales. <em>"Mi padre se fue a por
-              tabaco y no volvió"</em>, <em>"1 finde sin dormir"</em>,{" "}
+              <em>"Mi padre se fue a por tabaco y no volvió"</em>,{" "}
+              <em>"1 finde sin dormir"</em>,{" "}
               <em>"vomité en la cena de empresa"</em>. ¿Soy yo o eres tú?
             </p>
           </div>
@@ -162,7 +165,7 @@ export default function ComingSoon() {
                   </button>
                 </div>
                 <p className="text-center text-[11px] text-muted">
-                  Solo te escribiremos el día del lanzamiento. Cero spam.
+                  Te escribimos una vez, el día que salga. Y ya.
                 </p>
               </form>
             )}
