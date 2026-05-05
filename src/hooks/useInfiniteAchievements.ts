@@ -71,9 +71,10 @@ export function useInfiniteAchievements(
 
       // Read total_users from cache (or fetch once + cache forever-ish). This
       // replaces the per-page join against achievement_rarity.
-      const totalUsers =
-        queryClient.getQueryData<number>(["profiles", "total-count"]) ??
-        (await queryClient.fetchQuery({
+      const cached = queryClient.getQueryData<number>(["profiles", "total-count"]);
+      const totalUsers: number =
+        cached ??
+        (await queryClient.fetchQuery<number>({
           queryKey: ["profiles", "total-count"],
           queryFn: async () => {
             const { count } = await supabase

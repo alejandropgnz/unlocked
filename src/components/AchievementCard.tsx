@@ -78,7 +78,10 @@ function AchievementCardImpl({
       to={href ?? `/l/${slug}`}
       className={cn(
         sizing.card,
-        "relative block rounded-[18px] p-[2px] transition-transform hover:scale-[1.03]",
+        // h-full so when the parent grid is `align-items: stretch` (default)
+        // every card in a row stretches to the row's tallest sibling — no
+        // ragged bottom edges across cards with different title lengths.
+        "relative block h-full rounded-[18px] p-[2px] transition-transform hover:scale-[1.03]",
         tierBorderClass(tier),
       )}
     >
