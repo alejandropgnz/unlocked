@@ -108,19 +108,25 @@ export function EditProfileForm({ currentUsername }: EditProfileFormProps) {
               placeholder="tu_username"
             />
           </div>
-          <div className="flex items-center gap-2 text-xs mt-2">
-            <span className={dotClass} />
-            <span
-              className={cn(
-                "text-muted",
-                status === "available" && "text-green-400",
-                status === "taken" && "text-red",
-                status === "invalid" && "text-red/80",
-              )}
-            >
-              {usernameMessage || " "}
-            </span>
-          </div>
+          {/* Status row — only render when there's something to say. The
+              "current" status (= the user's own username, no change pending)
+              has no message and no useful dot, so don't take vertical space
+              for nothing. */}
+          {usernameMessage && (
+            <div className="flex items-center gap-2 text-xs mt-2">
+              <span className={dotClass} />
+              <span
+                className={cn(
+                  "text-muted",
+                  status === "available" && "text-green-400",
+                  status === "taken" && "text-red",
+                  status === "invalid" && "text-red/80",
+                )}
+              >
+                {usernameMessage}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Bio */}

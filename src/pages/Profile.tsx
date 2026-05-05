@@ -146,10 +146,11 @@ export default function Profile() {
         </div>
       </header>
 
-      {/* ===== Edit (owner only): unified form with single Guardar button ===== */}
+      {/* ===== Edit (owner only): unified form with single Guardar button.
+           Title removed — the form's own labels (USERNAME / BIO) make the
+           section self-evident. */}
       {isOwner && (
-        <section className="space-y-4">
-          <h2 className="text-xs uppercase tracking-widest text-muted">Editar perfil</h2>
+        <section>
           <EditProfileForm currentUsername={profile.username} />
         </section>
       )}
