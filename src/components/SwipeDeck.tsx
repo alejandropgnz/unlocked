@@ -124,11 +124,28 @@ function TopCard({
   );
 }
 
+// Per-depth presets so the stack underneath feels like a casually shuffled
+// pile rather than a perfectly nested set. depth 1 is the card right behind
+// the active one, depth 2 is one layer further back, etc. Stable values
+// (not random per render) so cards don't twitch when other state updates.
+const PEEK_PRESETS = [
+  { rotate: -3.5, x: -8, y: 8, scale: 0.95, opacity: 0.7 },
+  { rotate: 5, x: 10, y: 16, scale: 0.91, opacity: 0.45 },
+  { rotate: -2.5, x: -4, y: 24, scale: 0.87, opacity: 0.25 },
+] as const;
+
 function StaticCard({ item, depth }: { item: SwipeItem; depth: number }) {
+  const preset = PEEK_PRESETS[depth - 1] ?? PEEK_PRESETS[PEEK_PRESETS.length - 1];
   return (
     <motion.div
-      style={{ scale: 1 - depth * 0.05, y: depth * 8 }}
-      className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-8 opacity-60"
+      style={{
+        scale: preset.scale,
+        x: preset.x,
+        y: preset.y,
+        rotate: preset.rotate,
+        opacity: preset.opacity,
+      }}
+      className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-8"
     >
       <div className="flex-1 flex flex-col items-center justify-center text-center pointer-events-none h-full">
         <div className="text-7xl">{item.emoji}</div>
@@ -177,7 +194,9 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
   }
 
   const top = stack[0];
-  const peek = stack.slice(1, 3);
+  // 3 peek cards behind the active one — gives the casual "deck of cards"
+  // look in conjunction with PEEK_PRESETS.
+  const peek = stack.slice(1, 4);
 
   return (
     <div className="relative w-full max-w-sm mx-auto h-full">

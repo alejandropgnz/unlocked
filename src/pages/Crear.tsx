@@ -4,8 +4,8 @@ import { usePropose } from "@/hooks/usePropose";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { CategoryPicker } from "@/components/CategoryPicker";
+import { EmojiPickerInput } from "@/components/EmojiPickerInput";
 import { isEmojiOnly, emojiCount } from "@/lib/validators";
-import { cn } from "@/lib/cn";
 
 export default function Crear() {
   const proposeMut = usePropose();
@@ -16,14 +16,6 @@ export default function Crear() {
   const onlyEmoji = trimmed.length === 0 || isEmojiOnly(trimmed);
   const count = emojiCount(trimmed);
   const emojiValid = trimmed.length > 0 && onlyEmoji && count >= 1 && count <= 3;
-
-  const emojiHint = (() => {
-    if (trimmed.length === 0) return "1 a 3 emojis. Solo emojis, sin letras ni números.";
-    if (!onlyEmoji) return "Solo emojis (sin letras, números ni símbolos)";
-    if (count > 3) return "Máximo 3 emojis";
-    if (count === 0) return "Pon al menos 1 emoji";
-    return `${count}/3`;
-  })();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,8 +52,6 @@ export default function Crear() {
         Si lo aprobamos, todo el mundo podrá desbloquearlo. Tú lo recibirás automáticamente.
       </p>
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-        {/* Each field uses the same vertical layout: label above, control
-            below, hint underneath. Keeps the form rhythm consistent. */}
         <div>
           <label
             htmlFor="title"
@@ -79,36 +69,24 @@ export default function Crear() {
         </div>
 
         <div>
-          <label
-            htmlFor="emoji"
-            className="block text-xs uppercase tracking-widest text-muted mb-1.5"
-          >
-            Emoji
-          </label>
-          <input
-            id="emoji"
-            name="emoji"
-            value={emoji}
-            onChange={(e) => setEmoji(e.target.value)}
-            maxLength={32}
-            required
-            inputMode="text"
-            autoComplete="off"
-            placeholder="😴"
-            className="w-full bg-bg border border-white/10 rounded-xl p-3 text-2xl text-center focus:border-gold focus:outline-none"
-          />
-          <p
-            className={cn(
-              "text-[10px] mt-1.5",
-              trimmed.length === 0
-                ? "text-muted"
-                : emojiValid
-                  ? "text-green-400"
-                  : "text-red",
-            )}
-          >
-            {emojiHint}
-          </p>
+          {/* Hint moved next to the label so the field below stays clean.
+              The label is the contract for the field, the hint is short
+              guidance — both fit on one line on phone screens. */}
+          <div className="flex items-baseline justify-between gap-2 mb-1.5">
+            <label
+              htmlFor="emoji"
+              className="text-xs uppercase tracking-widest text-muted"
+            >
+              Emoji
+            </label>
+            <span className="text-[10px] text-muted/80 normal-case tracking-normal">
+              Resume el logro con 1-3 emojis
+            </span>
+          </div>
+          {/* Hidden input so FormData picks up the value on submit. The
+              picker component drives the controlled state. */}
+          <input type="hidden" name="emoji" value={emoji} />
+          <EmojiPickerInput value={emoji} onChange={setEmoji} />
         </div>
 
         <div>
