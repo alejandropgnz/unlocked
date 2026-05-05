@@ -136,13 +136,13 @@ export default function ComingSoon() {
                 </SwipeCard>
               )}
               {step === 1 && (
-                <SwipeCard key="ex0" onSwipe={advance}>
-                  <ExampleCardBody example={EXAMPLES[0]} />
+                <SwipeCard key="ex1" onSwipe={advance}>
+                  <ExampleCardBody example={EXAMPLES[1]} />
                 </SwipeCard>
               )}
               {step === 2 && (
-                <SwipeCard key="ex1" onSwipe={advance}>
-                  <ExampleCardBody example={EXAMPLES[1]} />
+                <SwipeCard key="ex0" onSwipe={advance}>
+                  <ExampleCardBody example={EXAMPLES[0]} />
                 </SwipeCard>
               )}
               {step === 3 && (
