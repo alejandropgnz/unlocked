@@ -326,7 +326,7 @@ function HeroCardBody() {
           style={{ fontSize: "clamp(2.25rem, 6vw, 3rem)" }}
         >
           Deja de trackear hábitos.{" "}
-          <span className="text-indigo">Empieza a coleccionar</span> tus logros absurdos.
+          <span className="text-indigo">Empieza a coleccionar</span> logros.
         </h1>
       </div>
 
