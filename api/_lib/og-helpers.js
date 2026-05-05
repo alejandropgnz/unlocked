@@ -26,12 +26,22 @@ export function tierLabel(tier) {
 
 let _interFontCache = null;
 
+/**
+ * Fetch the Inter Black weight font for use with @vercel/og (Satori).
+ *
+ * IMPORTANT: Satori does NOT support WOFF2. It accepts TTF, OTF, or WOFF.
+ * If we hand it a WOFF2 buffer it silently produces a 0-byte PNG, which
+ * the client then treats as a load failure. The previous version pointed
+ * at rsms.me's `.woff2` URL — that's why share cards stopped rendering.
+ *
+ * fontsource ships @fontsource/inter with WOFF subsets that Satori can
+ * decode. jsdelivr is the primary CDN; unpkg is the fallback.
+ */
 export async function getInterFont() {
   if (_interFontCache) return _interFontCache;
-  // Try rsms.me first (more reliable in Edge), fall back to GitHub raw
   const urls = [
-    "https://rsms.me/inter/font-files/Inter-Black.woff2",
-    "https://github.com/rsms/inter/raw/master/docs/font-files/Inter-Black.otf",
+    "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-900-normal.woff",
+    "https://unpkg.com/@fontsource/inter@5.0.18/files/inter-latin-900-normal.woff",
   ];
   for (const url of urls) {
     try {
