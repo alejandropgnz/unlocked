@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -176,6 +176,12 @@ function SwipeCard({
   const rotate = useTransform(x, [-300, 0, 300], [-15, 0, 15]);
   const [exiting, setExiting] = useState<"left" | "right" | null>(null);
 
+  // onAnimationComplete fires for EVERY animation that ends, including the
+  // entry, the fly-off, and the AnimatePresence exit. Without a guard,
+  // advance() gets called multiple times → step skips (1 → 3 instead of
+  // 1 → 2). Ref ensures onSwipe runs at most once per card lifetime.
+  const calledRef = useRef(false);
+
   const handleDragEnd = (
     _e: PointerEvent | MouseEvent | TouchEvent,
     info: PanInfo,
@@ -207,7 +213,10 @@ function SwipeCard({
       exit={{ opacity: 0, y: -16 }}
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
       onAnimationComplete={() => {
-        if (exiting) onSwipe();
+        if (exiting && !calledRef.current) {
+          calledRef.current = true;
+          onSwipe();
+        }
       }}
       style={{ x, rotate }}
       whileTap={{ cursor: "grabbing" }}
@@ -220,26 +229,40 @@ function SwipeCard({
 
 /* ─────────────────────────── card bodies ─────────────────────────────── */
 
+/* Each card body uses the same flex column layout — top region pinned to
+ * top, flex-1 middle for the centered content, bottom region pinned to
+ * bottom — so vertical zones never overlap regardless of title length.
+ * Padding lives on the outer container (p-6 sm:p-8) so all three cards
+ * share the same insets from the card border.
+ */
+
 function HeroCardBody() {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-8">
-      <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold mb-4">
+    <div className="absolute inset-0 flex flex-col text-center p-6 sm:p-8">
+      {/* Top */}
+      <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold shrink-0">
         Viernes 22 de mayo · Hecho en España
       </p>
-      <h1
-        className="font-black tracking-tighter leading-[1.05]"
-        style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}
-      >
-        Deja de trackear hábitos.
-        <br />
-        <span className="text-gold">Empieza a coleccionar</span>
-        <br />
-        tus logros absurdos.
-      </h1>
-      <p className="text-muted text-sm mt-5 max-w-xs">
-        Desliza para ver de qué va.
-      </p>
-      <div className="mt-3 text-2xl text-muted animate-pulse">→</div>
+
+      {/* Middle */}
+      <div className="flex-1 flex flex-col items-center justify-center min-h-0">
+        <h1
+          className="font-black tracking-tighter leading-[1.05]"
+          style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}
+        >
+          Deja de trackear hábitos.
+          <br />
+          <span className="text-gold">Empieza a coleccionar</span>
+          <br />
+          tus logros absurdos.
+        </h1>
+      </div>
+
+      {/* Bottom */}
+      <div className="shrink-0">
+        <p className="text-muted text-sm">Desliza para ver de qué va.</p>
+        <div className="mt-2 text-2xl text-muted animate-pulse">→</div>
+      </div>
     </div>
   );
 }
@@ -248,9 +271,9 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
   const tier = rarityTier(example.rarityPercent);
   const tierColor = tierTextColor(tier);
   return (
-    <>
-      {/* Top — rarity %, just like the real product card */}
-      <div className="absolute top-6 sm:top-8 inset-x-6 sm:inset-x-8 text-center leading-tight">
+    <div className="absolute inset-0 flex flex-col text-center p-6 sm:p-8">
+      {/* Top — rarity */}
+      <div className="leading-tight shrink-0">
         <div
           className="font-mono font-black tabular-nums text-2xl sm:text-3xl"
           style={{ color: tierColor }}
@@ -262,22 +285,22 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
         </div>
       </div>
 
-      {/* Bottom hint — drives the question forward */}
-      <div className="absolute bottom-6 sm:bottom-8 inset-x-6 sm:inset-x-8 text-center font-black text-sm uppercase tracking-widest text-muted">
-        ¿Soy yo o eres tú?
-      </div>
-
-      {/* Center — emoji + title */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-6 sm:px-8">
+      {/* Middle — emoji + title + category */}
+      <div className="flex-1 flex flex-col items-center justify-center min-h-0">
         <div className="text-7xl sm:text-8xl">{example.emoji}</div>
-        <div className="mt-5 sm:mt-6 text-2xl sm:text-3xl font-black tracking-tighter">
+        <div className="mt-4 sm:mt-5 text-xl sm:text-2xl font-black tracking-tighter leading-tight">
           {example.title}
         </div>
         <div className="mt-3 text-[11px] text-muted font-mono uppercase tracking-widest">
           {example.category}
         </div>
       </div>
-    </>
+
+      {/* Bottom hint */}
+      <div className="font-black text-sm uppercase tracking-widest text-muted shrink-0">
+        ¿Soy yo o eres tú?
+      </div>
+    </div>
   );
 }
 
@@ -334,7 +357,7 @@ function CTACard() {
         </div>
       ) : (
         <>
-          <div className="text-center pt-2">
+          <div className="text-center shrink-0">
             <h2
               className="font-black tracking-tighter leading-tight"
               style={{ fontSize: "clamp(1.5rem, 4.5vw, 2rem)" }}
