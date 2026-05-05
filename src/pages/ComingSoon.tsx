@@ -276,7 +276,13 @@ function SwipeCard({
       dragSnapToOrigin
       dragMomentum={false}
       onDragEnd={handleDragEnd}
-      initial={{ opacity: 0, y: 24 }}
+      // Initial only fades (no Y offset). Was { opacity: 0, y: 24 } which
+      // bounced on the FIRST card on click: AnimatePresence's
+      // initial={false} skipped the entry but framer-motion held the
+      // y:24 'pending' and replayed it on the first pointer interaction,
+      // dropping the card a few pixels visually. Opacity-only initial
+      // avoids any positional snap.
+      initial={{ opacity: 0 }}
       animate={
         exiting
           ? {
@@ -286,7 +292,7 @@ function SwipeCard({
             }
           : { opacity: 1, y: 0 }
       }
-      exit={{ opacity: 0, y: -16 }}
+      exit={{ opacity: 0 }}
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
       onAnimationComplete={() => {
         if (exiting && !calledRef.current) {
