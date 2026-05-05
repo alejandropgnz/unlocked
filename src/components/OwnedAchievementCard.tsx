@@ -32,7 +32,11 @@ export function OwnedAchievementCard({
   };
 
   return (
-    <div className="relative group w-full max-w-[230px]">
+    // max-w must match the inner AchievementCard's size cap (md = 200px) so
+    // the hover overlay + X badge stay aligned with the actual card edge.
+    // h-full so the wrapper stretches with the grid row, keeping cards in
+    // the same row visually equal-height even if titles vary in length.
+    <div className="relative group w-full max-w-[200px] h-full">
       <AchievementCard {...cardProps} />
 
       {/* Hover overlay — dims the card and surfaces the "Ver" cue. Sits
