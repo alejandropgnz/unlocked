@@ -238,7 +238,7 @@ function SwipeCard({
 
 function HeroCardBody() {
   return (
-    <div className="absolute inset-0 flex flex-col text-center p-7 sm:p-9">
+    <div className="absolute inset-0 flex flex-col text-center p-8 sm:p-10">
       {/* Top */}
       <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold shrink-0">
         Viernes 22 de mayo · Hecho en España
@@ -271,7 +271,7 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
   const tier = rarityTier(example.rarityPercent);
   const tierColor = tierTextColor(tier);
   return (
-    <div className="absolute inset-0 flex flex-col text-center p-7 sm:p-9">
+    <div className="absolute inset-0 flex flex-col text-center p-8 sm:p-10">
       {/* Top — rarity */}
       <div className="leading-tight shrink-0">
         <div
@@ -342,7 +342,7 @@ function CTACard() {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
-      className="absolute inset-0 bg-surface border-2 border-gold rounded-3xl p-7 sm:p-9 flex flex-col"
+      className="absolute inset-0 bg-surface border-2 border-gold rounded-3xl p-8 sm:p-10 flex flex-col"
     >
       {done ? (
         <div className="m-auto text-center">
@@ -362,16 +362,15 @@ function CTACard() {
               className="font-black tracking-tighter leading-tight"
               style={{ fontSize: "clamp(1.5rem, 4.5vw, 2rem)" }}
             >
-              Apúntate y te aviso<br />
+              Apúntate y te avisamos<br />
               cuando salga.
             </h2>
-            <p className="text-muted text-sm mt-3 max-w-xs mx-auto">
-              Te escribo una vez, el día que salga. Y ya.
-            </p>
           </div>
 
-          {/* Countdown - small, factual, not the focal point */}
-          <div className="my-auto py-6">
+          {/* Countdown — my-auto centers it vertically between title + form,
+              splitting the leftover space equally. No extra padding here:
+              the auto-margin already breathes for it. */}
+          <div className="my-auto">
             <LaunchDate target={LAUNCH_DATE} />
             <p className="text-center text-[11px] text-muted uppercase tracking-widest mt-3">
               {launchLabel}
