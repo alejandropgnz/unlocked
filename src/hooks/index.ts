@@ -14,6 +14,7 @@ export { useStory } from "./useStory";
 export type { StoryWithAchievement } from "./useStory";
 export { useReplies } from "./useReplies";
 export { useAdjudicate } from "./useAdjudicate";
+export { useDeleteUnlock } from "./useDeleteUnlock";
 export { usePropose } from "./usePropose";
 export type { ProposeInput } from "./usePropose";
 export { usePostReply } from "./usePostReply";

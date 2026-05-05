@@ -8,6 +8,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { AchievementCard } from "@/components/AchievementCard";
+import { OwnedAchievementCard } from "@/components/OwnedAchievementCard";
 import { ShareCardModal } from "@/components/ShareCardModal";
 import { AvatarUploader } from "@/components/AvatarUploader";
 import { EditProfileForm } from "@/components/EditProfileForm";
@@ -173,19 +174,34 @@ export default function Profile() {
             )
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 justify-items-start">
-              {top5Items.map((item) => (
-                <AchievementCard
-                  key={item.achievementId}
-                  slug={item.slug}
-                  title={item.title}
-                  emoji={item.emoji}
-                  rarityPercent={item.rarityPercent}
-                  unlockCount={item.unlockCount}
-                  category={item.category}
-                  size="md"
-                  href={`/u/${profile.username}/${item.slug}`}
-                />
-              ))}
+              {top5Items.map((item) =>
+                isOwner ? (
+                  <OwnedAchievementCard
+                    key={item.achievementId}
+                    achievementId={item.achievementId}
+                    slug={item.slug}
+                    title={item.title}
+                    emoji={item.emoji}
+                    rarityPercent={item.rarityPercent}
+                    unlockCount={item.unlockCount}
+                    category={item.category}
+                    size="md"
+                    href={`/u/${profile.username}/${item.slug}`}
+                  />
+                ) : (
+                  <AchievementCard
+                    key={item.achievementId}
+                    slug={item.slug}
+                    title={item.title}
+                    emoji={item.emoji}
+                    rarityPercent={item.rarityPercent}
+                    unlockCount={item.unlockCount}
+                    category={item.category}
+                    size="md"
+                    href={`/u/${profile.username}/${item.slug}`}
+                  />
+                ),
+              )}
             </div>
           )}
         </section>
@@ -210,19 +226,34 @@ export default function Profile() {
           </p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 justify-items-start">
-            {collectionItems.map((u) => (
-              <AchievementCard
-                key={u.achievementId}
-                slug={u.slug}
-                title={u.title}
-                emoji={u.emoji}
-                rarityPercent={u.rarityPercent}
-                unlockCount={u.unlockCount}
-                category={u.category}
-                size="md"
-                href={`/u/${profile.username}/${u.slug}`}
-              />
-            ))}
+            {collectionItems.map((u) =>
+              isOwner ? (
+                <OwnedAchievementCard
+                  key={u.achievementId}
+                  achievementId={u.achievementId}
+                  slug={u.slug}
+                  title={u.title}
+                  emoji={u.emoji}
+                  rarityPercent={u.rarityPercent}
+                  unlockCount={u.unlockCount}
+                  category={u.category}
+                  size="md"
+                  href={`/u/${profile.username}/${u.slug}`}
+                />
+              ) : (
+                <AchievementCard
+                  key={u.achievementId}
+                  slug={u.slug}
+                  title={u.title}
+                  emoji={u.emoji}
+                  rarityPercent={u.rarityPercent}
+                  unlockCount={u.unlockCount}
+                  category={u.category}
+                  size="md"
+                  href={`/u/${profile.username}/${u.slug}`}
+                />
+              ),
+            )}
           </div>
         )}
       </section>
