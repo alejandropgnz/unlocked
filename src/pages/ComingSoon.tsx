@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useJoinWaitlist } from "@/hooks/useJoinWaitlist";
 import { LaunchDate } from "@/components/CountdownTimer";
 import { LandingMiniSwipe, type MiniCard } from "@/components/LandingMiniSwipe";
+import { FloatingCards } from "@/components/FloatingCards";
 import { LAUNCH_DATE } from "@/lib/launch";
 import { Wordmark } from "@/components/Wordmark";
 import { cn } from "@/lib/cn";
@@ -63,16 +64,16 @@ export default function ComingSoon() {
 
   return (
     <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col relative overflow-hidden">
-      {/* Atmospheric background — radial glow that hints at the foil tier
-          gradient without screaming. Sits behind everything, no pointer
-          events. The two glows give the page a sense of depth without
-          being noisy. */}
+      {/* Atmospheric background — single concentrated indigo→violet glow
+          centered behind the hero, plus a warm gold edge. Less haze than
+          before; the floating cards do most of the visual heavy lifting
+          now so the bg can stay restrained. */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 30% 25%, rgba(201,169,97,0.18), transparent 55%), radial-gradient(circle at 75% 75%, rgba(167,139,250,0.12), transparent 55%), radial-gradient(circle at 50% 50%, rgba(255,107,107,0.06), transparent 70%)",
+            "radial-gradient(ellipse 60% 50% at 50% 35%, rgba(99,102,241,0.20), transparent 70%), radial-gradient(ellipse 80% 40% at 50% 100%, rgba(201,169,97,0.10), transparent 70%)",
         }}
       />
 
@@ -83,9 +84,13 @@ export default function ComingSoon() {
 
       {/* Hero block fills the remaining viewport so the email form stays
           above the fold on standard laptops + phones. Mini-swipe lives
-          below as a "scroll for more" tease. */}
-      <section className="relative z-10 flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-        <div className="max-w-3xl mx-auto w-full">
+          below as a "scroll for more" tease.
+          Floating mock cards live INSIDE this section absolutely
+          positioned, behind the text (z-0), so they "frame" the pitch
+          without crowding it. Hidden on mobile by FloatingCards itself. */}
+      <section className="relative flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        <FloatingCards />
+        <div className="relative z-10 max-w-3xl mx-auto w-full">
           <div className="text-center">
             <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-gold font-bold mb-3 sm:mb-4">
               Próximamente · +1M de logros y sumando · Todo en español
