@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster as Sonner } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Layout } from "@/components/Layout";
+import { LaunchGate } from "@/components/LaunchGate";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
@@ -23,6 +24,7 @@ const Legal = lazy(() => import("./pages/Legal"));
 const Login = lazy(() => import("./pages/Login"));
 const AuthCallback = lazy(() => import("./pages/AuthCallback"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,8 +57,11 @@ export default function App() {
         <BrowserRouter>
           <ScrollToTop />
           <AnalyticsTracker />
+          <LaunchGate>
           <Suspense fallback={<PageLoader />}>
             <Routes>
+              {/* Pre-launch landing — bypassed after launch via the gate. */}
+              <Route path="/proximamente" element={<ComingSoon />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route element={<Layout />}>
@@ -94,6 +99,7 @@ export default function App() {
               </Route>
             </Routes>
           </Suspense>
+          </LaunchGate>
         </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>

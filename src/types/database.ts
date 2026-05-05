@@ -261,6 +261,24 @@ export type Database = {
         };
         Relationships: [];
       };
+      waitlist: {
+        Row: {
+          email: string;
+          source: string;
+          created_at: string;
+        };
+        Insert: {
+          email: string;
+          source?: string;
+          created_at?: string;
+        };
+        Update: {
+          email?: string;
+          source?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       achievement_rarity: {
