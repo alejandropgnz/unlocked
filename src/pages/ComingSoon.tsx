@@ -410,17 +410,29 @@ const MOCK_STORIES: MockStory[] = [
 function StoriesCardBody() {
   return (
     <div className="absolute inset-0 flex flex-col p-6 sm:p-7">
-      {/* Top — frame the feature */}
-      <div className="text-center shrink-0 mb-4 sm:mb-5">
-        <p className="text-[10px] uppercase tracking-[3px] text-muted font-bold mb-2">
-          Y la mejor parte
+      {/* Logro header — gives context for which logro the stories below
+          belong to. Mimics the real /l/<slug> page format: emoji + title
+          + rarity. Without this the stories feel disconnected from the
+          previous example cards (which were about a different logro). */}
+      <div className="flex items-center gap-3 shrink-0">
+        <div className="text-4xl shrink-0 leading-none">🚬</div>
+        <div className="flex-1 min-w-0 text-left">
+          <p className="text-sm sm:text-base font-black tracking-tighter leading-tight">
+            Mi padre se fue a por tabaco
+          </p>
+          <p className="text-[10px] font-mono text-gold tracking-widest mt-0.5">
+            0.04% lo tiene
+          </p>
+        </div>
+      </div>
+
+      {/* Divider + section label — what is this list */}
+      <div className="mt-4 mb-3 flex items-center gap-2 shrink-0">
+        <div className="h-px flex-1 bg-grey" />
+        <p className="text-[10px] uppercase tracking-[3px] text-muted font-bold">
+          3 historias
         </p>
-        <h2 className="text-xl sm:text-2xl font-black tracking-tighter leading-tight">
-          Cada logro tiene historias.
-        </h2>
-        <p className="text-muted text-xs sm:text-sm mt-2">
-          La gente puede contar cómo lo consiguió.
-        </p>
+        <div className="h-px flex-1 bg-grey" />
       </div>
 
       {/* Mock thread — same shape as the real story page */}
