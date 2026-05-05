@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import { useJoinWaitlist } from "@/hooks/useJoinWaitlist";
 import { LaunchDate } from "@/components/CountdownTimer";
+import { LandingBackground } from "@/components/LandingBackground";
 import { LAUNCH_DATE } from "@/lib/launch";
 import { Wordmark } from "@/components/Wordmark";
 import { rarityTier, tierTextColor } from "@/lib/rarity";
@@ -66,16 +67,21 @@ export default function ComingSoon() {
   const skipToCTA = () => setStep(3);
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col">
+    <div className="min-h-screen min-h-[100dvh] bg-bg text-white flex flex-col relative overflow-hidden">
+      {/* Atmospheric wall of catalog cards behind everything (desktop only).
+          Cards solid, single dark overlay does the dimming so foreground
+          stays the focal point. */}
+      <LandingBackground />
+
       {/* Header — wordmark left, "Apúntate" skip pill right (only visible
           while we're not already on the CTA card). */}
-      <header className="px-4 sm:px-6 py-4 flex items-center justify-between shrink-0">
+      <header className="relative z-10 px-4 sm:px-6 py-4 flex items-center justify-between shrink-0">
         <Wordmark size="sm" />
         {step < 3 && (
           <button
             type="button"
             onClick={skipToCTA}
-            className="text-[11px] uppercase tracking-widest font-bold text-muted hover:text-white px-3 py-1.5 rounded-full border-2 border-grey hover:border-white"
+            className="text-[11px] uppercase tracking-widest font-bold text-muted hover:text-white px-3 py-1.5 rounded-full border-2 border-grey hover:border-white bg-bg"
           >
             Apúntate
           </button>
@@ -83,7 +89,7 @@ export default function ComingSoon() {
       </header>
 
       {/* Body — single column, centered, fills remaining viewport */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 pb-6">
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 pb-6">
         <div className="w-full max-w-md">
           <ProgressBar step={step} total={HINTS.length} hint={HINTS[step]} />
 
@@ -110,7 +116,7 @@ export default function ComingSoon() {
         </div>
       </main>
 
-      <footer className="shrink-0 px-4 py-4 border-t border-grey text-[11px] text-muted text-center">
+      <footer className="relative z-10 shrink-0 px-4 py-4 border-t border-grey text-[11px] text-muted text-center bg-bg">
         Hecho en España · 2026 ·{" "}
         <a href="/legal" className="hover:text-white underline-offset-2 hover:underline">
           Privacidad
