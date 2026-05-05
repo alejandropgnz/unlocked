@@ -426,8 +426,15 @@ function StoriesCardBody() {
         </div>
       </div>
 
+      {/* Frame what this list IS — the stories feature explained without
+          a full intro section. Sits between header and the thread. */}
+      <p className="text-muted text-xs sm:text-sm mt-3 shrink-0 text-left">
+        Cada logro tiene su sección de historias. La gente puede contar
+        cómo lo consiguió.
+      </p>
+
       {/* Divider + section label — what is this list */}
-      <div className="mt-4 mb-3 flex items-center gap-2 shrink-0">
+      <div className="mt-3 mb-3 flex items-center gap-2 shrink-0">
         <div className="h-px flex-1 bg-grey" />
         <p className="text-[10px] uppercase tracking-[3px] text-muted font-bold">
           3 historias
