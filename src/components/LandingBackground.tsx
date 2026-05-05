@@ -39,10 +39,18 @@ const RIGHT_LOGROS: BgLogro[] = [
   { emoji: "🚇", title: "Me subí al metro en sentido contrario", rarityPercent: 38.0, category: "verguenza" },
 ];
 
-// Half the gap between deck edge and side panel start. The center "void"
-// is 2× this, plus the deck's max-w-md (~448px). Tuned so on lg viewports
-// (1024px) each side panel still has ~220px to play with.
-const HALF_VOID_PX = 290;
+// Symmetric whitespace pattern: cards have the same margin to the deck
+// edge as they have to the viewport edge.
+//
+//   half deck width = 224 (max-w-md / 2)
+//   margin Y = 28
+//
+// HALF_VOID_PX = 224 + Y means the panel ends Y px BEFORE the deck.
+// Combined with asymmetric panel padding (`pl-Y pr-0` on left,
+// `pl-0 pr-Y` on right), each card has Y on its viewport-facing edge AND
+// Y on its deck-facing edge. Visually balanced.
+const SIDE_MARGIN_PX = 28;
+const HALF_VOID_PX = 224 + SIDE_MARGIN_PX;
 
 export function LandingBackground() {
   return (
@@ -68,22 +76,33 @@ function SidePanel({
       ? { left: 0, width: `calc(50% - ${HALF_VOID_PX}px)` }
       : { right: 0, width: `calc(50% - ${HALF_VOID_PX}px)` };
 
+  // Asymmetric padding so the card edge facing the deck has 0 panel
+  // padding (the void itself provides the visual margin), while the
+  // viewport-facing edge has SIDE_MARGIN_PX worth of breathing.
+  const innerPadStyle: React.CSSProperties =
+    side === "left"
+      ? { paddingLeft: SIDE_MARGIN_PX, paddingRight: 0 }
+      : { paddingLeft: 0, paddingRight: SIDE_MARGIN_PX };
+
   return (
     <div
       className="absolute top-0 bottom-0 overflow-hidden"
       style={positionStyle}
     >
-      <div className="columns-1 xl:columns-2 gap-3 lg:gap-4 px-4 py-6">
+      <div
+        className="columns-1 xl:columns-2 gap-3 lg:gap-4 py-6"
+        style={innerPadStyle}
+      >
         {cards.map((card, i) => (
           <BackgroundCard key={i} card={card} />
         ))}
       </div>
 
-      {/* Single dark overlay covers this panel — cards stay solid, the
-          overlay alone dims them into atmosphere. */}
+      {/* Heavy dark overlay — cards stay readable as silhouettes only,
+          shouldn't compete with the foreground swipe deck. */}
       <div
         className="absolute inset-0"
-        style={{ background: "rgba(14, 14, 20, 0.75)" }}
+        style={{ background: "rgba(14, 14, 20, 0.92)" }}
       />
     </div>
   );
