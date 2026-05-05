@@ -88,7 +88,7 @@ export default function ComingSoon() {
         <div className="max-w-3xl mx-auto w-full">
           <div className="text-center">
             <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-gold font-bold mb-3 sm:mb-4">
-              Próximamente · +1.000 logros y sumando · Todo en español
+              Próximamente · +1M de logros y sumando · Todo en español
             </p>
 
             {/* Title uses clamp() so it scales smoothly across viewports
