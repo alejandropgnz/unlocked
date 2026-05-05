@@ -241,20 +241,19 @@ function HeroCardBody() {
     <div className="absolute inset-0 flex flex-col text-center p-8 sm:p-10">
       {/* Top */}
       <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold shrink-0">
-        Viernes 22 de mayo · Hecho en España
+        Viernes 22 de mayo
       </p>
 
-      {/* Middle */}
+      {/* Middle. No forced <br/>'s — let the title wrap naturally based on
+          the card width. The indigo span stays inline and recolors only
+          its own words wherever they fall. */}
       <div className="flex-1 flex flex-col items-center justify-center min-h-0">
         <h1
           className="font-black tracking-tighter leading-[1.05]"
           style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}
         >
-          Deja de trackear hábitos.
-          <br />
-          <span className="text-indigo">Empieza a coleccionar</span>
-          <br />
-          tus logros absurdos.
+          Deja de trackear hábitos.{" "}
+          <span className="text-indigo">Empieza a coleccionar</span> tus logros absurdos.
         </h1>
       </div>
 
