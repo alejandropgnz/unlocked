@@ -370,7 +370,7 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
 
       {/* Bottom hint */}
       <div className="font-black text-sm uppercase tracking-widest text-muted shrink-0">
-        ¿Soy yo o eres tú?
+        ¿Te suena?
       </div>
     </div>
   );
