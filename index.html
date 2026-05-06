@@ -6,7 +6,31 @@
     <meta name="theme-color" content="#0e0e14" />
     <title>Unlocky — colecciona los logros más absurdos de tu vida</title>
     <meta name="description" content="Colecciona los logros más absurdos de tu vida." />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Favicons. The .ico is a multi-size (16+32+48) for legacy browsers
+         that don't pick the best size from the PNG list below. -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+
+    <!-- iOS home screen / "Add to Home Screen" -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- PWA manifest (standalone display, splash screens, etc.) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Open Graph fallback (when a page doesn't define its own og:image,
+         e.g. the root /). Per-page OG tags for /l/<slug>, /u/<user>, etc.
+         live in api/page.js (the crawler-aware HTML rewriter). -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Unlocky" />
+    <meta property="og:title" content="Unlocky — colecciona los logros más absurdos de tu vida" />
+    <meta property="og:description" content="Colecciona los logros más absurdos de tu vida." />
+    <meta property="og:image" content="/og-default.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/og-default.png" />
   </head>
   <body class="bg-bg text-white antialiased">
     <div id="root"></div>
