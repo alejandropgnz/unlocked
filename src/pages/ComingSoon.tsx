@@ -451,7 +451,7 @@ function HeroCardBody() {
     <div className="absolute inset-0 flex flex-col text-center p-8 sm:p-10">
       {/* Top — date keeps the launch tease visible from slide 0. */}
       <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold shrink-0">
-        Viernes 22 de mayo
+        Viernes 29 de mayo
       </p>
 
       {/* Middle — hook B2: posicionamiento "categoría nueva". Contraste
@@ -563,7 +563,12 @@ const STORIES_VISIBLE = 2;
 
 function StoriesCardBody() {
   return (
-    <div className="absolute inset-0 flex flex-col p-6 sm:p-7">
+    // Asymmetric padding: pt-10/12 reserva sitio al BrandTag (top-5 +
+    // ~12px de altura del tag = ~32px ocupados arriba) para que la
+    // cabecera left-aligned (🤖 + título) no se solape. Las demás cards
+    // del deck tienen contenido top centered, no compiten con el tag y
+    // pueden quedarse con padding uniforme.
+    <div className="absolute inset-0 flex flex-col px-6 sm:px-7 pt-10 sm:pt-12 pb-6 sm:pb-7">
       {/* Logro header — IA psicólogo. El 2026-zeitgeist rompe la
           percepción de "app de familia" creada por las dos cards previas
           y muestra el rango antes del CTA. */}

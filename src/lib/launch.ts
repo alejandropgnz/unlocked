@@ -2,9 +2,9 @@
 // LAUNCH_DATE arrives (or VITE_LAUNCHED=true forces it on early). A secret
 // preview token lets the team enter the real app pre-launch.
 
-// Friday May 22, 2026 at 18:00 CET (CEST in May = UTC+02:00). Right before
+// Friday May 29, 2026 at 18:00 CET (CEST in May = UTC+02:00). Right before
 // the weekend so day-1 visitors share Saturday/Sunday peak hours.
-export const LAUNCH_DATE = new Date("2026-05-22T18:00:00+02:00");
+export const LAUNCH_DATE = new Date("2026-05-29T18:00:00+02:00");
 
 const PREVIEW_TOKEN = "unlocky2026";
 const STORAGE_KEY = "unlocky.preview";
