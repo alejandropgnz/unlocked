@@ -665,9 +665,34 @@ function MockStoryRow({ story }: { story: MockStory }) {
 
 /* ──────────────────────────── CTA card ───────────────────────────────── */
 
+// localStorage flag — honest-user friction to prevent the same browser
+// from re-submitting / spamming the waitlist with multiple emails. Bots
+// don't go through React so this is NOT a security control; it's UX +
+// "no rompas tu propia lista". Bots get caught by the email PK
+// constraint server-side anyway (duplicate insert returns 23505).
+const WAITLIST_JOINED_KEY = "unlocky.waitlist.joined";
+
+function isAlreadyJoined(): boolean {
+  try {
+    return localStorage.getItem(WAITLIST_JOINED_KEY) === "true";
+  } catch {
+    // Safari private mode / locked-down browser: treat as not joined.
+    return false;
+  }
+}
+
+function markAsJoined(): void {
+  try {
+    localStorage.setItem(WAITLIST_JOINED_KEY, "true");
+  } catch {
+    // ignore — gate just won't persist for this session, no big deal
+  }
+}
+
 function CTACard({ onSubmitted }: { onSubmitted: () => void }) {
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
+  const [alreadyJoined] = useState<boolean>(isAlreadyJoined);
   const joinMut = useJoinWaitlist();
 
   const launchLabel = useMemo(() => {
@@ -711,6 +736,7 @@ function CTACard({ onSubmitted }: { onSubmitted: () => void }) {
     if (!consent) return; // belt-and-braces; button is also disabled
     joinMut.mutate(email, {
       onSuccess: () => {
+        markAsJoined();
         fireConfetti();
         // Hand off to parent — it advances to the bonus deck (steps 5-7).
         // Quick delay so the confetti has a beat to register before the
@@ -719,6 +745,43 @@ function CTACard({ onSubmitted }: { onSubmitted: () => void }) {
       },
     });
   };
+
+  // Already-joined state: el usuario ya se apuntó en una sesión previa
+  // (refrescó la página, volvió por otra pestaña). En vez de enseñarle
+  // el formulario otra vez (que rebotaría en el PK constraint), le
+  // confirmamos que está dentro y le damos un botón para seguir al
+  // bonus deck. Misma identidad visual (border indigo) que el form
+  // para que el cambio se sienta como "siguiente estado del CTA",
+  // no como una pantalla distinta.
+  if (alreadyJoined) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
+        className="absolute inset-0 bg-surface border-2 border-indigo rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center text-center"
+      >
+        <BrandTag />
+        <div className="text-6xl mb-4">✅</div>
+        <h2
+          className="font-black tracking-tighter leading-tight"
+          style={{ fontSize: "clamp(1.5rem, 4.5vw, 2rem)" }}
+        >
+          Ya estás apuntado
+        </h2>
+        <p className="text-muted text-sm mt-3 max-w-xs">
+          Te avisamos el {launchLabel}.
+        </p>
+        <button
+          type="button"
+          onClick={onSubmitted}
+          className="mt-6 rounded-full px-6 py-3 font-black tracking-widest text-xs uppercase bg-indigo text-bg hover:bg-white transition"
+        >
+          Continúa →
+        </button>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
