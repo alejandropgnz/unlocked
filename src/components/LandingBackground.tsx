@@ -32,17 +32,17 @@ const LEFT_LOGROS: BgLogro[] = [
   { emoji: "📧", title: "Le di a Responder a todos sin querer", rarityPercent: 10.8, category: "trabajo" },
   { emoji: "🫥", title: "Cancelé un plan inventando que estaba malo", rarityPercent: 32.1, category: "amigos" },
   { emoji: "🛒", title: "Me perdí el vuelo por mirar las tiendas", rarityPercent: 1.2, category: "viajes" },
-  { emoji: "🎤", title: "Hablé 5 minutos sin saber que estaba muteado", rarityPercent: 19.2, category: "trabajo" },
+  { emoji: "💒", title: "Mi tía me pregunta cuándo me caso", rarityPercent: 52.0, category: "familia" },
   { emoji: "🥲", title: "He llorado viendo un anuncio", rarityPercent: 8.6, category: "random" },
 ];
 
 const RIGHT_LOGROS: BgLogro[] = [
   { emoji: "📱", title: "Stalkeé el insta de mi ex a las 3am", rarityPercent: 22.7, category: "relaciones" },
-  { emoji: "🤮", title: "He vomitado en la cena de empresa", rarityPercent: 8.2, category: "trabajo" },
+  { emoji: "🤖", title: "Usé la IA de psicólogo", rarityPercent: 18.4, category: "salud" },
   { emoji: "💼", title: "He llorado en el baño de la oficina", rarityPercent: 14.3, category: "trabajo" },
   { emoji: "🍻", title: "He bebido cerveza para desayunar", rarityPercent: 6.1, category: "resaca" },
   { emoji: "🔕", title: "Mantengo silenciado el grupo del cole", rarityPercent: 28.4, category: "amigos" },
-  { emoji: "🤥", title: "Mentí sobre saber Excel en la entrevista", rarityPercent: 24.6, category: "trabajo" },
+  { emoji: "🍽️", title: "He sobrevivido a una cena de Navidad sin política", rarityPercent: 12.0, category: "familia" },
   { emoji: "💔", title: "Me dejaron sin dar ninguna explicación", rarityPercent: 18.1, category: "amor" },
   { emoji: "🚇", title: "Me subí al metro en sentido contrario", rarityPercent: 38.0, category: "verguenza" },
 ];

@@ -7,6 +7,7 @@ import {
   type PanInfo,
 } from "framer-motion";
 import confetti from "canvas-confetti";
+import { toast } from "sonner";
 import { useJoinWaitlist } from "@/hooks/useJoinWaitlist";
 import { LaunchDate } from "@/components/CountdownTimer";
 import { LandingBackground } from "@/components/LandingBackground";
@@ -16,23 +17,37 @@ import { rarityTier, tierTextColor } from "@/lib/rarity";
 import { cn } from "@/lib/cn";
 
 /* ────────────────────────────────────────────────────────────────────────
- * The landing IS the product's swipe deck. 4 cards in sequence:
- *   0 → Hero (the pitch)
- *   1 → Example logro #1 (legendary, hooks attention)
- *   2 → Example logro #2 (common, recognizable)
- *   3 → CTA (email + countdown)
+ * The landing IS the product's swipe deck. 8 cards in sequence:
  *
- * Progress bar at the top with a hint that changes per step (narrative,
- * not "page 2/4" infantilization). Skip pill in the header jumps anyone
- * who doesn't want to play straight to the CTA.
+ *   PRE-CONVERSIÓN (5 swipes)
+ *     0 → Hook ("categoría nueva" framing)
+ *     1 → Ejemplo común — universal Spanish (tía cuándo me caso ~52%)
+ *     2 → Ejemplo más raro — el reframe sarcástico de la marca
+ *           (cena Navidad sin política ~12%)
+ *     3 → Stories card sobre IA psicólogo — demuestra la feature de foro
+ *           con un logro 2026-zeitgeist; rompe la percepción "app de
+ *           familia" justo antes del CTA
+ *     4 → CTA (email + countdown)
+ *
+ *   POST-CONVERSIÓN (3 swipes)
+ *     5 → Bonus — el legendary 0.04% (padre tabaco) como recompensa
+ *     6 → Share trigger — slide dedicada para forwarding viral
+ *     7 → Goodbye con secondary CTA share
+ *
+ * Pre-CTA: 5 swipes con énfasis en pedagogía (cold IG necesita varios
+ * ejemplos para entender la categoría nueva). Post-CTA: bonus + share +
+ * goodbye, optimizado para virality pre-launch.
+ *
+ * Progress bar con hint que cambia por step (narrativo, no "page 2/4").
+ * Skip pill en header salta a la CTA para los que ya están convencidos.
  * ──────────────────────────────────────────────────────────────────────── */
 
 const HINTS = [
   "¿Qué es esto?",
-  "Un ejemplo, no es marketing",
-  "Y otro",
-  "Y la mejor parte",
-  "Tu email y listo",
+  "Esto es un logro",
+  "Y esto también",
+  "Cada uno tiene su foro",
+  "Te avisamos el día",
 ] as const;
 
 interface ExampleLogro {
@@ -42,36 +57,43 @@ interface ExampleLogro {
   category: string;
 }
 
+// Examples ordered común → raro: tía es universal (le pasa a casi
+// todos), cena Navidad es un logro de supervivencia más raro pero
+// recognizable. El orden ascendente en rareza crea narrativa "te
+// suena → ahora flipa con esto".
 const EXAMPLES: [ExampleLogro, ExampleLogro] = [
+  {
+    emoji: "💒",
+    title: "Mi tía me pregunta cuándo me caso en cada reunión familiar",
+    rarityPercent: 52.0,
+    category: "familia",
+  },
+  {
+    emoji: "🍽️",
+    title: "He sobrevivido a una cena de Navidad sin hablar de política",
+    rarityPercent: 12.0,
+    category: "familia",
+  },
+];
+
+// Post-submit bonus deck — UN solo logro extremo (0.04% legendary) que
+// recompensa al usuario tras dar el email. Padre-tabaco ya es el ejemplo
+// canónico del producto y aquí cierra el flujo con el wow máximo.
+const BONUS_LOGROS: ExampleLogro[] = [
   {
     emoji: "🚬",
     title: "Mi padre se fue a por tabaco y no volvió",
     rarityPercent: 0.04,
     category: "familia",
   },
-  {
-    emoji: "🤮",
-    title: "He vomitado en la cena de empresa",
-    rarityPercent: 8.2,
-    category: "trabajo",
-  },
 ];
 
-// Post-submit bonus deck — 2 extra logros to scratch the swipe itch
-// before the goodbye card. Different categories from the main examples.
-const BONUS_LOGROS: ExampleLogro[] = [
-  {
-    emoji: "🎤",
-    title: "Hablé 5 minutos en Teams sin saber que estaba muteado",
-    rarityPercent: 19.2,
-    category: "trabajo",
-  },
-  {
-    emoji: "🎂",
-    title: "Felicité un cumple un día tarde y disimulé",
-    rarityPercent: 28.5,
-    category: "amigos",
-  },
+// Mini-grid del Share Trigger card — 3 logros recognizable que generan
+// el "tengo un amigo así" instantáneo en el viewer.
+const SHARE_LOGROS: ExampleLogro[] = [
+  { emoji: "🛒", title: "Me perdí el vuelo por mirar las tiendas", rarityPercent: 1.2, category: "viajes" },
+  { emoji: "📱", title: "Stalkeé el insta de mi ex a las 3am", rarityPercent: 22.7, category: "relaciones" },
+  { emoji: "🔕", title: "Mantengo silenciado el grupo del cole", rarityPercent: 28.4, category: "amigos" },
 ];
 
 /* ─────────────── swipe gesture constants (mirrors SwipeDeck) ─────────── */
@@ -97,8 +119,8 @@ const PEEK_CARDS: ExampleLogro[] = [
 export default function ComingSoon() {
   const [step, setStep] = useState(0);
 
-  // Steps 0-4 = main flow (hero, ex, ex, stories, CTA).
-  // Steps 5-7 = post-submit bonus (2 bonus logros + goodbye).
+  // Steps 0-4 = main flow (hook, ej1, ej2, stories, CTA).
+  // Steps 5-7 = post-submit (1 bonus + share trigger + goodbye).
   // CTACard advances to 5 itself on successful submit.
   const advance = () => setStep((s) => Math.min(s + 1, 7));
   const skipToCTA = () => setStep(4);
@@ -189,13 +211,13 @@ export default function ComingSoon() {
                 </SwipeCard>
               )}
               {step === 1 && (
-                <SwipeCard key="ex1" onSwipe={advance}>
-                  <ExampleCardBody example={EXAMPLES[1]} />
+                <SwipeCard key="ex0" onSwipe={advance}>
+                  <ExampleCardBody example={EXAMPLES[0]} />
                 </SwipeCard>
               )}
               {step === 2 && (
-                <SwipeCard key="ex0" onSwipe={advance}>
-                  <ExampleCardBody example={EXAMPLES[0]} />
+                <SwipeCard key="ex1" onSwipe={advance}>
+                  <ExampleCardBody example={EXAMPLES[1]} />
                 </SwipeCard>
               )}
               {step === 3 && (
@@ -208,13 +230,13 @@ export default function ComingSoon() {
                 <SwipeCard key="bonus0" onSwipe={advance}>
                   <BonusCardBody
                     example={BONUS_LOGROS[0]}
-                    intro="Te tenemos. Mira un par más mientras esperas."
+                    intro="Te tenemos. Un último regalo antes de irte."
                   />
                 </SwipeCard>
               )}
               {step === 6 && (
-                <SwipeCard key="bonus1" onSwipe={advance}>
-                  <BonusCardBody example={BONUS_LOGROS[1]} />
+                <SwipeCard key="share" onSwipe={advance}>
+                  <ShareCardBody />
                 </SwipeCard>
               )}
               {step === 7 && <GoodbyeCard key="goodbye" />}
@@ -391,21 +413,23 @@ function SwipeCard({
 function HeroCardBody() {
   return (
     <div className="absolute inset-0 flex flex-col text-center p-8 sm:p-10">
-      {/* Top */}
+      {/* Top — date keeps the launch tease visible from slide 0. */}
       <p className="text-[10px] sm:text-xs uppercase tracking-[3px] text-muted font-bold shrink-0">
         Viernes 22 de mayo
       </p>
 
-      {/* Middle. No forced <br/>'s — let the title wrap naturally based on
-          the card width. Bigger font on mobile so the title dominates the
-          card and doesn't feel lost in empty space. */}
+      {/* Middle — hook B2: posicionamiento "categoría nueva". Contraste
+          declarativo entre lo que YA existe (hábitos) y lo que esto es
+          por primera vez (coleccionar logros). El número "1.000" da
+          autoridad inmediata sin esfuerzo. */}
       <div className="flex-1 flex flex-col items-center justify-center min-h-0">
         <h1
           className="font-black tracking-tighter leading-[1.05]"
-          style={{ fontSize: "clamp(2.25rem, 6vw, 3rem)" }}
+          style={{ fontSize: "clamp(2rem, 5.5vw, 2.75rem)" }}
         >
-          Deja de trackear hábitos.{" "}
-          <span className="text-indigo">Empieza a coleccionar</span> logros.
+          Hay <span className="text-indigo">1.000 apps</span> para trackear hábitos.
+          <br />
+          Esta es la primera para <span className="text-indigo">coleccionar logros</span>.
         </h1>
       </div>
 
@@ -447,7 +471,9 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
         </div>
       </div>
 
-      {/* Bottom hint */}
+      {/* Bottom hint — engagement emocional. El progress bar superior
+          lleva el hint declarativo ("esto es un logro"); aquí abajo va
+          la pregunta abierta que invita a auto-reconocerse. */}
       <div className="font-black text-sm uppercase tracking-widest text-muted shrink-0">
         ¿Te suena?
       </div>
@@ -464,67 +490,85 @@ interface MockStory {
   body: string;
 }
 
+// 4 stories sobre 🤖 IA psicólogo. Tono catálogo: frase corta, primera
+// persona, situación específica, reveal pequeño al final, cero adjetivos
+// sentimentales. Las 2 visibles van pensadas para impacto inmediato
+// (universal + meta); las 2 ocultas viven en "+ 2 más" para sugerir
+// profundidad sin pedir lectura completa.
 const MOCK_STORIES: MockStory[] = [
   {
     username: "alex_perez",
     avatarEmoji: "👨🏻",
     avatarBg: "#6366F1",
-    body: "Era 2003. Mi padre dijo que iba al estanco. Aún espero el cambio. 🚬",
+    body: "Le conté lo de mi ex a ChatGPT antes que a mis amigos. Me dio mejor consejo.",
   },
+  {
+    username: "lucia_m",
+    avatarEmoji: "👩🏼",
+    avatarBg: "#FF6B6B",
+    body: "Le conté un sueño muy raro. Me dijo que necesitaba ayuda profesional. Ironía nivel dios.",
+  },
+  // ─── ocultas tras "+ 2 más" ───
   {
     username: "marina_g",
     avatarEmoji: "👩🏽‍🦱",
     avatarBg: "#E8BD55",
-    body: "Mi madre me lo cuenta con humor pero veo que se le cae la sonrisa al final. 🥲",
+    body: "Pago 80€ al mes a mi terapeuta. Le pregunto a la IA entre sesiones.",
   },
   {
     username: "joaquin_v",
     avatarEmoji: "🧔🏼",
     avatarBg: "#A78BFA",
-    body: "El mío sí volvió. Pero con otra mujer. ¿Cuenta? 😂",
+    body: "La IA me ha hecho llorar tres veces este mes. Mi terapeuta solo dos.",
   },
 ];
+
+const STORIES_VISIBLE = 2;
 
 function StoriesCardBody() {
   return (
     <div className="absolute inset-0 flex flex-col p-6 sm:p-7">
-      {/* Logro header — gives context for which logro the stories below
-          belong to. Mimics the real /l/<slug> page format: emoji + title
-          + rarity. Without this the stories feel disconnected from the
-          previous example cards (which were about a different logro). */}
+      {/* Logro header — IA psicólogo. El 2026-zeitgeist rompe la
+          percepción de "app de familia" creada por las dos cards previas
+          y muestra el rango antes del CTA. */}
       <div className="flex items-center gap-3 shrink-0">
-        <div className="text-4xl shrink-0 leading-none">🚬</div>
+        <div className="text-4xl shrink-0 leading-none">🤖</div>
         <div className="flex-1 min-w-0 text-left">
           <p className="text-sm sm:text-base font-black tracking-tighter leading-tight">
-            Mi padre se fue a por tabaco
+            Usé la IA de psicólogo
           </p>
-          <p className="text-[10px] font-mono text-gold tracking-widest mt-0.5">
-            0.04% lo tiene
+          <p className="text-[10px] font-mono text-violet tracking-widest mt-0.5">
+            18.4% lo tiene
           </p>
         </div>
       </div>
 
-      {/* Frame what this list IS — the stories feature explained without
-          a full intro section. Sits between header and the thread. */}
+      {/* Sub-headline declarativa — describe sin sobre-explicar. Antes
+          era un párrafo de 2 líneas; ahora es 4 palabras. */}
       <p className="text-muted text-xs sm:text-sm mt-3 shrink-0 text-left">
-        Cada logro tiene su sección de historias. La gente puede contar
-        cómo lo consiguió.
+        Cada logro tiene su foro
       </p>
 
-      {/* Divider + section label — what is this list */}
+      {/* Divider + total count — sugiere volumen. */}
       <div className="mt-3 mb-3 flex items-center gap-2 shrink-0">
         <div className="h-px flex-1 bg-grey" />
         <p className="text-[10px] uppercase tracking-[3px] text-muted font-bold">
-          3 historias
+          {MOCK_STORIES.length} historias
         </p>
         <div className="h-px flex-1 bg-grey" />
       </div>
 
-      {/* Mock thread — same shape as the real story page */}
+      {/* 2 historias visibles + indicador "+ N más" para sugerir
+          profundidad sin pedir que lean las 4. */}
       <div className="space-y-2.5 sm:space-y-3 flex-1 min-h-0 overflow-hidden">
-        {MOCK_STORIES.map((s) => (
+        {MOCK_STORIES.slice(0, STORIES_VISIBLE).map((s) => (
           <MockStoryRow key={s.username} story={s} />
         ))}
+        {MOCK_STORIES.length > STORIES_VISIBLE && (
+          <p className="text-[11px] text-muted text-center font-mono pt-1">
+            + {MOCK_STORIES.length - STORIES_VISIBLE} más
+          </p>
+        )}
       </div>
     </div>
   );
@@ -535,7 +579,7 @@ function MockStoryRow({ story }: { story: MockStory }) {
     <div className="bg-bg border border-grey rounded-xl p-3">
       <div className="flex items-center gap-2 mb-1.5">
         <div
-          className="w-7 h-7 rounded-full flex items-center justify-center text-base shrink-0 leading-none"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-lg shrink-0 leading-none"
           style={{ backgroundColor: story.avatarBg }}
         >
           {story.avatarEmoji}
@@ -616,7 +660,7 @@ function CTACard({ onSubmitted }: { onSubmitted: () => void }) {
               className="font-black tracking-tighter leading-tight"
               style={{ fontSize: "clamp(1.5rem, 4.5vw, 2rem)" }}
             >
-              Apúntate y te avisamos<br />
+              Avísame<br />
               cuando salga.
             </h2>
           </div>
@@ -739,6 +783,100 @@ function BonusCardBody({
   );
 }
 
+/* ─────────────────── share trigger — viral pre-launch card ──────────── */
+
+const SHARE_TEXT =
+  "Esto te va a doler de lo familiar que te suena. Sale en 2 semanas:";
+const SHARE_URL = "https://unlocky.app";
+
+/**
+ * Share trigger card — la pieza dedicada para activar forwarding viral
+ * pre-launch. Sin esta card, los shares dependen de que el usuario
+ * copie la URL por su cuenta (≈ 0% conversión secundaria). Con esta
+ * card + un botón grande conectado a navigator.share(), capturamos el
+ * momento "tengo un amigo así" en su pico emocional.
+ *
+ * navigator.share() abre el share sheet nativo del SO en mobile (iOS,
+ * Android). En desktop (donde no existe), fallback a clipboard +
+ * toast. AbortError = usuario canceló el share sheet, no es un fallo.
+ */
+function ShareCardBody() {
+  const handleShare = async () => {
+    const data: ShareData = { title: "Unlocky", text: SHARE_TEXT, url: SHARE_URL };
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share(data);
+        return;
+      }
+      await navigator.clipboard.writeText(`${SHARE_TEXT} ${SHARE_URL}`);
+      toast.success("Copiado, mándaselo por donde quieras");
+    } catch (err) {
+      // AbortError fires when user dismisses the native share sheet.
+      // Anything else falls back to clipboard so the action never feels
+      // broken to the user.
+      if (err instanceof Error && err.name === "AbortError") return;
+      try {
+        await navigator.clipboard.writeText(`${SHARE_TEXT} ${SHARE_URL}`);
+        toast.success("Copiado, mándaselo por donde quieras");
+      } catch {
+        toast.error("No se pudo compartir");
+      }
+    }
+  };
+
+  return (
+    <div className="absolute inset-0 flex flex-col text-center p-6 sm:p-8">
+      {/* Top — emoji + headline. La frase apela a la red social interna
+          del usuario sin apostar por una emoción concreta ("le va a
+          encantar" / "se va a partir") — solo describe que existe un
+          alguien y cierra. */}
+      <div className="shrink-0">
+        <div className="text-5xl sm:text-6xl mb-3 leading-none">📲</div>
+        <h2
+          className="font-black tracking-tighter leading-tight"
+          style={{ fontSize: "clamp(1.4rem, 4.5vw, 1.9rem)" }}
+        >
+          Tienes un amigo<br />
+          al que le pasa esto.
+        </h2>
+      </div>
+
+      {/* Mini-grid de 3 logros recognizable — funciona como prueba
+          visual del "esto" abstracto del headline. Pulsar uno NO hace
+          nada (no es una feature, es atrezzo del trigger). */}
+      <div className="flex-1 flex items-center min-h-0 my-4">
+        <div className="grid grid-cols-3 gap-2 w-full">
+          {SHARE_LOGROS.map((logro) => (
+            <ShareMiniCard key={logro.title} logro={logro} />
+          ))}
+        </div>
+      </div>
+
+      {/* CTA grande con border indigo (mismo lenguaje visual que el
+          CTA de email, para que el usuario lea "esto es la acción
+          principal aquí"). */}
+      <button
+        type="button"
+        onClick={handleShare}
+        className="shrink-0 w-full rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase bg-indigo text-bg hover:bg-white transition"
+      >
+        Mándaselo →
+      </button>
+    </div>
+  );
+}
+
+function ShareMiniCard({ logro }: { logro: ExampleLogro }) {
+  return (
+    <div className="bg-bg border border-grey rounded-xl p-2 flex flex-col items-center justify-center aspect-square">
+      <div className="text-2xl sm:text-3xl leading-none">{logro.emoji}</div>
+      <p className="text-[8px] sm:text-[9px] font-black text-muted text-center leading-tight tracking-tighter mt-1.5 line-clamp-2">
+        {logro.title}
+      </p>
+    </div>
+  );
+}
+
 /* ─────────────────── goodbye card — final post-bonus screen ──────────── */
 
 function GoodbyeCard() {
@@ -749,6 +887,30 @@ function GoodbyeCard() {
     const month = d.toLocaleDateString("es-ES", { month: "long" });
     return `${day} ${dayNum} de ${month}`;
   }, []);
+
+  // Secondary share CTA en goodbye — recordatorio para los que pasaron
+  // de la card de share trigger. Misma función que ShareCardBody pero
+  // styled como CTA secundario (ghost) para no competir con el "nos
+  // vemos el [día]" que es el take-away principal.
+  const handleShare = async () => {
+    const data: ShareData = { title: "Unlocky", text: SHARE_TEXT, url: SHARE_URL };
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share(data);
+        return;
+      }
+      await navigator.clipboard.writeText(`${SHARE_TEXT} ${SHARE_URL}`);
+      toast.success("Copiado, mándaselo por donde quieras");
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      try {
+        await navigator.clipboard.writeText(`${SHARE_TEXT} ${SHARE_URL}`);
+        toast.success("Copiado, mándaselo por donde quieras");
+      } catch {
+        // ignore
+      }
+    }
+  };
 
   return (
     <motion.div
@@ -767,6 +929,13 @@ function GoodbyeCard() {
       <p className="text-muted text-sm mt-3 max-w-xs">
         Te escribimos al email ese día.
       </p>
+      <button
+        type="button"
+        onClick={handleShare}
+        className="mt-6 text-xs uppercase tracking-widest text-muted hover:text-white underline-offset-4 hover:underline transition"
+      >
+        O mándaselo a alguien
+      </button>
     </motion.div>
   );
 }
