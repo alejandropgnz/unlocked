@@ -104,12 +104,24 @@ export default function ComingSoon() {
   const skipToCTA = () => setStep(4);
   const inBonus = step >= 5;
 
-  // h-screen + h-[100dvh] (NOT min-h-) so the column is exactly viewport
-  // height; combined with overflow-hidden, anything taller than the
-  // viewport gets clipped instead of pushing the body to scroll. The
-  // landing must always fit on a single screen.
+  // 100svh (NOT 100dvh, NOT 100vh) is critical here. iOS Safari 15-17 has a
+  // documented bug where `100dvh` during the initial paint reports the LARGE
+  // viewport (= chrome hidden) instead of the actual currently-visible
+  // height — so a div sized to dvh ends up bigger than the visible viewport
+  // when the URL bar + bottom toolbar are showing, and the footer gets
+  // clipped behind Safari's toolbar. svh is the SMALL viewport height (=
+  // chrome fully visible) → guarantees the layout fits in every chrome
+  // state. Trade-off: when the URL bar minifies on scroll, a small bg-bg
+  // sliver appears below the footer; imperceptible on a single-screen
+  // landing.
+  // h-screen (= 100vh) stays as Tailwind class fallback for ancient
+  // browsers without svh support; modern iOS Safari (15.4+) and all
+  // current Chrome/Firefox/Edge support svh, so the inline style wins.
   return (
-    <div className="h-screen h-[100dvh] bg-bg text-white flex flex-col overflow-hidden">
+    <div
+      className="h-screen bg-bg text-white flex flex-col overflow-hidden"
+      style={{ height: "100svh" }}
+    >
       {/* Header — wordmark left, "Apúntate" skip pill right (only visible
           while we're not already on the CTA card). Safe-area top padding
           so the notch on iPhone doesn't eat into the wordmark. */}
