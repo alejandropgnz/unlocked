@@ -11,33 +11,54 @@ interface EmojiProps {
 }
 
 /**
- * Drop-in emoji renderer that swaps the OS-native emoji font for a
- * consistent, brand-aligned set via a CDN. Each emoji becomes an <img>
- * sized at 1em so it scales naturally with the surrounding text.
+ * jsDelivr URL builder for Microsoft Fluent UI Emoji "Modern" 3D set.
+ *
+ * The static assets package @lobehub/fluent-emoji-modern@1.0.0 organizes
+ * SVGs by codepoint in /assets/{codepoint(s)}.svg. jsDelivr serves any
+ * npm package on demand — the 143 MB package never gets bundled into
+ * our app, only the individual SVGs we actually request (each <10 KB)
+ * stream in via the CDN edge.
+ *
+ * File naming:
+ *  - Single-codepoint emojis: lowercase hex, padded to min 4 chars
+ *    e.g. ©  → "00a9-fe0f.svg"
+ *         🚬 → "1f6ac.svg"
+ *  - Multi-codepoint (ZWJ sequences, regional indicators, keycaps):
+ *    codepoints joined by "-"
+ *    e.g. 👨‍👩‍👧 → "1f468-200d-1f469-200d-1f467.svg"
+ *         🇪🇸    → "1f1ea-1f1f8.svg"
+ */
+function emojiToCodepointSlug(grapheme: string): string {
+  return Array.from(grapheme)
+    .map((c) => c.codePointAt(0)!.toString(16).padStart(4, "0"))
+    .join("-");
+}
+
+const FLUENT_BASE =
+  "https://cdn.jsdelivr.net/npm/@lobehub/fluent-emoji-modern@1.0.0/assets";
+
+/**
+ * Drop-in emoji renderer that swaps the OS-native emoji font for
+ * Microsoft Fluent Emoji ("Modern" 3D style) via jsDelivr. Each emoji
+ * becomes an <img> sized at 1em so it scales naturally with the
+ * surrounding text.
  *
  * Why: native emoji rendering varies wildly between OS (Apple's 3D
  * vs Android's Noto vs Windows Segoe), breaking brand consistency for
- * an app where the emoji IS the content.
+ * an app where the emoji IS the content. Fluent's chunky 3D style
+ * matches the illustrated padlock logo aesthetic.
  *
- * Style: APPLE. emojicdn.elk.sh dropped the "microsoft" (Fluent) style
- * as of mid-2026 — only apple/google/facebook/twitter remain. Apple's
- * 3D illustrated set is the closest substitute to Fluent's chunky 3D
- * aesthetic that matches the padlock logo, and is the most universally
- * recognized "premium" emoji style.
- *
- * Implementation notes:
- * - Uses emojicdn.elk.sh as the asset gateway. It 302-redirects to the
- *   actual asset (cached by Bunny CDN). One redirect per unique emoji
- *   per browser cache lifetime, then instant.
- * - Splits the input by GRAPHEME (Intl.Segmenter), not by char, so
- *   compound emojis like 👨‍👩‍👧 (zero-width-joiner sequences) and
- *   country flags 🇪🇸 (regional indicator pairs) render as a single
- *   image instead of breaking apart.
- * - loading="lazy" defers off-screen emojis (huge win in feed/grid).
- * - draggable=false prevents iOS Safari from triggering image-drag UI
- *   when users tap-and-hold a card.
- * - alt={char} keeps the original emoji for screen readers and as a
- *   fallback if the image fails to load.
+ * Implementation:
+ * - Splits the input by GRAPHEME via Intl.Segmenter so compound emojis
+ *   like 👨‍👩‍👧 (ZWJ sequences) and 🇪🇸 (regional indicator pairs)
+ *   are treated as single image units, not broken apart.
+ * - Each grapheme is converted to its codepoint slug (e.g. "1f6ac" or
+ *   "1f1ea-1f1f8") which is the filename used by the Fluent Modern
+ *   static package.
+ * - loading="lazy" defers off-screen emojis (big win on long lists).
+ * - draggable=false prevents iOS Safari image-drag UI on tap-and-hold.
+ * - alt={char} keeps the original emoji as fallback for screen
+ *   readers and if the SVG ever 404s on the CDN.
  */
 export function Emoji({ children, className }: EmojiProps) {
   if (!children) return null;
@@ -50,17 +71,20 @@ export function Emoji({ children, className }: EmojiProps) {
     <span
       className={cn("inline-flex items-center align-middle gap-0.5", className)}
     >
-      {graphemes.map((char, i) => (
-        <img
-          key={i}
-          src={`https://emojicdn.elk.sh/${encodeURIComponent(char)}?style=apple`}
-          alt={char}
-          style={{ width: "1em", height: "1em" }}
-          className="inline-block"
-          loading="lazy"
-          draggable={false}
-        />
-      ))}
+      {graphemes.map((char, i) => {
+        const slug = emojiToCodepointSlug(char);
+        return (
+          <img
+            key={i}
+            src={`${FLUENT_BASE}/${slug}.svg`}
+            alt={char}
+            style={{ width: "1em", height: "1em" }}
+            className="inline-block"
+            loading="lazy"
+            draggable={false}
+          />
+        );
+      })}
     </span>
   );
 }
