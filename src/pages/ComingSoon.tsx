@@ -841,11 +841,14 @@ function ShareCardBody() {
         </h2>
       </div>
 
-      {/* Mini-grid de 3 logros recognizable — funciona como prueba
-          visual del "esto" abstracto del headline. Pulsar uno NO hace
-          nada (no es una feature, es atrezzo del trigger). */}
+      {/* Stack de 3 logros recognizable — funciona como prueba visual
+          del "esto" abstracto del headline. Layout horizontal (emoji
+          izquierda + título derecha) en lugar de grid cuadrada para
+          que el texto sea legible (~13px) y los logros se lean como
+          "cosas que tu amigo hace", que es exactamente el frame del
+          headline. Pulsar uno no hace nada (atrezzo, no feature). */}
       <div className="flex-1 flex items-center min-h-0 my-4">
-        <div className="grid grid-cols-3 gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full">
           {SHARE_LOGROS.map((logro) => (
             <ShareMiniCard key={logro.title} logro={logro} />
           ))}
@@ -868,9 +871,9 @@ function ShareCardBody() {
 
 function ShareMiniCard({ logro }: { logro: ExampleLogro }) {
   return (
-    <div className="bg-bg border border-grey rounded-xl p-2 flex flex-col items-center justify-center aspect-square">
-      <div className="text-2xl sm:text-3xl leading-none">{logro.emoji}</div>
-      <p className="text-[8px] sm:text-[9px] font-black text-muted text-center leading-tight tracking-tighter mt-1.5 line-clamp-2">
+    <div className="bg-bg border border-grey rounded-xl p-3 flex items-center gap-3">
+      <div className="text-3xl sm:text-4xl leading-none shrink-0">{logro.emoji}</div>
+      <p className="text-[13px] sm:text-sm font-black text-white leading-tight tracking-tighter line-clamp-2 text-left flex-1 min-w-0">
         {logro.title}
       </p>
     </div>
