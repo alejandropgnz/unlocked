@@ -97,8 +97,8 @@ function SidePanel({
       ? { paddingLeft: SIDE_MARGIN_PX, paddingRight: 0 }
       : { paddingLeft: 0, paddingRight: SIDE_MARGIN_PX };
 
-  // Repeat the source array so the column always overflows. Offset the
-  // start index per repeat to avoid stacking identical cards on top of
+  // Repeat the source array so the columns always overflow. Offset the
+  // start index per repeat to avoid stacking identical cards next to
   // each other when columns wrap.
   const expanded: BgLogro[] = [];
   for (let r = 0; r < REPEATS; r++) {
@@ -107,18 +107,46 @@ function SidePanel({
     }
   }
 
+  // Split into two interleaved columns (even indexes / odd indexes) so
+  // adjacent cards in the source array don't end up neighbors in the
+  // same column.
+  const colA = expanded.filter((_, i) => i % 2 === 0);
+  const colB = expanded.filter((_, i) => i % 2 === 1);
+
   return (
     <div
       className="absolute top-0 bottom-0 overflow-hidden"
       style={positionStyle}
     >
-      <div
-        className="columns-1 xl:columns-2 gap-3 lg:gap-4 py-6"
-        style={innerPadStyle}
-      >
-        {expanded.map((card, i) => (
-          <BackgroundCard key={i} card={card} index={i} />
-        ))}
+      {/* lg breakpoint: panels too narrow for 2 columns → single
+          column, all cards stacked. xl+ : real masonry with explicit
+          stagger between the two columns (one starts at top, the
+          other ~80px lower) so the wall feels Pinterest-style instead
+          of grid-aligned. */}
+      <div className="py-6" style={innerPadStyle}>
+        {/* Single column for lg (1024-1279) */}
+        <div className="flex flex-col gap-3 xl:hidden">
+          {expanded.map((card, i) => (
+            <BackgroundCard key={`s-${i}`} card={card} index={i} />
+          ))}
+        </div>
+
+        {/* Two staggered columns for xl+ (1280+). Second column has
+            mt-20 offset so the wall reads as masonry, not grid. The
+            in-card variant cycling (3 sizes) inside each column adds
+            the additional intra-column height variance. */}
+        <div className="hidden xl:flex gap-4">
+          <div className="flex-1 flex flex-col gap-4">
+            {colA.map((card, i) => (
+              <BackgroundCard key={`a-${i}`} card={card} index={i * 2} />
+            ))}
+          </div>
+          <div className="flex-1 flex flex-col gap-4 mt-20">
+            {colB.map((card, i) => (
+              <BackgroundCard key={`b-${i}`} card={card} index={i * 2 + 1} />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Heavy dark overlay — cards stay readable as silhouettes only,
