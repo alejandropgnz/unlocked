@@ -11,14 +11,19 @@ interface EmojiProps {
 }
 
 /**
- * Drop-in emoji renderer that swaps the OS-native emoji font for
- * Microsoft Fluent Emoji via a CDN. Each emoji becomes an <img>
+ * Drop-in emoji renderer that swaps the OS-native emoji font for a
+ * consistent, brand-aligned set via a CDN. Each emoji becomes an <img>
  * sized at 1em so it scales naturally with the surrounding text.
  *
  * Why: native emoji rendering varies wildly between OS (Apple's 3D
- * realistic vs Android's Noto vs Windows Segoe), which breaks brand
- * consistency for an app where the emoji IS the content. Fluent's
- * chunky 3D style matches the illustrated padlock logo aesthetic.
+ * vs Android's Noto vs Windows Segoe), breaking brand consistency for
+ * an app where the emoji IS the content.
+ *
+ * Style: APPLE. emojicdn.elk.sh dropped the "microsoft" (Fluent) style
+ * as of mid-2026 — only apple/google/facebook/twitter remain. Apple's
+ * 3D illustrated set is the closest substitute to Fluent's chunky 3D
+ * aesthetic that matches the padlock logo, and is the most universally
+ * recognized "premium" emoji style.
  *
  * Implementation notes:
  * - Uses emojicdn.elk.sh as the asset gateway. It 302-redirects to the
@@ -48,7 +53,7 @@ export function Emoji({ children, className }: EmojiProps) {
       {graphemes.map((char, i) => (
         <img
           key={i}
-          src={`https://emojicdn.elk.sh/${encodeURIComponent(char)}?style=microsoft`}
+          src={`https://emojicdn.elk.sh/${encodeURIComponent(char)}?style=apple`}
           alt={char}
           style={{ width: "1em", height: "1em" }}
           className="inline-block"
