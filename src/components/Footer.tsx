@@ -18,7 +18,7 @@ export function Footer() {
     <footer className="hidden md:block border-t border-white/5 mt-12 py-10 px-6 lg:px-8 bg-bg">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <Link to="/" aria-label="Unlocky — Inicio" className="hover:text-gold transition">
+          <Link to="/" aria-label="Unlocky — Inicio" className="hover:text-indigo transition">
             <Wordmark size="md" />
           </Link>
           <div className="flex gap-2">

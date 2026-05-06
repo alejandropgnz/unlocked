@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Unlocky — Carrusel 01 — 99% lo tiene</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --bg: #0e0e14;
+    --surface: #16161f;
+    --gold: #C9A961;
+    --violet: #A78BFA;
+    --red: #FF6B6B;
+    --grey: #3a3a4a;
+    --grey-soft: #5a5a6a;
+    --muted: rgba(255,255,255,0.45);
+    --white: #ffffff;
+    --f-display: 'Inter', system-ui, -apple-system, sans-serif;
+    --f-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #050507; }
+  body {
+    color: var(--white);
+    font-family: var(--f-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    padding: 80px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    background: var(--bg);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+
+  /* ============ SHARED UI CHROME ============ */
+  .ui-tag {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 30;
+  }
+  .ui-tag .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    transform: translateY(-3px);
+    margin-right: 14px;
+  }
+  .ui-num {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    z-index: 30;
+  }
+  .ui-foot {
+    position: absolute;
+    bottom: 60px;
+    left: 60px;
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 30;
+  }
+  .ui-foot-right {
+    position: absolute;
+    bottom: 60px;
+    right: 60px;
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    z-index: 30;
+  }
+  /* ghost background number for logro slides */
+  .ghost {
+    position: absolute;
+    font-family: var(--f-display);
+    font-weight: 900;
+    line-height: 0.78;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255,255,255,0.04);
+    text-stroke: 2px rgba(255,255,255,0.04);
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    letter-spacing: -0.05em;
+  }
+
+  /* ============ SLIDE 01 — HOOK ============ */
+  .hook {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 80px;
+  }
+  .hook-eyebrow {
+    font-family: var(--f-mono);
+    font-size: 22px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 60px;
+  }
+  .hook-title {
+    font-family: var(--f-display);
+    font-weight: 900;
+    font-size: 220px;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    color: var(--white);
+  }
+  .hook-title .second {
+    color: var(--muted);
+  }
+  .hook-sub {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 1.3;
+    color: var(--white);
+    margin-top: 80px;
+    max-width: 760px;
+    letter-spacing: -0.01em;
+  }
+  .hook-sub strong {
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .hook-arrow {
+    font-family: var(--f-mono);
+    font-size: 22px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 40px;
+  }
+
+  /* ============ SLIDES 02-09 — LOGROS ============ */
+  .logro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 180px 80px 160px;
+  }
+  .logro-emojis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 60px;
+  }
+  .logro-emoji {
+    font-size: 150px;
+    line-height: 1;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  }
+  .logro-sep {
+    width: 8px;
+    height: 8px;
+    background: var(--grey-soft);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .logro-title {
+    font-family: var(--f-display);
+    font-weight: 900;
+    font-size: 92px;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    text-align: center;
+    color: var(--white);
+    padding: 0 10px;
+    margin-top: 60px;
+  }
+  .logro-meta {
+    border-top: 1px solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    padding: 28px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tier {
+    font-family: var(--f-mono);
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .tier-dot {
+    width: 12px; height: 12px;
+    background: var(--grey-soft);
+    border-radius: 50%;
+  }
+  .rarity {
+    font-family: var(--f-mono);
+    font-weight: 600;
+    font-size: 36px;
+    color: var(--white);
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ SLIDE 10 — BRIDGE ============ */
+  .bridge {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 80px;
+  }
+  .bridge-eyebrow {
+    font-family: var(--f-mono);
+    font-size: 22px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 60px;
+  }
+  .bridge-q {
+    font-family: var(--f-display);
+    font-weight: 900;
+    font-size: 200px;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+    color: var(--white);
+  }
+  .bridge-body {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.3;
+    color: rgba(255,255,255,0.7);
+    margin-top: 60px;
+    max-width: 800px;
+    letter-spacing: -0.015em;
+  }
+  .bridge-cta {
+    font-family: var(--f-mono);
+    font-size: 28px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .bridge-arrow {
+    font-size: 36px;
+    line-height: 1;
+  }
+
+  /* ============ SLIDE 11 — CTA ============ */
+  .cta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 80px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 30%, rgba(201,169,97,0.12) 0%, transparent 70%),
+      var(--bg);
+  }
+  .cta-eyebrow {
+    font-family: var(--f-mono);
+    font-size: 22px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 60px;
+  }
+  .cta-lock {
+    font-size: 140px;
+    line-height: 1;
+    margin-bottom: 40px;
+  }
+  .cta-url {
+    font-family: var(--f-display);
+    font-weight: 900;
+    font-size: 130px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--gold);
+  }
+  .cta-line {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 44px;
+    color: var(--white);
+    margin-top: 40px;
+    letter-spacing: -0.015em;
+  }
+  .cta-divider {
+    width: 80px;
+    height: 1px;
+    background: var(--grey);
+    margin: 70px auto;
+  }
+  .cta-secondary {
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: 28px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+    max-width: 720px;
+  }
+  .cta-secondary strong {
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .cta-handle {
+    font-family: var(--f-mono);
+    font-size: 22px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 80px;
+  }
+  .cta-handle .at {
+    color: var(--white);
+  }
+
+  /* ============ DOWNLOAD BAR (only in browser preview) ============ */
+  .dl-bar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    padding: 16px 32px;
+    font-family: var(--f-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    z-index: 9999;
+    border-radius: 999px;
+    box-shadow: 0 4px 24px rgba(201, 169, 97, 0.5);
+    transition: transform 0.15s ease;
+  }
+  .dl-bar:hover { transform: translateX(-50%) scale(1.03); }
+  .dl-bar:disabled { opacity: 0.55; cursor: wait; }
+  @media print { .dl-bar { display: none; } }
+</style>
+</head>
+<body>
+
+<button class="dl-bar" id="dlbtn" onclick="downloadAll()">⬇ Descargar los 11 slides PNG</button>
+
+<!-- ============================== SLIDE 01 — HOOK ============================== -->
+<section class="slide hook" data-slide="01">
+  <div class="ui-tag"><span class="dot"></span>UNLOCKY · CATÁLOGO</div>
+  <div class="ui-num">01 / 11</div>
+
+  <div>
+    <div class="hook-eyebrow">— Logros que casi nadie ve</div>
+    <div class="hook-title">99% lo tiene.</div>
+    <div class="hook-title second">Y no lo sabe.</div>
+    <div class="hook-sub">8 logros que llevas <strong>desbloqueando toda la vida</strong> sin que nadie te lo haya dicho.</div>
+    <div class="hook-arrow">desliza →</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 02 — LOGRO 1 ============================== -->
+<section class="slide logro" data-slide="02">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">01</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 01 / 08</div>
+  <div class="ui-num">02 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">🚪</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">💭</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">❓</span>
+    </div>
+    <div class="logro-title">Entrar a una habitación<br>y olvidarte a qué ibas</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">97,8%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 03 — LOGRO 2 ============================== -->
+<section class="slide logro" data-slide="03">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">02</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 02 / 08</div>
+  <div class="ui-num">03 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">🔍</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">📱</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">🤦</span>
+    </div>
+    <div class="logro-title">Buscar lo que tienes<br>en la mano</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">94,2%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 04 — LOGRO 3 ============================== -->
+<section class="slide logro" data-slide="04">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">03</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 03 / 08</div>
+  <div class="ui-num">04 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">☕</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">🔥</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">👅</span>
+    </div>
+    <div class="logro-title">Quemarte la lengua<br>con el primer sorbo</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">92,3%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 05 — LOGRO 4 ============================== -->
+<section class="slide logro" data-slide="05">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">04</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 04 / 08</div>
+  <div class="ui-num">05 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">⏰</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">😴</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">🔄</span>
+    </div>
+    <div class="logro-title">"Cinco minutos más"</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">96,1%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 06 — LOGRO 5 ============================== -->
+<section class="slide logro" data-slide="06">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">05</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 05 / 08</div>
+  <div class="ui-num">06 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">📺</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">😴</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">💤</span>
+    </div>
+    <div class="logro-title">Quedarte dormido y jurar<br>que lo estabas viendo</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">91,5%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 07 — LOGRO 6 ============================== -->
+<section class="slide logro" data-slide="07">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">06</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 06 / 08</div>
+  <div class="ui-num">07 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">🛍️</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">📦</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">🤷</span>
+    </div>
+    <div class="logro-title">Acumular cosas<br>"que pueden hacer falta"</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">95,6%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 08 — LOGRO 7 ============================== -->
+<section class="slide logro" data-slide="08">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">07</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 07 / 08</div>
+  <div class="ui-num">08 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">🗣️</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">📛</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">🤦</span>
+    </div>
+    <div class="logro-title">Llamar a alguien por<br>el nombre del hermano</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">89,4%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 09 — LOGRO 8 ============================== -->
+<section class="slide logro" data-slide="09">
+  <div class="ghost" style="font-size:1100px; right:-100px; bottom:-280px;">08</div>
+  <div class="ui-tag"><span class="dot"></span>LOGRO 08 / 08</div>
+  <div class="ui-num">09 / 11</div>
+
+  <div style="position:relative; z-index:5;">
+    <div class="logro-emojis">
+      <span class="logro-emoji">🎤</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">🔁</span>
+      <span class="logro-sep"></span>
+      <span class="logro-emoji">🤔</span>
+    </div>
+    <div class="logro-title">Escucharte el audio 4 veces<br>antes de enviarlo</div>
+  </div>
+
+  <div class="logro-meta">
+    <div class="tier"><span class="tier-dot"></span>COMÚN</div>
+    <div class="rarity">88,7%</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 10 — BRIDGE / UGC ============================== -->
+<section class="slide bridge" data-slide="10">
+  <div class="ui-tag"><span class="dot"></span>UNLOCKY · TU TURNO</div>
+  <div class="ui-num">10 / 11</div>
+
+  <div>
+    <div class="bridge-eyebrow">— Pausa antes del cierre</div>
+    <div class="bridge-q">¿Cuál es<br>el tuyo?</div>
+    <div class="bridge-body">
+      El logro más absurdo<br>que has desbloqueado<br>esta semana.
+    </div>
+    <div class="bridge-cta"><span class="bridge-arrow">↓</span> Cuéntanoslo en comentarios</div>
+  </div>
+
+  <div class="ui-foot">@unlockyapp</div>
+</section>
+
+<!-- ============================== SLIDE 11 — CTA FINAL ============================== -->
+<section class="slide cta" data-slide="11">
+  <div class="ui-tag"><span class="dot"></span>UNLOCKY · LISTA DE ESPERA</div>
+  <div class="ui-num">11 / 11</div>
+
+  <div>
+    <div class="cta-lock">🔓</div>
+    <div class="cta-url">unlocky.app</div>
+    <div class="cta-line">Lista de espera abierta.</div>
+
+    <div class="cta-divider"></div>
+
+    <div class="cta-secondary">
+      ¿Sin ganas de salir de Instagram?<br>
+      Comenta <strong>SOYYO</strong> y te apuntamos a mano.
+    </div>
+
+    <div class="cta-handle">síguenos · <span class="at">@unlockyapp</span></div>
+  </div>
+
+  <div class="ui-foot-right">desbloquea lo que ya eres</div>
+</section>
+
+<script>
+async function downloadAll() {
+  const btn = document.getElementById('dlbtn');
+  btn.disabled = true;
+  const original = btn.textContent;
+
+  await document.fonts.ready;
+  await new Promise(r => setTimeout(r, 500));
+
+  const slides = document.querySelectorAll('.slide');
+  for (let i = 0; i < slides.length; i++) {
+    btn.textContent = `⏳ Slide ${i+1}/${slides.length}`;
+    const canvas = await html2canvas(slides[i], {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null,
+      logging: false
+    });
+    const link = document.createElement('a');
+    link.download = `unlocky-c01-${String(i+1).padStart(2,'0')}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    await new Promise(r => setTimeout(r, 350));
+  }
+
+  btn.textContent = '✓ Descargados';
+  setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2500);
+}
+</script>
+
+</body>
+</html>

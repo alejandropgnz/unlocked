@@ -18,7 +18,7 @@ export function RepliesList({ replies }: { replies: ReplyListItem[] }) {
             <Avatar src={r.user.avatar_url} size="sm" className="w-6 h-6" />
             <Link
               to={`/u/${r.user.username}`}
-              className="text-xs font-bold hover:text-gold"
+              className="text-xs font-bold hover:text-indigo"
             >
               @{r.user.username}
             </Link>

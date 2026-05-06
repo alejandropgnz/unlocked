@@ -19,7 +19,7 @@ export interface AchievementCardProps {
   category: string;
   size?: "sm" | "md" | "lg";
   href?: string;
-  /** Already in the user's collection (right-swiped). Shows a gold check. */
+  /** Already in the user's collection (right-swiped). Shows a indigo check. */
   isUnlocked?: boolean;
   /** Already passed in /descubrir (left-swiped). Shows a muted minus.
    *  Visually softer than the X used elsewhere — just "you've seen this
@@ -102,7 +102,7 @@ function AchievementCardImpl({
           <span className="inline-flex">
             {isUnlocked ? (
               <Check
-                className="w-3.5 h-3.5 text-gold/70"
+                className="w-3.5 h-3.5 text-indigo/70"
                 strokeWidth={3}
                 aria-label="Ya lo tienes"
               />

@@ -22,7 +22,7 @@ export function CookieBanner() {
             localStorage.setItem("ck-ack", "1");
             setShow(false);
           }}
-          className="px-3 py-1 bg-white text-bg font-black text-xs uppercase rounded-full tracking-widest hover:bg-gold transition"
+          className="px-3 py-1 bg-white text-bg font-black text-xs uppercase rounded-full tracking-widest hover:bg-indigo transition"
         >
           OK
         </button>

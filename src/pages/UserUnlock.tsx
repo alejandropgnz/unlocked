@@ -91,7 +91,7 @@ export default function UserUnlock() {
         <div>
           <Link
             to={`/u/${profileUser.username}`}
-            className="font-bold hover:text-gold text-sm"
+            className="font-bold hover:text-indigo text-sm"
           >
             @{profileUser.username}
           </Link>

@@ -121,7 +121,7 @@ function TopCard({
             if (!exiting) setExiting("right");
           }}
           disabled={!!exiting}
-          className="text-gold hover:text-white transition disabled:opacity-50 cursor-pointer"
+          className="text-indigo hover:text-white transition disabled:opacity-50 cursor-pointer"
         >
           Desbloquear →
         </button>
@@ -143,7 +143,7 @@ function TopCard({
       </div>
       <motion.div
         style={{ opacity: acceptOpacity }}
-        className="absolute top-8 right-8 px-4 py-2 border-4 border-gold text-gold font-black rounded-xl text-sm uppercase tracking-widest -rotate-6 pointer-events-none"
+        className="absolute top-8 right-8 px-4 py-2 border-4 border-indigo text-indigo font-black rounded-xl text-sm uppercase tracking-widest -rotate-6 pointer-events-none"
       >
         Mío
       </motion.div>
@@ -218,7 +218,7 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
         </p>
         <Link
           to="/"
-          className="mt-6 inline-block px-5 py-3 bg-white text-bg font-black rounded-full text-xs tracking-widest uppercase hover:bg-gold transition"
+          className="mt-6 inline-block px-5 py-3 bg-white text-bg font-black rounded-full text-xs tracking-widest uppercase hover:bg-indigo transition"
         >
           Volver al inicio
         </Link>

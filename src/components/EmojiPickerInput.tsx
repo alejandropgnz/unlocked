@@ -76,7 +76,7 @@ export function EmojiPickerInput({ value, onChange }: Props) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full bg-bg border border-white/10 rounded-xl p-4 text-3xl min-h-[68px] flex items-center justify-center hover:border-white/30 focus:border-gold focus:outline-none transition"
+        className="w-full bg-bg border border-white/10 rounded-xl p-4 text-3xl min-h-[68px] flex items-center justify-center hover:border-white/30 focus:border-indigo focus:outline-none transition"
         aria-label="Seleccionar emojis"
       >
         {value || (

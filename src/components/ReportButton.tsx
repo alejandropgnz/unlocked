@@ -52,7 +52,7 @@ export function ReportButton({
         <select
           value={reason}
           onChange={(e) => setReason(e.target.value as Reason)}
-          className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none"
+          className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none"
         >
           {REASONS.map((r) => (
             <option key={r.value} value={r.value}>

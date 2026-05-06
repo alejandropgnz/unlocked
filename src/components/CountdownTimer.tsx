@@ -38,7 +38,7 @@ export function LaunchDate({ target }: { target: Date }) {
   if (parts.total === 0) {
     return (
       <div className="text-center">
-        <p className="text-2xl sm:text-3xl font-black tracking-tighter text-gold uppercase">
+        <p className="text-2xl sm:text-3xl font-black tracking-tighter text-indigo uppercase">
           ¡Ya está aquí!
         </p>
         <p className="text-muted text-xs mt-1">Recarga la página.</p>

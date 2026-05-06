@@ -14,7 +14,7 @@ export function ReplyBox({ storyId }: { storyId: string }) {
     return (
       <Link
         to={`/login?next=${encodeURIComponent(`/h/${storyId}`)}`}
-        className="text-sm underline hover:text-gold mt-4 inline-block"
+        className="text-sm underline hover:text-indigo mt-4 inline-block"
       >
         Inicia sesión para responder
       </Link>

@@ -121,7 +121,7 @@ function buildTop5Layout({ username, displayName, avatarUrl, totalUnlocks, rares
         src: avatarUrl,
         width: 140,
         height: 140,
-        style: { borderRadius: 70, border: "4px solid #C9A961" },
+        style: { borderRadius: 70, border: "4px solid #6366F1" },
         alt: "",
       }),
     );
@@ -155,7 +155,7 @@ function buildTop5Layout({ username, displayName, avatarUrl, totalUnlocks, rares
       { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
       h(
         "div",
-        { style: { fontSize: 44, fontWeight: 900, color: "#C9A961" } },
+        { style: { fontSize: 44, fontWeight: 900, color: "#6366F1" } },
         String(totalUnlocks),
       ),
       h(

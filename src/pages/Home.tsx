@@ -107,7 +107,7 @@ export default function Home() {
               value={query}
               onChange={(e) => updateParams({ q: e.target.value })}
               placeholder="Buscar logros…"
-              className="w-full pl-9 pr-9 py-2.5 bg-surface border border-white/10 rounded-full text-sm focus:border-gold focus:outline-none placeholder:text-muted"
+              className="w-full pl-9 pr-9 py-2.5 bg-surface border border-white/10 rounded-full text-sm focus:border-indigo focus:outline-none placeholder:text-muted"
             />
             {query && (
               <button
@@ -170,7 +170,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setParams({}, { replace: true })}
-                  className="mt-3 text-xs uppercase tracking-widest underline text-gold"
+                  className="mt-3 text-xs uppercase tracking-widest underline text-indigo"
                 >
                   Limpiar filtros
                 </button>
@@ -229,7 +229,7 @@ function CategoryChip({
       className={cn(
         "shrink-0 px-3 py-1.5 rounded-full text-xs uppercase tracking-widest font-bold transition border",
         active
-          ? "bg-gold text-bg border-gold"
+          ? "bg-indigo text-bg border-indigo"
           : "bg-surface text-muted border-white/10 hover:text-white hover:border-white/30",
       )}
     >

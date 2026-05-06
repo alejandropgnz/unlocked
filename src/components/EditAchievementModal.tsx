@@ -145,7 +145,7 @@ export function EditAchievementModal({ open, onClose, item }: Props) {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as AchievementCategory)}
-            className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none"
+            className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none"
           >
             {CATEGORIES.map((c) => (
               <option key={c.value} value={c.value}>
@@ -163,7 +163,7 @@ export function EditAchievementModal({ open, onClose, item }: Props) {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as AchievementStatus)}
-            className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none"
+            className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none"
           >
             {STATUS_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -180,7 +180,7 @@ export function EditAchievementModal({ open, onClose, item }: Props) {
       {/* Actions */}
       <div className="mt-6 flex gap-2">
         <Button
-          variant="gold"
+          variant="indigo"
           size="block"
           onClick={handleSave}
           disabled={!dirty || updateMut.isPending}

@@ -53,7 +53,7 @@ export default function StoryThread() {
       <div className="bg-surface rounded-2xl p-5">
         <div className="flex items-center gap-3">
           <Avatar src={story.user.avatar_url} size="sm" />
-          <Link to={`/u/${story.user.username}`} className="text-sm font-bold hover:text-gold">
+          <Link to={`/u/${story.user.username}`} className="text-sm font-bold hover:text-indigo">
             @{story.user.username}
           </Link>
           <div className="ml-auto">

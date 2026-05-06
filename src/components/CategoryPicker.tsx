@@ -30,7 +30,7 @@ export function CategoryPicker({
       name={name}
       defaultValue={defaultValue ?? ""}
       required
-      className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none"
+      className="w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none"
     >
       <option value="">Elige una categoría...</option>
       {CATEGORIES.map((c) => (

@@ -45,7 +45,7 @@ export function BottomNav() {
             to={t.href}
             className={cn(
               "flex flex-col items-center gap-1 px-3 py-1 transition",
-              active ? "text-gold" : "text-muted hover:text-white",
+              active ? "text-indigo" : "text-muted hover:text-white",
             )}
           >
             <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} aria-hidden />

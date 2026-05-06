@@ -79,7 +79,7 @@ export default function Admin() {
           {pending.map((p, i) => (
             <div
               key={p.id}
-              className={`bg-surface rounded-2xl p-5 ${i === cursor ? "ring-2 ring-gold" : ""}`}
+              className={`bg-surface rounded-2xl p-5 ${i === cursor ? "ring-2 ring-indigo" : ""}`}
             >
               <div className="flex items-start gap-3">
                 <div className="text-4xl">{p.emoji}</div>
@@ -92,7 +92,7 @@ export default function Admin() {
               </div>
               <div className="mt-3 flex gap-2">
                 <Button
-                  variant="gold"
+                  variant="indigo"
                   onClick={() => {
                     setCursor(i);
                     approveMut.mutate(p.id);
@@ -131,7 +131,7 @@ export default function Admin() {
               <div className="font-bold mt-2">Motivo: {r.reason}</div>
               {r.notes && <p className="text-sm mt-2 text-muted">{r.notes}</p>}
               <div className="mt-3 flex gap-2">
-                <Button variant="gold" onClick={() => resolveMut.mutate(r.id)}>
+                <Button variant="indigo" onClick={() => resolveMut.mutate(r.id)}>
                   Resolver
                 </Button>
                 <Button variant="ghost" onClick={() => dismissMut.mutate(r.id)}>
@@ -196,12 +196,12 @@ function CatalogTab() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Buscar por título…"
-          className="bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none"
+          className="bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none"
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value as AchievementCategory | "")}
-          className="bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none"
+          className="bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none"
         >
           <option value="">Todas las categorías</option>
           {CATEGORIES.map((c) => (
@@ -213,7 +213,7 @@ function CatalogTab() {
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as AchievementStatus | "")}
-          className="bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none"
+          className="bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none"
         >
           <option value="">Todos los estados</option>
           <option value="approved">Aprobados</option>
@@ -314,7 +314,7 @@ function StatusBadge({ status }: { status: AchievementStatus }) {
   // Compact pill that's readable at a glance during scanning. Color
   // coded to match the rest of the design system.
   const config: Record<AchievementStatus, { label: string; className: string }> = {
-    approved: { label: "OK", className: "bg-gold/20 text-gold" },
+    approved: { label: "OK", className: "bg-indigo/20 text-indigo" },
     pending: { label: "Pendiente", className: "bg-violet/20 text-violet" },
     rejected: { label: "Oculto", className: "bg-red/20 text-red" },
   };

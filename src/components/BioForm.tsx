@@ -41,7 +41,7 @@ export function BioForm() {
         showCounter
       />
       <div className="flex justify-end items-center gap-3 min-h-[40px]">
-        {justSaved && <span className="text-gold text-xs">✓ Guardado</span>}
+        {justSaved && <span className="text-indigo text-xs">✓ Guardado</span>}
         {/* Show button only when bio differs from saved value */}
         {hasChanges && (
           <Button type="submit" size="sm" disabled={saveMut.isPending}>

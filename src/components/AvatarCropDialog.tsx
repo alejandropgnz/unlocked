@@ -101,7 +101,7 @@ export function AvatarCropDialog({
           step={0.05}
           value={zoom}
           onChange={(e) => setZoom(Number(e.target.value))}
-          className="w-full mt-1 accent-gold"
+          className="w-full mt-1 accent-indigo"
         />
       </div>
       <div className="mt-5 flex gap-3">

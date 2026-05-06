@@ -93,7 +93,7 @@ export function AvatarUploader({
         <label
           className={cn(
             camSize,
-            "absolute bottom-0 right-0 rounded-full bg-gold text-bg flex items-center justify-center shadow-md hover:bg-gold/80 transition cursor-pointer",
+            "absolute bottom-0 right-0 rounded-full bg-indigo text-bg flex items-center justify-center shadow-md hover:bg-indigo/80 transition cursor-pointer",
             uploading && "pointer-events-none opacity-70",
           )}
           aria-label="Cambiar foto de perfil"

@@ -23,7 +23,7 @@ export default function Login() {
 
   return (
     <section className="min-h-screen flex flex-col items-center justify-center p-8 text-center gap-4">
-      <h1 className="text-4xl md:text-6xl font-black tracking-tightest bg-gradient-to-br from-red via-gold to-violet bg-clip-text text-transparent leading-none">
+      <h1 className="text-4xl md:text-6xl font-black tracking-tightest bg-gradient-to-br from-red via-indigo to-violet bg-clip-text text-transparent leading-none">
         UNLOCKY
       </h1>
       <p className="text-muted text-sm">

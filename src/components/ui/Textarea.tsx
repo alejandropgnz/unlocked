@@ -16,7 +16,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           value={value}
           maxLength={maxLength}
           className={cn(
-            "w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-gold focus:outline-none resize-none disabled:opacity-50",
+            "w-full bg-bg border border-white/10 rounded-xl p-3 text-sm focus:border-indigo focus:outline-none resize-none disabled:opacity-50",
             error && "border-red focus:border-red",
             className,
           )}

@@ -148,7 +148,7 @@ export function Top5Editor({
               >
                 <div className="text-xl">{i.emoji}</div>
                 <div className="flex-1 text-xs font-bold leading-tight">{i.title}</div>
-                <span className="text-gold">+</span>
+                <span className="text-indigo">+</span>
               </button>
             ))}
           </div>

@@ -55,7 +55,7 @@ export function ReactionButtons({
         aria-label="Upvote"
         className={cn(
           "text-base font-mono leading-none px-1 transition",
-          value === 1 ? "text-gold" : "text-muted hover:text-gold",
+          value === 1 ? "text-indigo" : "text-muted hover:text-indigo",
         )}
       >
         ▲

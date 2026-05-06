@@ -22,12 +22,12 @@ export function StoriesList({ stories }: { stories: StoryListItem[] }) {
             <Avatar src={s.user.avatar_url} size="sm" />
             <Link
               to={`/u/${s.user.username}`}
-              className="text-sm font-bold hover:text-gold"
+              className="text-sm font-bold hover:text-indigo"
             >
               @{s.user.username}
             </Link>
             {s.isOwn && (
-              <span className="text-[10px] uppercase tracking-widest bg-gold/20 text-gold px-2 py-0.5 rounded-full">
+              <span className="text-[10px] uppercase tracking-widest bg-indigo/20 text-indigo px-2 py-0.5 rounded-full">
                 Tu historia
               </span>
             )}

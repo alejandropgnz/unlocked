@@ -55,7 +55,13 @@
       "Bash(curl -sI \"https://github.com/rsms/inter/raw/master/docs/font-files/Inter-Black.otf\")",
       "Bash(curl -sI \"https://rsms.me/inter/font-files/Inter-Black.woff\")",
       "Bash(curl -sI \"https://unpkg.com/@fontsource/inter@5.0.18/files/inter-latin-900-normal.woff\")",
-      "Bash(curl -sI \"https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-900-normal.woff\")"
+      "Bash(curl -sI \"https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-900-normal.woff\")",
+      "Bash(git log *)",
+      "Bash(node scripts/build-restore-description-migration.mjs)",
+      "Read(//c/Users/alexp/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/f172ff83-f5e6-4fee-891a-1232a48ecc05/52389866-7016-4d62-98ff-a35013b40d33/skills/carrusel-studio/assets/**)",
+      "Read(//c/Users/alexp/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/f172ff83-f5e6-4fee-891a-1232a48ecc05/52389866-7016-4d62-98ff-a35013b40d33/skills/carrusel-studio/references/**)",
+      "Bash(xargs -0 sed -i 's/gold/indigo/g')",
+      "Bash(sed -i 's/#C9A961/#6366F1/g' api/og-profile.js)"
     ]
   }
 }

@@ -44,7 +44,7 @@ export function Sidebar() {
               cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition",
                 isActive
-                  ? "bg-white/10 text-gold font-bold"
+                  ? "bg-white/10 text-indigo font-bold"
                   : "text-white hover:bg-white/5",
               )
             }

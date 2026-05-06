@@ -87,7 +87,7 @@ export function MobileTopBar() {
               }
             }}
             placeholder="Buscar logros…"
-            className="w-full pl-9 pr-10 py-2 bg-surface border border-white/10 rounded-full text-sm focus:border-gold focus:outline-none placeholder:text-muted"
+            className="w-full pl-9 pr-10 py-2 bg-surface border border-white/10 rounded-full text-sm focus:border-indigo focus:outline-none placeholder:text-muted"
             aria-label="Buscar logros"
           />
           <button
@@ -114,7 +114,7 @@ export function MobileTopBar() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="ml-auto p-2 text-white hover:text-gold transition"
+              className="ml-auto p-2 text-white hover:text-indigo transition"
               aria-label="Buscar logros"
             >
               <Search className="w-5 h-5" />

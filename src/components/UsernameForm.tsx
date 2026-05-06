@@ -54,7 +54,7 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
           autoComplete="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="flex-1 bg-bg border border-white/10 rounded-xl p-3 text-sm font-mono lowercase focus:border-gold focus:outline-none disabled:opacity-50"
+          className="flex-1 bg-bg border border-white/10 rounded-xl p-3 text-sm font-mono lowercase focus:border-indigo focus:outline-none disabled:opacity-50"
           placeholder="tu_username"
         />
       </div>
