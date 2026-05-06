@@ -30,44 +30,37 @@ const VELOCITY_THRESHOLD = 600;
 // the viewport on big monitors so it doesn't pop back into view mid-fade.
 const EXIT_DISTANCE = 1200;
 
-// Per-depth presets for the stack underneath the active card. depth 1 sits
-// right behind the top, depth 2 one further, etc. Stable values (not random
-// per render) so cards don't twitch when other state updates.
-const PEEK_PRESETS = [
-  { rotate: -3.5, x: -8, y: 8, scale: 0.95, opacity: 0.7 },
-  { rotate: 5, x: 10, y: 16, scale: 0.91, opacity: 0.45 },
-  { rotate: -2.5, x: -4, y: 24, scale: 0.87, opacity: 0.25 },
-] as const;
-
 const ANIM_TRANSITION = { duration: 0.32, ease: [0.22, 0.61, 0.36, 1] as const };
 
 /**
  * Single card component for both the top (active, draggable) and the
- * stacked peek cards underneath. Crucially this renders the FULL content
- * (rarity %, emoji, title, meta) at every depth — at depth>0 it's just
- * scaled down and dimmed, but the content is already there. So when a
- * swipe completes and a peek card gets promoted to top, no content
- * "pops in" — only the scale/opacity/position smoothly animate.
+ * card sitting directly underneath. The card behind sits at IDENTITY
+ * TRANSFORM (same scale, no rotation, no offset, full opacity) — fully
+ * occluded by the top card while at rest, and revealed untouched as the
+ * top is dragged away. No tween, no transform on promotion to top: the
+ * card behind is already exactly where the new top should be.
  *
- * Stable React key (item.id) on the parent map ensures the same component
- * instance survives a depth change, which lets framer-motion's `animate`
- * prop drive a tween between the old and new depth presets instead of
- * remounting at the new position instantly.
+ * Why no visible peek/stack: rotated semi-transparent peek cards behind
+ * a dragging top look like ghosting/blur to the eye, and they have to
+ * tween (rotate→0, opacity→1, scale→1) when promoted, which feels like
+ * the card "lurches into place." Rendering them at identity makes the
+ * promotion seamless.
+ *
+ * Stable React key (item.id) ensures the same component instance
+ * survives the swipe, so the next card doesn't remount.
  */
 function Card({
   item,
-  depth,
+  isTop,
   onSwipe,
 }: {
   item: SwipeItem;
-  depth: number;
+  isTop: boolean;
   onSwipe?: (dir: "left" | "right") => void;
 }) {
-  const isTop = depth === 0 && !!onSwipe;
-
   // Drag motion values — only meaningful when isTop, but we always create
-  // them so React's hook order stays stable as the card transitions
-  // between depths.
+  // them so hook order stays stable when the card promotes from behind
+  // to top.
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-300, 0, 300], [-15, 0, 15]);
   const acceptOpacity = useTransform(x, [50, 150], [0, 1]);
@@ -78,30 +71,19 @@ function Card({
   const tier = rarityTier(item.rarityPercent);
   const tierColor = tierTextColor(tier);
 
-  // Build the target animation. Three states:
-  //   1. Exiting: fly to off-screen + rotate dramatically
-  //   2. Top + idle: full size, identity transform (drag controls runtime
-  //      x via the motion value applied through `style`)
-  //   3. Peek: depth preset (smaller, dimmer, offset)
+  // Two states only:
+  //   1. Exiting: fly off-screen + rotate dramatically
+  //   2. Anything else (top idle OR card behind): identity transform.
+  //      For the top, drag overrides x/rotate via `style`. For the card
+  //      behind, identity = exact same place as the top will return to,
+  //      so when the top swipes away there's nothing to animate.
   const targetAnimate = exiting
     ? {
         x: exiting === "right" ? EXIT_DISTANCE : -EXIT_DISTANCE,
         opacity: 0,
         rotate: exiting === "right" ? 25 : -25,
       }
-    : isTop
-      ? { scale: 1, x: 0, y: 0, rotate: 0, opacity: 1 }
-      : (() => {
-          const preset =
-            PEEK_PRESETS[depth - 1] ?? PEEK_PRESETS[PEEK_PRESETS.length - 1];
-          return {
-            scale: preset.scale,
-            x: preset.x,
-            y: preset.y,
-            rotate: preset.rotate,
-            opacity: preset.opacity,
-          };
-        })();
+    : { scale: 1, x: 0, y: 0, rotate: 0, opacity: 1 };
 
   const handleDragEnd = (
     _e: PointerEvent | MouseEvent | TouchEvent,
@@ -136,8 +118,8 @@ function Card({
         (isTop ? "cursor-grab active:cursor-grabbing" : "pointer-events-none")
       }
     >
-      {/* Top row — rarity. Always rendered so peek→top transition has no
-          content pop. */}
+      {/* Top row — rarity. Always rendered so the card behind is fully
+          ready when revealed (no content pop). */}
       <div className="absolute top-6 sm:top-8 inset-x-6 sm:inset-x-8 text-center leading-tight">
         <div
           className="font-mono font-black tabular-nums text-2xl sm:text-3xl"
@@ -150,8 +132,8 @@ function Card({
         </div>
       </div>
 
-      {/* Bottom row — pasar / desbloquear. Only rendered on the top card
-          since peek cards aren't interactive. */}
+      {/* Bottom row — pasar / desbloquear. Only on the top card since
+          the card behind isn't interactive. */}
       {isTop && (
         <div className="absolute bottom-6 sm:bottom-8 inset-x-6 sm:inset-x-8 flex justify-between items-center font-black text-sm sm:text-base uppercase tracking-widest z-10">
           <button
@@ -257,10 +239,14 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
     );
   }
 
-  // Render the top 4 cards. Reverse-iterate so the deepest card paints
-  // first (DOM bottom = visual back) and the active top card paints last
-  // (DOM top = visual front).
-  const visible = stack.slice(0, 4);
+  // Render only top 2 cards: the active one + the next one waiting
+  // behind at identity transform. Rendering more is pointless when the
+  // card behind is identical to the top — they'd all stack invisibly
+  // at the same position. Two is the minimum that lets the next card
+  // be revealed instantly when the active swipes away.
+  // Reverse-iterate so the back card paints first (DOM bottom = visual
+  // back) and the active card paints last (DOM top = visual front).
+  const visible = stack.slice(0, 2);
 
   return (
     <div className="relative w-full max-w-sm mx-auto h-full">
@@ -268,13 +254,13 @@ export function SwipeDeck({ items: initial }: { items: SwipeItem[] }) {
         .slice()
         .reverse()
         .map((item, idxFromBottom) => {
-          const depth = visible.length - 1 - idxFromBottom;
+          const isTop = idxFromBottom === visible.length - 1;
           return (
             <Card
               key={item.id}
               item={item}
-              depth={depth}
-              onSwipe={depth === 0 ? handleSwipe : undefined}
+              isTop={isTop}
+              onSwipe={isTop ? handleSwipe : undefined}
             />
           );
         })}
