@@ -14,6 +14,7 @@ import { LaunchDate } from "@/components/CountdownTimer";
 import { LandingBackground } from "@/components/LandingBackground";
 import { LAUNCH_DATE } from "@/lib/launch";
 import { Wordmark } from "@/components/Wordmark";
+import { Emoji } from "@/components/Emoji";
 import { rarityTier, tierTextColor } from "@/lib/rarity";
 import { cn } from "@/lib/cn";
 
@@ -336,7 +337,7 @@ function PeekCard({
       className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl pointer-events-none"
     >
       <div className="flex flex-col items-center justify-center text-center h-full p-6">
-        <div className="text-7xl">{card.emoji}</div>
+        <Emoji className="text-7xl">{card.emoji}</Emoji>
       </div>
     </motion.div>
   );
@@ -520,7 +521,7 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
 
       {/* Middle — emoji + title + category */}
       <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-        <div className="text-7xl sm:text-8xl">{example.emoji}</div>
+        <Emoji className="text-7xl sm:text-8xl">{example.emoji}</Emoji>
         <div className="mt-4 sm:mt-5 text-xl sm:text-2xl font-black tracking-tighter leading-tight">
           {example.title}
         </div>
@@ -903,7 +904,7 @@ function BonusCardBody({
 
       {/* Middle — emoji + title + category */}
       <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-        <div className="text-7xl sm:text-8xl">{example.emoji}</div>
+        <Emoji className="text-7xl sm:text-8xl">{example.emoji}</Emoji>
         <div className="mt-4 sm:mt-5 text-xl sm:text-2xl font-black tracking-tighter leading-tight">
           {example.title}
         </div>
@@ -1016,7 +1017,7 @@ function ShareCardBody() {
 function ShareMiniCard({ logro }: { logro: ExampleLogro }) {
   return (
     <div className="bg-bg border border-grey rounded-xl p-3 flex items-center gap-3">
-      <div className="text-3xl sm:text-4xl leading-none shrink-0">{logro.emoji}</div>
+      <Emoji className="text-3xl sm:text-4xl leading-none shrink-0">{logro.emoji}</Emoji>
       <p className="text-[13px] sm:text-sm font-black text-white leading-tight tracking-tighter line-clamp-2 text-left flex-1 min-w-0">
         {logro.title}
       </p>

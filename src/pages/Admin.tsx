@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { CATEGORIES } from "@/components/CategoryPicker";
 import { EditAchievementModal } from "@/components/EditAchievementModal";
+import { Emoji } from "@/components/Emoji";
 import type { AchievementCategory, AchievementStatus } from "@/hooks/types";
 
 const PAGE_SIZE = 50;
@@ -82,7 +83,7 @@ export default function Admin() {
               className={`bg-surface rounded-2xl p-5 ${i === cursor ? "ring-2 ring-indigo" : ""}`}
             >
               <div className="flex items-start gap-3">
-                <div className="text-4xl">{p.emoji}</div>
+                <Emoji className="text-4xl">{p.emoji}</Emoji>
                 <div className="flex-1">
                   <div className="font-black">{p.title}</div>
                   <div className="text-xs text-muted mt-2">
@@ -260,7 +261,7 @@ function CatalogTab() {
               onClick={() => setEditing(row)}
               className="w-full bg-surface hover:bg-surface/70 rounded-xl p-3 text-left flex items-center gap-3 transition"
             >
-              <div className="text-3xl shrink-0">{row.emoji}</div>
+              <Emoji className="text-3xl shrink-0">{row.emoji}</Emoji>
               <div className="flex-1 min-w-0">
                 <div className="font-black text-sm leading-tight tracking-tight truncate">
                   {row.title}

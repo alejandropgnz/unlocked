@@ -8,6 +8,7 @@ import {
   type Tier,
 } from "@/lib/rarity";
 import { emojiCount } from "@/lib/validators";
+import { Emoji } from "./Emoji";
 import { cn } from "@/lib/cn";
 
 export interface AchievementCardProps {
@@ -122,7 +123,7 @@ function AchievementCardImpl({
             sizing.emojiBox,
           )}
         >
-          <span className={emojiClass}>{emoji}</span>
+          <Emoji className={emojiClass}>{emoji}</Emoji>
         </div>
         <h3
           className={cn(

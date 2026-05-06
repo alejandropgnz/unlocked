@@ -13,6 +13,7 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { Emoji } from "./Emoji";
 import { CSS } from "@dnd-kit/utilities";
 import { useSaveTop5 } from "@/hooks/useYo";
 
@@ -108,7 +109,7 @@ export function Top5Editor({
               )}
               {top5.map((i) => (
                 <SortableRow key={i.id} id={i.id}>
-                  <div className="text-2xl">{i.emoji}</div>
+                  <Emoji className="text-2xl">{i.emoji}</Emoji>
                   <div className="flex-1 text-sm font-bold">{i.title}</div>
                   <button
                     type="button"
@@ -146,7 +147,7 @@ export function Top5Editor({
                 onClick={() => add(i)}
                 className="bg-surface/50 rounded-xl p-3 text-left hover:bg-surface transition flex items-center gap-2"
               >
-                <div className="text-xl">{i.emoji}</div>
+                <Emoji className="text-xl">{i.emoji}</Emoji>
                 <div className="flex-1 text-xs font-bold leading-tight">{i.title}</div>
                 <span className="text-indigo">+</span>
               </button>

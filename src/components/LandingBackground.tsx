@@ -7,6 +7,13 @@
  * by-product, not an empty band in the layout. Cards extend uniformly
  * across the entire viewport width.
  *
+ *
+ * NOTE: Background cards stay with NATIVE OS emojis (no <Emoji>) so we
+ * don't fire 1500+ image requests just for atmospheric texture. The
+ * overlay (rgba 0.92 black) makes them silhouettes anyway — no one
+ * inspects details. Foreground deck uses Fluent via the regular Emoji
+ * component for brand consistency where it actually matters.
+ *
  * Cards are SOLID (bg-surface); a single dark overlay over the whole
  * wall does the dimming, so each card still reads as a real
  * achievement, just seen through tinted glass.

@@ -5,6 +5,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { ShareCardModal } from "@/components/ShareCardModal";
+import { Emoji } from "@/components/Emoji";
 import { rarityTier, tierBorderClass, tierTextColor } from "@/lib/rarity";
 
 export default function UserUnlock() {
@@ -68,7 +69,7 @@ export default function UserUnlock() {
           >
             <span className="font-mono">{rarityPercent.toFixed(2)}%</span> lo tienen
           </div>
-          <div className="text-7xl md:text-8xl mt-4">{achievement.emoji}</div>
+          <Emoji className="text-7xl md:text-8xl mt-4">{achievement.emoji}</Emoji>
           <h1 className="mt-4 text-2xl md:text-4xl font-black tracking-tighter">
             {achievement.title}
           </h1>

@@ -61,7 +61,12 @@
       "Read(//c/Users/alexp/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/f172ff83-f5e6-4fee-891a-1232a48ecc05/52389866-7016-4d62-98ff-a35013b40d33/skills/carrusel-studio/assets/**)",
       "Read(//c/Users/alexp/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/f172ff83-f5e6-4fee-891a-1232a48ecc05/52389866-7016-4d62-98ff-a35013b40d33/skills/carrusel-studio/references/**)",
       "Bash(xargs -0 sed -i 's/gold/indigo/g')",
-      "Bash(sed -i 's/#C9A961/#6366F1/g' api/og-profile.js)"
+      "Bash(sed -i 's/#C9A961/#6366F1/g' api/og-profile.js)",
+      "Bash(node scripts/gen-icons.mjs)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const b=fs.readFileSync\\('marketing/logo.base64.txt','utf8'\\).trim\\(\\); const html=fs.readFileSync\\('marketing/carrusel-01-99-percent.html','utf8'\\); fs.writeFileSync\\('marketing/carrusel-01-99-percent.html', html.replace\\('__LOGO_BASE64__',b\\)\\); console.log\\('OK — placeholder reemplazado, tamaño final:', \\(fs.statSync\\('marketing/carrusel-01-99-percent.html'\\).size/1024\\).toFixed\\(0\\)+'KB'\\);\")",
+      "Bash(npm view *)",
+      "Bash(npm search *)",
+      "Bash(curl -sI \"https://emojicdn.elk.sh/🚬?style=microsoft\")"
     ]
   }
 }

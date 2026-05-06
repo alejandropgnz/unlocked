@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import { useAdjudicate } from "@/hooks/useAdjudicate";
 import { usePass } from "@/hooks/usePass";
+import { Emoji } from "./Emoji";
 import { trackEvent } from "@/hooks/useTrack";
 import { rarityTier, tierTextColor } from "@/lib/rarity";
 
@@ -133,7 +134,7 @@ function TopCard({
           is vs the action hints. pointer-events-none so the drag still
           works on the card body. */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-6 sm:px-8">
-        <div className="text-7xl sm:text-8xl">{item.emoji}</div>
+        <Emoji className="text-7xl sm:text-8xl">{item.emoji}</Emoji>
         <div className="mt-5 sm:mt-6 text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter">
           {item.title}
         </div>
@@ -181,7 +182,7 @@ function StaticCard({ item, depth }: { item: SwipeItem; depth: number }) {
       className="absolute inset-0 bg-surface border border-white/10 rounded-3xl p-8"
     >
       <div className="flex-1 flex flex-col items-center justify-center text-center pointer-events-none h-full">
-        <div className="text-7xl">{item.emoji}</div>
+        <Emoji className="text-7xl">{item.emoji}</Emoji>
       </div>
     </motion.div>
   );
