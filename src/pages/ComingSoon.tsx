@@ -253,14 +253,14 @@ export default function ComingSoon() {
         <span>Hecho en España · 2026</span>
         <span className="text-grey">·</span>
         <a
-          href="https://instagram.com/unlucky.app"
+          href="https://instagram.com/unlocky.app"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 hover:text-white transition"
-          aria-label="Síguenos en Instagram @unlucky.app"
+          aria-label="Síguenos en Instagram @unlocky.app"
         >
           <Instagram className="w-3.5 h-3.5" />
-          <span>@unlucky.app</span>
+          <span>@unlocky.app</span>
         </a>
         <span className="text-grey">·</span>
         <a href="/legal" className="hover:text-white underline-offset-2 hover:underline">
@@ -398,15 +398,6 @@ function SwipeCard({
       setExiting("left");
   };
 
-  // onTap fires after a pointer release that DIDN'T involve a
-  // significant drag — so tap and drag coexist without conflicting.
-  // Framer-motion handles the discrimination: a small movement = tap,
-  // anything past its tap threshold = drag (handled by onDragEnd).
-  const handleTap = () => {
-    if (exiting) return;
-    setExiting("right");
-  };
-
   return (
     <motion.div
       drag={exiting ? false : "x"}
@@ -415,7 +406,6 @@ function SwipeCard({
       dragSnapToOrigin
       dragMomentum={false}
       onDragEnd={handleDragEnd}
-      onTap={handleTap}
       // Initial only fades (no Y offset). Was { opacity: 0, y: 24 } which
       // bounced on the FIRST card on click: AnimatePresence's
       // initial={false} skipped the entry but framer-motion held the
@@ -442,11 +432,30 @@ function SwipeCard({
       }}
       style={{ x, rotate }}
       whileTap={{ cursor: "grabbing" }}
-      className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl select-none cursor-pointer"
+      className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl select-none cursor-grab active:cursor-grabbing"
     >
       <BrandTag />
       {children}
     </motion.div>
+  );
+}
+
+/**
+ * Small "Desliza →" cue for the bottom of swipeable cards. Replaces the
+ * tap-to-advance UX that turned out to mis-fire on legit drag attempts
+ * (framer-motion's tap detector classified slow drags as taps,
+ * advancing the deck before the user finished the gesture). With tap
+ * removed, this cue tells the user the card is interactive and how.
+ *
+ * Animated arrow nudges the eye in the swipe direction; uppercase
+ * tracking matches the deck's other tertiary labels (¿te suena?).
+ */
+function SwipeHint() {
+  return (
+    <div className="text-muted text-[10px] sm:text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 shrink-0">
+      <span>Desliza</span>
+      <span className="animate-pulse text-base">→</span>
+    </div>
   );
 }
 
@@ -482,11 +491,11 @@ function HeroCardBody() {
         </h1>
       </div>
 
-      {/* Bottom */}
-      <div className="shrink-0">
-        <p className="text-muted text-sm">Desliza para ver de qué va.</p>
-        <div className="mt-2 text-2xl text-muted animate-pulse">→</div>
-      </div>
+      {/* Bottom — usa el SwipeHint compartido. Antes había una versión
+          propia con texto largo + arrow grande; ahora se unifica con
+          el resto del deck para que el "desliza" sea reconocible
+          rápido en cualquier card. */}
+      <SwipeHint />
     </div>
   );
 }
@@ -520,11 +529,14 @@ function ExampleCardBody({ example }: { example: ExampleLogro }) {
         </div>
       </div>
 
-      {/* Bottom hint — engagement emocional. El progress bar superior
-          lleva el hint declarativo ("esto es un logro"); aquí abajo va
-          la pregunta abierta que invita a auto-reconocerse. */}
-      <div className="font-black text-sm uppercase tracking-widest text-muted shrink-0">
-        ¿Te suena?
+      {/* Bottom — pregunta abierta + cue de navegación. La pregunta
+          mantiene engagement emocional, el SwipeHint enseña cómo
+          avanzar (sin esto el usuario que no probó drag se queda). */}
+      <div className="shrink-0 flex flex-col items-center gap-2">
+        <div className="font-black text-sm uppercase tracking-widest text-muted">
+          ¿Te suena?
+        </div>
+        <SwipeHint />
       </div>
     </div>
   );
@@ -623,6 +635,12 @@ function StoriesCardBody() {
             + {MOCK_STORIES.length - STORIES_VISIBLE} más
           </p>
         )}
+      </div>
+
+      {/* Swipe cue — esta card no tenía bottom action y el usuario no
+          sabía cómo avanzar. */}
+      <div className="mt-3 shrink-0">
+        <SwipeHint />
       </div>
     </div>
   );
@@ -831,8 +849,11 @@ function BonusCardBody({
         </div>
       </div>
 
-      <div className="font-black text-sm uppercase tracking-widest text-muted shrink-0">
-        ¿Te suena?
+      <div className="shrink-0 flex flex-col items-center gap-2">
+        <div className="font-black text-sm uppercase tracking-widest text-muted">
+          ¿Te suena?
+        </div>
+        <SwipeHint />
       </div>
     </div>
   );
@@ -912,19 +933,19 @@ function ShareCardBody() {
 
       {/* CTA grande con border indigo (mismo lenguaje visual que el
           CTA de email, para que el usuario lea "esto es la acción
-          principal aquí"). stopPropagation evita que el tap del
-          SwipeCard wrapper avance al goodbye en cuanto el usuario
-          pulsa este botón — queremos abrir el share, no saltar slide. */}
+          principal aquí"). */}
       <button
         type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          void handleShare();
-        }}
+        onClick={() => void handleShare()}
         className="shrink-0 w-full rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase bg-indigo text-bg hover:bg-white transition"
       >
         Mándaselo →
       </button>
+      {/* Swipe-past affordance — el usuario que no quiera compartir
+          puede saltar al goodbye sin pulsar el botón. */}
+      <p className="text-muted text-[10px] uppercase tracking-widest font-bold mt-3 shrink-0">
+        O desliza →
+      </p>
     </div>
   );
 }
