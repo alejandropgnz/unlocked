@@ -12,7 +12,12 @@ export function NavBar() {
   const { user, signInWithGoogle } = useAuth();
 
   return (
-    <nav className="hidden md:flex items-center justify-between px-6 lg:px-8 py-4 border-b border-white/5">
+    // Horizontal padding chosen to align the wordmark's logo edge with
+    // the Sidebar items' icon edge: Sidebar uses `px-4` (16px) container
+    // + per-item `px-3` (12px) = 28px from screen edge. Matching with
+    // `px-7` (28px) here keeps the padlock and menu icons in the same
+    // vertical column.
+    <nav className="hidden md:flex items-center justify-between px-7 py-4 border-b border-white/5">
       <Link to="/" aria-label="Unlocky — Inicio">
         <Wordmark size="md" />
       </Link>
