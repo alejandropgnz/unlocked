@@ -63,6 +63,15 @@ export default function AchievementDetail() {
           <h1 className="mt-4 text-2xl md:text-4xl font-black tracking-tighter">
             {achievement.title}
           </h1>
+          {/* Short witty tagline below the title — nullable: only the
+              200 originally-curated logros have descriptions, the
+              rest stay clean without it. Render nothing if null
+              instead of an empty box. */}
+          {achievement.description && (
+            <p className="mt-3 text-sm md:text-base text-muted italic max-w-md">
+              {achievement.description}
+            </p>
+          )}
 <div className="mt-4 flex gap-4 text-xs text-muted font-mono uppercase tracking-widest">
             <span>{achievement.category}</span>
             <span>·</span>

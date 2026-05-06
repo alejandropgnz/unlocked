@@ -16,7 +16,7 @@ export type ReportReason = Database["public"]["Enums"]["report_reason"];
 
 export type AchievementSummary = Pick<
   Achievement,
-  "id" | "slug" | "title" | "emoji" | "category" | "unlock_count"
+  "id" | "slug" | "title" | "emoji" | "description" | "category" | "unlock_count"
 >;
 
 export type AchievementWithRarity = AchievementSummary & {

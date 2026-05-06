@@ -9,6 +9,7 @@ export interface UserUnlockData {
     slug: string;
     title: string;
     emoji: string;
+    description: string | null;
     category: string;
     unlock_count: number;
   };
@@ -40,7 +41,7 @@ export function useUserUnlock(
       // 2. Achievement by slug
       const { data: achievement, error: aErr } = await supabase
         .from("achievements")
-        .select("id, slug, title, emoji, category, unlock_count")
+        .select("id, slug, title, emoji, description, category, unlock_count")
         .eq("slug", slug!)
         .eq("status", "approved")
         .maybeSingle();
@@ -80,6 +81,7 @@ export function useUserUnlock(
           slug: achievement.slug,
           title: achievement.title,
           emoji: achievement.emoji,
+          description: achievement.description,
           category: achievement.category,
           unlock_count: achievement.unlock_count,
         },

@@ -48,6 +48,12 @@ export type Database = {
           slug: string;
           title: string;
           emoji: string;
+          // Nullable: only the original 200 curated logros have descriptions
+          // (restored via migration _019). The 1675 v2/v3 entries that were
+          // generated AFTER the description column was dropped come back
+          // with description = NULL until they're filled in. UI must render
+          // nothing if null.
+          description: string | null;
           category: Database["public"]["Enums"]["achievement_category"];
           created_by: string | null;
           status: Database["public"]["Enums"]["achievement_status"];
@@ -59,6 +65,7 @@ export type Database = {
           slug: string;
           title: string;
           emoji: string;
+          description?: string | null;
           category: Database["public"]["Enums"]["achievement_category"];
           created_by?: string | null;
           status?: Database["public"]["Enums"]["achievement_status"];
@@ -70,6 +77,7 @@ export type Database = {
           slug?: string;
           title?: string;
           emoji?: string;
+          description?: string | null;
           category?: Database["public"]["Enums"]["achievement_category"];
           created_by?: string | null;
           status?: Database["public"]["Enums"]["achievement_status"];

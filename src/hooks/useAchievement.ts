@@ -8,7 +8,7 @@ export function useAchievement(slug: string | undefined) {
     queryFn: async (): Promise<AchievementWithRarity | null> => {
       const { data, error } = await supabase
         .from("achievements")
-        .select("id, slug, title, emoji, category, unlock_count")
+        .select("id, slug, title, emoji, description, category, unlock_count")
         .eq("slug", slug!)
         .eq("status", "approved")
         .maybeSingle();
