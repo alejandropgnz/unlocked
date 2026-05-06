@@ -173,7 +173,10 @@ export function useAchievement(slug: string | undefined) {
 
 ### Reglas obligatorias
 
-1. **Siempre `min-h-screen min-h-[100dvh]`** en los contenedores principales del Layout. `100vh` no se ajusta cuando Safari iOS oculta la URL bar → genera gap. `100dvh` sí. Ambas como fallback.
+1. **`min-h-screen min-h-[100dvh]` en layouts SCROLLABLES, `h-screen` + `style={{ height: "100svh" }}` en layouts FIXED (1-screen)**. La unidad correcta depende de cómo se comporta la página:
+
+   - **Scrollable (Home, Profile, Descubrir feed, etc.)**: `min-h-screen min-h-[100dvh]`. El contenedor crece con el contenido y mínimo cubre el viewport. `100dvh` (NO `100vh`) porque cuando Safari iOS oculta la URL bar al scrollear, `100vh` deja un gap; `100dvh` se ajusta dinámicamente y no.
+   - **Fixed single-screen (landing `/proximamente`, modals fullscreen, splash screens)**: `h-screen` como fallback Tailwind + `style={{ height: "100svh" }}` inline. **NUNCA `100dvh` aquí.** iOS Safari 15-17 tiene un bug documentado: durante el primer paint, `100dvh` reporta el LARGE viewport (chrome oculto) en vez del visible actual → el contenedor sale más alto que el área visible cuando la URL bar y la toolbar inferior están mostradas → con `overflow-hidden` el contenido (típicamente footer) queda recortado detrás de la toolbar inferior de Safari. Solo se reproduce en iOS real, NO en el emulador mobile de Chrome DevTools (que no tiene chrome dinámico). `100svh` = small viewport height = el peor caso del chrome → garantiza que el layout cabe siempre. Trade-off: cuando la URL bar se minimiza al scrollear queda un sliver del color de fondo abajo, imperceptible en una landing single-screen.
 
 2. **El `<main>` en mobile siempre con padding-bottom calculado:**
    ```tsx
@@ -210,6 +213,7 @@ export function useAchievement(slug: string | undefined) {
 2. Hacer scroll para que Safari iOS oculte URL bar → no aparece gap
 3. iPhone con notch → home indicator respetado
 4. **Sin scroll horizontal** — cards en grid 2-col deben tener `w-full max-w-[Npx]`, NUNCA `w-[Npx]` fijo, o desbordan en viewports estrechos (375px típico iPhone)
+5. **Probar SIEMPRE en iOS Safari real, no solo en Chrome DevTools mobile mode.** El emulador de Chrome no tiene chrome dinámico (URL bar / toolbar inferior) y oculta bugs de `100dvh`, safe-area-insets y `overflow-hidden` clipping. Si solo validas en el emulador, vas a deployar layouts rotos al teléfono real. Para forzar refresh tras un cambio, usar query param `?v=N` ya que iOS Safari cachea index.html agresivamente.
 
 ---
 
