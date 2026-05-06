@@ -230,7 +230,7 @@ export default function ComingSoon() {
                 <SwipeCard key="bonus0" onSwipe={advance}>
                   <BonusCardBody
                     example={BONUS_LOGROS[0]}
-                    intro="Te tenemos. Un último regalo antes de irte."
+                    intro="Te enseñamos un logro más ;)"
                   />
                 </SwipeCard>
               )}
