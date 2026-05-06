@@ -1909,4 +1909,828 @@ export const NEW_DESCRIPTIONS = {
   'soy-siempre-el-ultimo-en-irme-y-nadie-me-lo-agradece': {
     description: 'Apago las luces. Cierro la puerta. Llego a casa a las 23h.',
   },
+
+  // ===== v3-viajes (274) ================================================
+  'me-pelee-con-mi-pareja-en-el-aeropuerto-antes-de-un-viaje-ro': {
+    description: 'Empezamos las vacaciones sin hablarnos. Tres días.',
+  },
+  'me-puse-a-llorar-en-la-puerta-de-embarque-sin-saber-muy-bien': {
+    description: 'Cinco minutos. Sin razón clara. La gente miraba.',
+  },
+  'cogi-un-ryanair-a-las-6am-habiendo-dormido-en-el-suelo-de-ba': {
+    description: 'La maleta de almohada. Las luces nunca se apagan.',
+  },
+  'me-quede-en-tierra-por-overbooking-y-me-dieron-un-vale-para': {
+    description: 'Doce euros. Para una hamburguesa. Sin patatas.',
+  },
+  'me-toco-el-bebe-llorando-al-lado-en-un-vuelo-de-8-horas': {
+    description: 'Lloró 7 horas y 45 minutos. Los dejé un round.',
+  },
+  'el-bebe-que-lloraba-en-el-avion-esta-vez-era-el-mio': {
+    description: 'Y miré a las otras personas pidiendo perdón en silencio.',
+  },
+  'vomite-en-la-bolsita-del-avion-en-pleno-aterrizaje': {
+    description: 'No llegué al baño. La señora del lado lo entendió.',
+  },
+  'me-dormi-en-el-avion-y-me-desperte-con-la-gente-mirandome-po': {
+    description: 'Roncaba con la boca abierta. El de al lado lo grabó.',
+  },
+  'pite-en-el-control-y-no-sabia-que-tenia-en-el-bolsillo': {
+    description: 'Una llave perdida desde 2018. La conservé.',
+  },
+  'me-hicieron-tirar-las-cremas-en-seguridad-y-eran-las-caras': {
+    description: 'Cuarenta euros a la basura. La cara de la agente: cero piedad.',
+  },
+  'llegue-al-aeropuerto-y-descubri-que-mi-pasaporte-estaba-cadu': {
+    description: 'Caducado por dos meses. Me puse a llorar en facturación.',
+  },
+  'llegue-al-aeropuerto-sin-pasaporte-y-volvi-a-por-el-en-taxi': {
+    description: 'Cuarenta euros. Llegué a la puerta de embarque corriendo.',
+  },
+  'me-hicieron-pesar-la-mochila-en-ryanair-y-me-cobraron-50-eur': {
+    description: 'Cien gramos de más. Cincuenta euros. Recuerdo el momento.',
+  },
+  'cambiaron-la-puerta-de-embarque-y-cruce-el-aeropuerto-a-espr': {
+    description: 'De la 1A a la 47C. Llegué con la lengua fuera.',
+  },
+  'me-cancelaron-el-vuelo-y-pase-4-horas-en-la-cola-del-mostrad': {
+    description: 'Sin agua. Sin información. Solo gente con las maletas.',
+  },
+  'me-dormi-en-la-puerta-de-embarque-y-me-desperte-solo-en-la-s': {
+    description: 'Cuando abrí los ojos, todos se habían ido sin avisarme.',
+  },
+  'me-toco-el-asiento-del-medio-entre-dos-senores-que-no-callar': {
+    description: 'Me hablaron sin mirarme. Yo no respondí. Siguieron.',
+  },
+  'mi-bolso-no-entro-en-el-medidor-y-lo-meti-a-presion-con-la-r': {
+    description: 'Sudaba. Sonreía. Pasé.',
+  },
+  'me-pillaron-en-aduana-llevando-un-trozo-de-jamon-en-la-malet': {
+    description: 'Lo confiscaron. Treinta euros de jamón ibérico al cubo.',
+  },
+  'me-sellaron-mal-el-pasaporte-y-casi-no-entro-al-pais': {
+    description: 'Tres horas con el oficial. Tres llamadas. Volví casi sin viaje.',
+  },
+  'me-equivoque-de-cola-en-el-control-de-pasaportes-y-me-toco-1': {
+    description: 'La cola del lado iba al doble de velocidad.',
+  },
+  'perdieron-mi-maleta-y-llego-3-dias-despues-con-todo-dentro-m': {
+    description: 'La camisa de boda. Mojada. Apesadumbrada. Olía a depósito.',
+  },
+  'recogi-la-maleta-en-la-cinta-y-estaba-rota-con-todo-asomando': {
+    description: 'La cubrí con cinta de embalar. Volví así a casa.',
+  },
+  'cogi-la-maleta-de-otra-persona-y-me-di-cuenta-en-el-hotel': {
+    description: 'Mismo color. Mismo peso. Distinto contenido.',
+  },
+  'perdi-el-ultimo-aerobus-a-las-1am-y-dormi-en-una-silla-del-a': {
+    description: 'Cinco horas. Sin manta. Con el frío del aire condicionado.',
+  },
+  'me-toco-un-blablacar-de-6-horas-con-un-conductor-que-no-abri': {
+    description: 'Solo dijo "hola" y "ya llegamos". Yo tampoco hablé.',
+  },
+  'sufri-700km-de-reggaeton-al-maximo-en-un-blablacar': {
+    description: 'Pedí bajar dos veces. No le importó.',
+  },
+  'cogi-el-tren-equivocado-y-apareci-en-una-ciudad-que-ni-iba-a': {
+    description: 'Pasé cuatro horas en un pueblo de cuatro casas.',
+  },
+  'hice-un-bus-nocturno-con-el-asiento-roto-que-no-se-reclinaba': {
+    description: 'Doce horas en posición militar. Mi espalda lo recuerda.',
+  },
+  'me-subi-al-metro-en-otro-pais-sin-saber-como-se-compraba-el': {
+    description: 'Salté el torno. Lo confieso. Nadie lo notó.',
+  },
+  'me-pillaron-sin-validar-el-billete-del-metro-y-me-clavaron-6': {
+    description: 'Lo había validado. Pero la máquina no leyó. Pagué igual.',
+  },
+  'me-dieron-la-vuelta-larga-en-taxi-desde-el-aeropuerto-y-me-c': {
+    description: 'Setenta euros por un trayecto de veinte. Sin ticket.',
+  },
+  'me-subi-al-uber-equivocado-y-no-me-di-cuenta-en-5-minutos': {
+    description: 'El conductor tampoco. Llegamos a un sitio que no era.',
+  },
+  'me-di-cuenta-a-mitad-de-trayecto-que-el-conductor-olia-a-alc': {
+    description: 'Pedí bajarme. Inventé un mensaje urgente.',
+  },
+  'llegue-a-un-airbnb-que-en-las-fotos-era-espectacular-y-era-u': {
+    description: 'Las fotos eran del 2014. La realidad: humedades en el techo.',
+  },
+  'el-anfitrion-del-airbnb-me-hizo-un-tour-de-1-hora-por-la-cas': {
+    description: 'Me explicó cómo funciona la lavadora con manual incluido.',
+  },
+  'reserve-airbnb-entero-y-resulto-que-el-anfitrion-vivia-en-la': {
+    description: 'Salía del baño en pijama mientras yo desayunaba.',
+  },
+  'en-el-hostal-el-de-la-litera-de-arriba-roncaba-como-un-oso': {
+    description: 'Tapones. Música. Almohada en la cara. Nada funcionó.',
+  },
+  'a-las-3am-alguien-encendio-la-luz-del-hostal-para-hacer-la-m': {
+    description: 'Cuarenta y cinco minutos haciendo crujir el plástico.',
+  },
+  'en-el-hostal-estaban-follando-en-la-litera-de-al-lado-y-yo-f': {
+    description: 'Veinte minutos. Sin sonido. Yo tampoco respiraba.',
+  },
+  'el-hotel-del-centro-no-tenia-agua-caliente-y-yo-banandome-en': {
+    description: 'Pagué cuatro estrellas. Me duché en cuatro grados.',
+  },
+  'encontre-un-bicho-en-la-cama-del-hotel-a-la-1-de-la-manana': {
+    description: 'Cucaracha. Tamaño industrial. Cambié de hotel a las 2am.',
+  },
+  'el-vecino-de-hotel-puso-la-tele-a-las-7am-y-no-habia-forma-d': {
+    description: 'Telediario en el idioma local. A todo volumen. Cada día.',
+  },
+  'llegue-al-airbnb-a-las-11-de-la-noche-y-no-habia-papel-higie': {
+    description: 'El supermercado cerrado. Improvisé con servilletas.',
+  },
+  'llegue-al-alojamiento-tarde-y-la-recepcion-estaba-cerrada-ha': {
+    description: 'Dormí en el portal. Con la maleta de almohada.',
+  },
+  'no-encontre-la-llave-en-el-buzon-del-airbnb-y-dormi-en-el-po': {
+    description: 'El anfitrión me respondió a las 9am. "Disculpa, lo olvidé".',
+  },
+  'se-me-mojo-la-tienda-entera-la-primera-noche-de-camping': {
+    description: 'Saco de dormir incluido. Pasé la noche en el coche.',
+  },
+  'acampe-con-un-saco-que-no-daba-calor-y-me-mori-de-frio': {
+    description: 'Tiritaba toda la noche. Pegado a las brasas del fuego.',
+  },
+  'me-perdi-en-el-bosque-siguiendo-google-maps-por-un-sendero-q': {
+    description: 'Tres horas dando vueltas. Me cogió la noche.',
+  },
+  'hice-una-ruta-de-15km-con-zapatillas-urbanas-y-se-me-deshici': {
+    description: 'Volví descalzo el último kilómetro. Las suelas en la mochila.',
+  },
+  'sali-a-hacer-una-ruta-sin-agua-y-casi-me-desmayo-a-mitad': {
+    description: 'Treinta y cinco grados. Dos horas. Cero litros.',
+  },
+  'llegue-a-la-cumbre-y-se-me-apago-el-movil-justo-antes-de-la': {
+    description: 'Llevé el cargador equivocado. Sin foto. Sin prueba.',
+  },
+  'me-torci-el-tobillo-el-primer-dia-y-me-pase-las-vacaciones-c': {
+    description: 'Diez días esperando que desinflamara. Nunca llegó.',
+  },
+  'me-queme-tanto-al-sol-que-no-podia-ni-ponerme-la-camiseta': {
+    description: 'Dormí desnudo. Crema cada hora. Tres días sin moverme.',
+  },
+  'volvi-de-la-playa-con-la-marca-de-la-camiseta-de-tirantes-pa': {
+    description: 'En septiembre seguía la línea. En noviembre también.',
+  },
+  'pise-un-erizo-en-la-playa-y-pase-el-resto-del-viaje-cojeando': {
+    description: 'Doce púas. Cinco días para sacarlas todas.',
+  },
+  'me-pico-una-medusa-el-primer-dia-y-se-acabo-el-plan-playa': {
+    description: 'Una raya morada de 30 cm en el muslo. Una semana.',
+  },
+  'pille-una-diarrea-de-viaje-que-no-quiero-ni-recordar': {
+    description: 'Tres días en el baño del hotel. Sin móvil. Sin esperanza.',
+  },
+  'comi-marisco-en-un-puesto-cualquiera-y-pase-la-noche-en-el-b': {
+    description: 'Camarones. Dudosos. La barriga lo confirmó dos horas después.',
+  },
+  'vomite-en-un-tuk-tuk-por-la-mezcla-de-calor-comida-y-conducc': {
+    description: 'El conductor ni paró. Yo tampoco le pedí.',
+  },
+  'pille-un-resfriado-bestia-por-el-aire-acondicionado-del-hote': {
+    description: 'Dieciocho grados. Yo en pantalón corto. Tres días con fiebre.',
+  },
+  'con-el-jet-lag-me-hice-una-tortilla-francesa-a-las-3-de-la-m': {
+    description: 'No sabía si era cena o desayuno. Comí dos.',
+  },
+  'pague-100-euros-por-una-cena-que-pensaba-que-costaba-30': {
+    description: 'No leí la carta. Asumí. Pagué triple.',
+  },
+  'pedi-en-otro-idioma-y-me-trajeron-algo-que-ni-reconoci': {
+    description: 'Casquería. Hígado. Algo. Lo comí por compromiso.',
+  },
+  'cai-en-una-trampa-para-turistas-y-me-cobraron-el-cubierto-a': {
+    description: 'Por persona. Por servilleta. Por sentarse.',
+  },
+  'no-sabia-cuanta-propina-dejar-y-deje-el-doble-por-miedo': {
+    description: 'El camarero salió detrás de mí para devolverla.',
+  },
+  'despues-de-5-dias-de-probar-comida-local-termine-en-un-mcdon': {
+    description: 'En Roma. Con un Big Mac. Sin filtros y sin remordimientos.',
+  },
+  'cene-un-sandwich-de-gasolinera-de-un-pais-que-no-entendia-na': {
+    description: 'Pan rancio. Queso del color del cartón. Era 1am.',
+  },
+  'pase-40-minutos-en-un-supermercado-intentando-comprar-cosas': {
+    description: 'Yogur. Pan. Agua. Tres conceptos imposibles sin idioma.',
+  },
+  'pedi-un-cafe-con-leche-en-italia-a-las-5-de-la-tarde-y-me-mi': {
+    description: 'El camarero me dijo "¿estás seguro?". Aún lo recuerda.',
+  },
+  'me-cobraron-12-libras-por-una-pinta-en-londres-y-disimule': {
+    description: 'Sonreí. Pagué. Me fui sin pedir otra.',
+  },
+  'pedi-una-cerveza-en-baviera-y-me-trajeron-un-litro-que-no-me': {
+    description: 'Tardé tres horas. Acabé en horizontal. La camarera asintió.',
+  },
+  'dije-que-aguantaba-el-picante-en-mexico-y-casi-lloro': {
+    description: 'Tres salsas. Tres derrotas. Dos vasos de leche.',
+  },
+  'en-el-sushi-de-cinta-no-entendi-los-precios-y-pague-80-euros': {
+    description: 'Cogí lo más colorido. Cada plato era el más caro.',
+  },
+  'pedi-el-vino-de-la-carta-sin-mirar-precio-y-costaba-200-euro': {
+    description: 'Lo bebí muy despacio. Sabía igual que el de 12.',
+  },
+  'llegue-al-destino-sin-haber-cambiado-moneda-y-todo-cerrado': {
+    description: 'Pagué un café con la última moneda que tenía.',
+  },
+  'el-cajero-del-extranjero-me-clavo-15-euros-de-comision-por-s': {
+    description: 'Lo descubrí en el extracto. Tres meses después.',
+  },
+  'mi-banco-bloqueo-la-tarjeta-por-sospechar-fraude-justo-en-el': {
+    description: 'En el supermercado. Llamada urgente desde una cabina.',
+  },
+  'la-revolut-no-me-funciono-y-tuve-que-pagar-todo-con-la-tarje': {
+    description: 'Doce comisiones. Una factura del banco infinita.',
+  },
+  'perdi-la-cartera-en-la-estacion-de-tren-y-no-volvi-a-verla': {
+    description: 'DNI. Tarjetas. Doscientos euros en cash. Adiós.',
+  },
+  'me-robaron-la-mochila-en-un-bar-mientras-pedia-la-segunda-ce': {
+    description: 'Cinco minutos. Eso fue todo. Móvil incluido.',
+  },
+  'un-carterista-me-saco-el-movil-del-bolsillo-en-el-metro-y-no': {
+    description: 'Lo busqué. No estaba. Lo asumí.',
+  },
+  'me-hicieron-la-estafa-de-la-pulsera-en-plena-calle-y-pague': {
+    description: 'Diez euros por una pulsera que se rompió en una hora.',
+  },
+  'pague-100-euros-por-una-bici-de-alquiler-que-se-rompio-en-el': {
+    description: 'La cadena se salió. La empresa no respondió. Cien al aire.',
+  },
+  'mi-primera-noche-de-erasmus-la-pase-llorando-en-la-habitacio': {
+    description: 'Sin amigos. Sin idioma. Con la maleta abierta.',
+  },
+  'fui-a-mi-primera-clase-de-erasmus-y-no-entendi-ni-una-palabr': {
+    description: 'Asentí dos horas. Salí más perdido que cuando entré.',
+  },
+  'en-el-erasmus-me-alimente-de-pasta-con-tomate-durante-un-mes': {
+    description: 'Cuatro euros la bolsa. Treinta y un cenas iguales.',
+  },
+  'en-mi-piso-de-erasmus-la-cocina-parecia-una-zona-de-guerra-c': {
+    description: 'Platos por todas partes. Nadie limpiaba. Yo tampoco.',
+  },
+  'sali-de-fiesta-en-erasmus-perdi-las-llaves-y-dormi-en-el-rel': {
+    description: 'Mis compañeros me encontraron por la mañana. Risas eternas.',
+  },
+  'llore-en-el-vuelo-de-vuelta-del-erasmus-mirando-por-la-venta': {
+    description: 'Tres horas. Sin película. Solo nubes y nostalgia.',
+  },
+  'hice-un-mes-de-mochilero-con-tres-camisetas-que-ya-no-olian': {
+    description: 'Las lavé en lavabos de hostales. No fue suficiente.',
+  },
+  'me-lie-con-alguien-en-el-hostal-y-al-dia-siguiente-cogimos-v': {
+    description: 'No le pedí Instagram. Él tampoco. Quedó así.',
+  },
+  'conoci-a-alguien-en-un-hostal-y-seguimos-hablando-4-anos-des': {
+    description: 'Vive en Berlín. Yo en Madrid. Nos llamamos cada cumple.',
+  },
+  'cene-yo-solo-en-la-cocina-del-hostel-mientras-todos-hacian-p': {
+    description: 'Comí pasta del Lidl. Todos pidieron en el bar.',
+  },
+  'mi-pareja-y-yo-nos-peleamos-por-el-mapa-y-dejamos-de-hablarn': {
+    description: 'En las callejuelas de un pueblo. Tres horas en silencio.',
+  },
+  'en-vacaciones-queriamos-cosas-opuestas-y-acabamos-cada-uno-p': {
+    description: 'Yo museos. Él playa. Quedamos para cenar y casi cortamos.',
+  },
+  'viaje-con-un-grupo-de-amigos-y-descubri-que-uno-era-un-plomo': {
+    description: 'Lo dijimos al cuarto día. Volvió antes que el resto.',
+  },
+  'en-el-grupo-el-tipico-que-llevaba-un-excel-con-todos-los-gas': {
+    description: 'Con cinco decimales. Un Bizum por dos cervezas.',
+  },
+  'en-el-viaje-con-amigos-siempre-habia-uno-que-se-escapaba-a-p': {
+    description: 'En la cuenta final descubrimos que llevaba cinco días sin pagar.',
+  },
+  'me-coincidio-mi-cumpleanos-en-pleno-viaje-y-nadie-se-acordo': {
+    description: 'A las 22h alguien lo vio en Instagram. Pidieron una tarta.',
+  },
+  'en-la-luna-de-miel-nos-peleamos-al-bajar-del-avion': {
+    description: 'Por las maletas. Veinte minutos. Empezó así la luna.',
+  },
+  'viaje-con-mis-padres-a-roma-y-acabe-buscando-excusas-para-es': {
+    description: 'Inventé que necesitaba comprar un libro. Dos horas paseando solo.',
+  },
+  'el-domingo-de-vuelta-del-viaje-pense-en-pedir-la-baja-para-n': {
+    description: 'No la pedí. Lloré toda la mañana en la oficina.',
+  },
+  'se-cancelo-el-vuelo-y-dormi-8h-en-una-silla-rigida-del-aerop': {
+    description: 'Sin manta. Sin almohada. Sin colchón. Sin dignidad.',
+  },
+  'pase-la-noche-en-el-aeropuerto-cenando-un-burger-king-a-las': {
+    description: 'Catorce euros. Frío. Solo en una mesa para cuatro.',
+  },
+  'llegue-2-horas-antes-al-aeropuerto-y-aun-asi-casi-pierdo-el': {
+    description: 'Cola de seguridad: una hora. Cola de pasaportes: media.',
+  },
+  'imprimi-la-tarjeta-de-embarque-en-blanco-y-negro-y-casi-me-h': {
+    description: 'Veinte euros me querían cobrar. Casi lo aceptan.',
+  },
+  'pague-extra-por-ventanilla-y-me-pase-el-vuelo-durmiendo-con': {
+    description: 'Ocho euros perdidos. Las nubes pasaron sin mí.',
+  },
+  'cogi-pasillo-y-la-del-medio-se-mareo-toda-encima': {
+    description: 'No me avisó. Cinco horas oliendo.',
+  },
+  'pedi-el-menu-especial-del-avion-y-vino-una-cosa-imposible-de': {
+    description: 'Ensalada con plástico. Pollo gomoso. Yogur sin cuchara.',
+  },
+  'la-azafata-me-tiro-el-cafe-encima-y-me-pase-el-vuelo-con-el': {
+    description: 'Me pidió perdón. Me regaló dos miniaturas.',
+  },
+  'estuve-en-cola-del-bano-del-avion-30-minutos-y-me-lo-aguante': {
+    description: 'Aterricé corriendo. La gente me cedía el paso.',
+  },
+  'me-puse-a-llorar-viendo-una-peli-en-el-avion-rodeado-de-gent': {
+    description: 'Era una peli mediocre. Pero el contexto me pudo.',
+  },
+  'aplaudi-cuando-aterrizo-el-avion-y-me-di-cuenta-tarde-de-la': {
+    description: 'Solo aplaudimos cuatro. La cabina hizo silencio incómodo.',
+  },
+  'en-una-turbulencia-fuerte-me-puse-a-rezar-sin-ser-creyente': {
+    description: 'Padre nuestro completo. Lo aprendí en el momento.',
+  },
+  'me-maree-tanto-en-un-coche-que-tuve-que-parar-y-vomitar-en-l': {
+    description: 'Dos horas de curvas. Cuatro paradas. Una indigestión.',
+  },
+  'me-maree-en-un-autobus-de-montana-y-vomite-unas-lentejas-que': {
+    description: 'Me las había comido tres días antes. Aún recuerdo el sabor.',
+  },
+  'en-el-ferry-me-pase-toda-la-travesia-tumbado-en-el-suelo-del': {
+    description: 'Doce horas. Mareado. Sin moverme.',
+  },
+  'conduje-en-un-pais-con-el-volante-al-otro-lado-y-casi-me-mat': {
+    description: 'Las rotondas son enemigas. Especialmente al revés.',
+  },
+  'eche-gasolina-equivocada-en-un-coche-de-alquiler-en-otro-pai': {
+    description: 'Diésel en un gasolina. Doscientos euros de grúa.',
+  },
+  'me-llego-una-multa-del-coche-de-alquiler-4-meses-despues-por': {
+    description: 'Una raya que ya estaba. Cobrada al doble.',
+  },
+  'me-llevaron-el-coche-con-la-grua-en-el-primer-dia-de-vacacio': {
+    description: 'Aparqué donde no debía. Dos horas para recuperarlo.',
+  },
+  'me-cobraron-80-euros-de-parking-porque-no-entendi-como-se-pa': {
+    description: 'La máquina solo aceptaba moneda local. La descubrí tarde.',
+  },
+  'llegue-al-monumento-estrella-del-viaje-y-estaba-cerrado-los': {
+    description: 'Vi el cartel desde fuera. Lloré por dentro.',
+  },
+  'hice-3-horas-de-cola-para-un-museo-que-me-aburrio-en-20-minu': {
+    description: 'Salí mintiendo: "muy interesante". A nadie engañé.',
+  },
+  'pase-una-tarde-entera-en-un-museo-y-solo-recuerdo-el-dolor-d': {
+    description: 'No me preguntes por las obras. Recuerdo los bancos.',
+  },
+  'hice-la-foto-sujetando-la-torre-de-pisa-y-me-sigo-arrepintie': {
+    description: 'La subí en 2014. Sigue ahí. Sin borrar.',
+  },
+  'pague-entrada-para-una-atraccion-solo-para-el-insta-y-no-ent': {
+    description: 'Hice la foto desde fuera. Me ahorré el museo.',
+  },
+  'pase-2-horas-montando-una-foto-de-instagram-en-la-playa': {
+    description: 'Cien intentos. La que subí no era la mejor.',
+  },
+  'volvi-con-50-imanes-de-la-nevera-y-no-se-ni-donde-compre-la': {
+    description: 'Mi nevera parece una galería de minimuseos.',
+  },
+  'me-compre-un-souvenir-de-ceramica-y-llego-a-casa-hecho-anico': {
+    description: 'Lo metí en la maleta sin envolver. Confié.',
+  },
+  'me-compre-la-camiseta-de-i-love-ny-y-no-me-la-he-puesto-nunc': {
+    description: 'Está en el cajón desde 2019. Esperando.',
+  },
+  'volvi-con-una-bolsa-de-souvenirs-tan-pesada-que-me-cobraron': {
+    description: 'Cuarenta euros por exceso. Eran imanes.',
+  },
+  'me-duche-en-el-hostel-y-me-senti-mas-solo-que-en-toda-mi-vid': {
+    description: 'Agua tibia. Azulejos rotos. Llorar también.',
+  },
+  'pedi-mesa-para-uno-en-un-restaurante-caro-y-disfrute-como-nu': {
+    description: 'Sin móvil. Sin libro. Solo el plato y yo.',
+  },
+  'hice-match-en-tinder-en-otro-pais-y-quede-con-un-desconocido': {
+    description: 'Me llevó a un mercado nocturno. Cinco horas de tour.',
+  },
+  'quede-con-alguien-de-grindr-en-otro-pais-y-luego-me-arrepent': {
+    description: 'Aparté la cortina. Vi su salón. Inventé una llamada.',
+  },
+  'me-lie-con-alguien-en-el-viaje-y-al-volver-llore-en-el-avion': {
+    description: 'No me dio su nombre real. Lo descubrí buscando.',
+  },
+  'llame-a-mis-padres-llorando-desde-otro-pais-por-una-tonteria': {
+    description: 'Era un Bizum mal hecho. Mi madre suspiró tres veces.',
+  },
+  'me-llego-una-factura-de-100-euros-de-roaming-sin-haber-hecho': {
+    description: 'Solo había abierto WhatsApp. Una vez. O eso creía.',
+  },
+  'el-hotel-decia-wifi-gratis-y-era-de-pago-a-15-euros-la-hora': {
+    description: 'Lo descubrí cuando intenté ver Instagram a la 1am.',
+  },
+  'intente-ver-netflix-en-otro-pais-y-la-vpn-no-me-funcionaba': {
+    description: 'Tres horas configurando. Mejor me leí un libro.',
+  },
+  'llegue-al-hotel-con-el-cargador-equivocado-para-el-tipo-de-e': {
+    description: 'El móvil al 4%. Adaptador a 15 euros. Cero negociación.',
+  },
+  'compre-un-adaptador-de-enchufe-en-el-aeropuerto-a-25-euros': {
+    description: 'Lo encontré por 2 al día siguiente. Sin reembolso.',
+  },
+  'se-me-apago-el-movil-en-una-ciudad-nueva-y-no-sabia-volver-a': {
+    description: 'Dos horas dando vueltas. Pregunté por gestos.',
+  },
+  'en-un-taxi-no-me-acordaba-del-nombre-del-hotel-y-di-vueltas': {
+    description: 'Solo recordaba que era azul. Y que estaba cerca.',
+  },
+  'use-un-mapa-de-papel-del-hostal-y-aun-asi-me-perdi': {
+    description: 'No sabía orientarlo. El norte se me escapaba.',
+  },
+  'pague-un-tour-por-adelantado-y-al-final-no-me-apetecia-y-no': {
+    description: 'Cuarenta euros tirados. Dormí hasta las 11.',
+  },
+  'cai-en-un-tour-donde-el-guia-no-callo-en-3-horas-y-solo-quer': {
+    description: 'Hablaba sin parar. Y mal.',
+  },
+  'en-un-free-tour-me-senti-obligado-a-poner-20-euros-de-propin': {
+    description: 'El guía pasó la gorra. Yo el primero. Por vergüenza.',
+  },
+  'me-quede-dormido-en-un-bus-turistico-y-pase-dos-veces-por-lo': {
+    description: 'El conductor me despertó al hacer la última vuelta.',
+  },
+  'se-me-cayeron-las-gafas-haciendo-snorkel-y-se-las-llevo-el-m': {
+    description: 'Las graduadas. Pasé el viaje viendo siluetas.',
+  },
+  'en-mi-primera-inmersion-de-buceo-me-dio-un-ataque-de-panico': {
+    description: 'A 5 metros. Subí a la superficie sin avisar.',
+  },
+  'cogi-un-paddle-surf-y-me-aleje-tanto-que-no-sabia-como-volve': {
+    description: 'Tres horas remando contra viento. Lloré.',
+  },
+  'volque-el-kayak-con-el-movil-dentro-y-se-acabo-el-viaje': {
+    description: 'Tres mil fotos. Todas perdidas. Sin backup.',
+  },
+  'me-monte-en-un-camello-en-marruecos-y-me-cai-en-el-primer-pa': {
+    description: 'Frente al guía. Frente al grupo. Frente a la cámara.',
+  },
+  'monte-un-elefante-en-tailandia-y-volvi-con-cargo-de-concienc': {
+    description: 'Lo defendí en el momento. Lo enterré después.',
+  },
+  'un-perro-me-mordio-en-otro-pais-y-tuve-que-ir-a-urgencias-po': {
+    description: 'Cuatro pinchazos. Tres horas. Seguro privado.',
+  },
+  'volvi-del-viaje-con-las-piernas-hechas-un-campo-de-mosquitos': {
+    description: 'Cuarenta picaduras. Conté.',
+  },
+  'pille-piojos-en-un-hostal-y-me-entere-2-semanas-despues': {
+    description: 'En la cabeza de mi sobrina. Lo conecté tarde.',
+  },
+  'pille-sarna-en-un-hostal-del-sudeste-asiatico-y-no-se-lo-des': {
+    description: 'Picaba sin parar. Tres semanas de tratamiento.',
+  },
+  'me-dieron-a-probar-orina-de-vaca-en-india-por-una-broma-de-u': {
+    description: 'Dijo que era zumo. Confié. Bebí.',
+  },
+  'use-un-bano-comun-en-asia-y-aun-sueno-con-esa-experiencia': {
+    description: 'Suelo mojado. Olor industrial. Sin papel.',
+  },
+  'me-quede-sin-papel-en-un-bano-publico-de-un-pais-que-solo-us': {
+    description: 'Aprendí. Improvisé. No quiero hablar de ello.',
+  },
+  'pase-la-noche-en-el-desierto-y-la-arena-se-me-metio-hasta-en': {
+    description: 'Aún encuentro arena en mi mochila. Cuatro años después.',
+  },
+  'pense-que-el-desierto-era-calor-y-casi-me-congelo-por-la-noc': {
+    description: 'Llevé pantalón corto. Dormí con cuatro mantas.',
+  },
+  'llegue-a-cusco-y-casi-me-desmayo-por-el-mal-de-altura': {
+    description: 'Mate de coca. Dos pastillas. Dos días en cama.',
+  },
+  'llegue-a-machu-picchu-y-estaba-todo-cubierto-de-niebla': {
+    description: 'Pagué por el cielo y vi una nube blanca.',
+  },
+  'vi-las-cataratas-y-volvi-completamente-empapado-al-hotel': {
+    description: 'El chubasquero no aguantó. Mi humor tampoco.',
+  },
+  'pague-un-viaje-a-laponia-para-ver-auroras-y-no-vi-ni-una': {
+    description: 'Cinco noches mirando al cielo. Cero verde.',
+  },
+  'vi-la-torre-eiffel-en-persona-y-me-decepciono-un-poco': {
+    description: 'Esperaba magia. Vi metal. Y mucha gente.',
+  },
+  'llegue-a-la-mona-lisa-y-era-mucho-mas-pequena-de-lo-que-pens': {
+    description: 'Tres horas de cola para ver un cuadro de A4.',
+  },
+  'me-robaron-en-las-ramblas-siendo-turista-en-mi-propio-pais': {
+    description: 'Andaba como guiri. Lo notaron rápido.',
+  },
+  'me-perdi-en-san-isidro-siendo-de-madrid-de-toda-la-vida': {
+    description: 'Cuarenta minutos. Pregunté a una guiri.',
+  },
+  'perdi-al-grupo-en-ibiza-a-las-4am-y-apareci-al-dia-siguiente': {
+    description: 'Sin móvil. Sin ropa. Sin recuerdos.',
+  },
+  'acabe-en-una-calle-de-benidorm-cantando-con-guiris-borrachos': {
+    description: 'A las 4am. Todos en pantalón corto. Todos cantando.',
+  },
+  'fui-a-un-festival-de-verano-y-llovio-los-4-dias-seguidos': {
+    description: 'Barro hasta las rodillas. Botas perdidas. Móvil muerto.',
+  },
+  'perdi-la-cartera-en-un-festival-y-aun-asi-segui-bailando': {
+    description: 'Sin DNI. Sin tarjeta. Pero con buena energía.',
+  },
+  'se-me-volo-la-tienda-del-camping-en-un-festival-con-mis-cosa': {
+    description: 'A las 5am. Viento bestia. Encontré tres cosas.',
+  },
+  'volvi-de-un-festival-con-0-fotos-de-mi-y-200-de-mis-amigos': {
+    description: 'Y todas eran del DJ que solo escuché yo.',
+  },
+  'hice-un-finde-en-otra-ciudad-sin-dormir-practicamente-nada': {
+    description: 'Tres horas en el AVE. Tres horas en el bar. Cero cama.',
+  },
+  'hice-un-puente-improvisado-y-volvi-con-la-mochila-mas-pesada': {
+    description: 'Llené todo. La cinta del aeropuerto se quejó.',
+  },
+  'en-vacaciones-conteste-un-mail-del-curro-y-me-arrepenti-inme': {
+    description: 'Me llamaron al día siguiente. Tres horas de reunión.',
+  },
+  'mi-jefe-me-llamo-estando-en-la-playa-y-disimule-que-estaba-e': {
+    description: 'Me metí en una sombrilla. Hablé treinta minutos. Sudé.',
+  },
+  'hice-la-tipica-foto-de-pies-en-la-piscina-y-luego-me-dio-ver': {
+    description: 'La puse en un álbum privado. Sigue ahí.',
+  },
+  'me-lie-con-alguien-en-un-resort-todo-incluido-y-nunca-lo-con': {
+    description: 'Mi pareja sigue sin saberlo. Han pasado siete años.',
+  },
+  'aproveche-tanto-la-pulsera-del-todo-incluido-que-vomite-el-s': {
+    description: 'Quince mojitos. Dos piñas coladas. Cero arrepentimiento.',
+  },
+  'hice-un-crucero-y-los-3-primeros-dias-estuve-mareado-en-la-c': {
+    description: 'Pagué cuatro mil euros por dormir.',
+  },
+  'en-un-crucero-comi-en-el-buffet-4-veces-al-dia-y-subi-5-kilo': {
+    description: 'Y eso que vomité dos veces.',
+  },
+  'hice-un-tren-nocturno-y-mi-compartimiento-olia-a-pies-durant': {
+    description: 'Cuatro pasajeros. Cero ventana abierta.',
+  },
+  'me-hice-un-interrail-y-llegue-a-estar-2-dias-sin-ducharme': {
+    description: 'Hostales sin agua caliente. Trenes sin lavabo.',
+  },
+  'en-un-interrail-perdi-un-tren-por-30-segundos-y-se-me-fue-to': {
+    description: 'Vi cómo se iba sin mí. Quince días para reorganizar.',
+  },
+  'en-el-aeropuerto-cambiamos-de-destino-y-compramos-otro-vuelo': {
+    description: 'Sin pensarlo. Sin maleta extra. Acabamos en otro continente.',
+  },
+  'en-roma-comi-pasta-los-3-dias-y-aun-asi-pedi-mas-para-llevar': {
+    description: 'Carbonara. Amatriciana. Cacio. Volví con dos kilos más.',
+  },
+  'me-perdi-en-shibuya-siguiendo-un-mapa-que-no-entendia': {
+    description: 'Caracteres japoneses. Yo girando sobre mí mismo.',
+  },
+  'en-seul-entre-a-un-norebang-yo-solo-y-cante-como-si-nadie-me': {
+    description: 'Tres horas. Veinte canciones. Vergüenza cero.',
+  },
+  'comi-pizza-sentado-en-el-bordillo-en-nueva-york-como-en-las': {
+    description: 'Cinco euros. Sin servilletas. Sin remordimientos.',
+  },
+  'llore-delante-del-castillo-de-disney-teniendo-28-anos': {
+    description: 'Sentí mi infancia volver. Y luego irse otra vez.',
+  },
+  'hice-3-horas-de-cola-para-una-atraccion-que-duro-90-segundos': {
+    description: 'Repetí. Otras tres horas. Otros 90 segundos.',
+  },
+  'me-pase-en-un-coffeeshop-de-amsterdam-y-dormi-en-un-parque': {
+    description: 'Dos horas tumbado. Frío bestia. Pero feliz.',
+  },
+  'en-praga-me-bebi-mas-litros-de-cerveza-que-de-agua-en-una-se': {
+    description: 'La cerveza era más barata que el agua. No es broma.',
+  },
+  'fui-a-los-banos-termales-de-budapest-con-la-peor-resaca-de-m': {
+    description: 'Treinta y ocho grados. Yo a punto de desmayarme.',
+  },
+  'estuve-12-horas-seguidas-en-una-discoteca-de-berlin-y-casi-m': {
+    description: 'Salí a las 11am con luz de día. Berghain.',
+  },
+  'hice-80-fotos-del-tranvia-de-lisboa-y-subi-solo-una': {
+    description: 'Las otras 79 siguen en el carrete. Sin ver.',
+  },
+  'un-camarero-parisino-me-trato-fatal-y-me-fui-sin-tomarme-la': {
+    description: 'Sin propina. Sin mirar atrás. Pagué fuera.',
+  },
+  'volvi-de-australia-con-tal-jet-lag-que-tarde-semanas-en-recu': {
+    description: 'Me dormía a las 6pm. Me despertaba a las 3am.',
+  },
+  'volvi-de-bali-diciendo-que-era-otra-persona-y-dure-3-dias-as': {
+    description: 'Yoga. Meditación. Crudismo. Hasta que vi un Burger King.',
+  },
+  'hice-4-amigos-intimos-en-tailandia-y-no-he-vuelto-a-hablar-c': {
+    description: 'Solo nos seguimos en Instagram. Solo eso.',
+  },
+  'alquile-una-moto-en-vietnam-y-me-cai-antes-de-salir-del-park': {
+    description: 'Tres metros. Sin daños. Mucha vergüenza.',
+  },
+  'el-grupo-de-whatsapp-del-viaje-murio-a-los-3-dias-de-volver': {
+    description: 'El último mensaje: "qué buen viaje 🥹". Silencio total.',
+  },
+  'tengo-fotos-de-un-viaje-en-el-movil-sin-organizar-desde-hace': {
+    description: 'Cuatro mil setecientas. Sin álbum. Sin descripción.',
+  },
+  'compre-un-album-de-fotos-para-imprimir-el-viaje-y-sigue-vaci': {
+    description: 'Veinticinco euros. En el cajón. Esperando.',
+  },
+  'volvi-de-viaje-y-al-dia-siguiente-fui-a-currar-como-si-no-hu': {
+    description: 'A las 9am sentado en mi mesa. La maleta sin deshacer.',
+  },
+  'el-domingo-de-vuelta-del-viaje-me-sente-en-el-sofa-a-mirar-l': {
+    description: 'Tres horas. Sin moverme. Solo procesando.',
+  },
+  'volvi-obsesionado-con-un-restaurante-y-se-lo-conte-a-todo-el': {
+    description: 'Mis amigos lo escucharon tres veces cada uno.',
+  },
+  'compre-una-guia-de-viaje-en-papel-y-no-la-abri-ni-una-vez': {
+    description: 'Veinte euros. Página 1. La devolví al cajón.',
+  },
+  'segui-una-guia-vieja-y-los-sitios-ya-no-existian': {
+    description: 'El restaurante "imprescindible" cerrado desde 2018.',
+  },
+  'hice-una-lista-de-cosas-para-ver-y-no-marque-ni-la-mitad': {
+    description: 'Cincuenta sitios. Vi seis. Recordé tres.',
+  },
+  'no-prepare-el-viaje-y-acabe-pagando-todo-el-doble-por-improv': {
+    description: 'Hostales sin reserva. Trenes en clase business sin querer.',
+  },
+  'volvi-del-viaje-pesando-2-kilos-mas-y-me-costo-un-mes-quitar': {
+    description: 'La pasta italiana. La cerveza alemana. La culpa española.',
+  },
+  'jure-no-hacer-fotos-turisticas-y-volvi-con-700-identicas-a-l': {
+    description: 'Misma Torre Eiffel. Misma Mona Lisa. Mismo Coliseo.',
+  },
+  'pague-un-tour-de-grupo-y-me-pase-el-dia-evitando-hablar-con': {
+    description: 'Auriculares puestos. Distancia prudente. Misión cumplida.',
+  },
+  'hice-un-presupuesto-y-al-final-me-gaste-el-doble': {
+    description: 'Mil estimados. Dos mil reales. Tarjeta de crédito al rescate.',
+  },
+  'me-pase-un-mes-pagando-con-tarjeta-de-credito-un-viaje-de-fi': {
+    description: 'Tres días en Lisboa. Cuatro pagos en tarjeta.',
+  },
+  'volvi-del-viaje-con-la-cuenta-a-cero-y-aun-quedaban-10-dias': {
+    description: 'Comí lentejas diez días. Pagué Bizums no cobrados.',
+  },
+  'jure-no-viajar-mas-en-6-meses-y-a-los-3-ya-estaba-mirando-vu': {
+    description: 'Skyscanner es droga.',
+  },
+  'pase-un-domingo-entero-buscando-vuelos-a-cualquier-sitio-sin': {
+    description: 'Cuatro horas. Veinte ciudades. Cero compras.',
+  },
+  'vi-un-error-fare-brutal-y-dude-tanto-que-cuando-fui-a-compra': {
+    description: 'Cien euros a Tokio. Lo dudé cinco minutos. Fatal.',
+  },
+  'mis-amigos-cancelaron-a-ultima-hora-y-me-fui-de-viaje-yo-sol': {
+    description: 'El mejor viaje de mi vida. Lo confieso.',
+  },
+  'hice-mi-primer-viaje-solo-y-me-cambio-un-poco-la-cabeza': {
+    description: 'No volví igual. Ni quise volver igual.',
+  },
+  'cene-yo-solo-en-la-barra-de-un-bar-leyendo-un-libro-como-un': {
+    description: 'Sentido pleno. Cero remordimiento.',
+  },
+  'en-un-viaje-le-mande-un-mensaje-borracho-a-mi-ex-y-al-dia-si': {
+    description: 'Borrado al día siguiente. Pero ya leído.',
+  },
+  'me-pase-el-viaje-montando-stories-de-instagram-en-vez-de-mir': {
+    description: 'Volví con quinientas stories. Cero recuerdos propios.',
+  },
+  'llovio-toda-la-semana-del-viaje-y-me-lo-pase-en-el-hotel-vie': {
+    description: 'Pagué quinientos euros por una semana de Netflix.',
+  },
+  'en-un-viaje-de-trabajo-me-escape-del-grupo-de-la-empresa-par': {
+    description: 'Una caña. Sin ellos. Suspiro.',
+  },
+  'tuve-que-ir-con-corbata-a-una-presentacion-en-otro-pais-y-ol': {
+    description: 'Compré una en H&M. Veinticinco euros para diez minutos.',
+  },
+  'hice-una-videollamada-de-trabajo-desde-un-hotel-en-pijama-y': {
+    description: 'Camisa arriba. Bañador abajo. Cliente en directo.',
+  },
+  'vole-en-una-compania-low-cost-y-el-asiento-estaba-literalmen': {
+    description: 'No reclinaba. No giraba. Funcionaba a medias.',
+  },
+  'espere-45-minutos-en-la-cinta-de-equipajes-y-mi-maleta-no-sa': {
+    description: 'Vino tres días después. Con dos camisetas menos.',
+  },
+  'hice-2-horas-de-cola-para-recoger-el-coche-de-alquiler': {
+    description: 'Cuando llegó mi turno me dieron uno distinto al reservado.',
+  },
+  'me-cobraron-una-raya-del-coche-de-alquiler-que-ya-estaba-ant': {
+    description: 'Sin foto previa. Cien euros perdidos.',
+  },
+  'el-deposito-del-coche-de-alquiler-tardo-3-meses-en-volver-a': {
+    description: 'Llamé seis veces. Cada vez una excusa distinta.',
+  },
+  'mi-dni-estaba-caducado-y-descubrirlo-en-el-aeropuerto-fue-un': {
+    description: 'Comisaría a las 6am. Llegué al embarque por los pelos.',
+  },
+  'firme-un-papel-para-un-deporte-extremo-sin-entender-nada-y-l': {
+    description: 'Estaba en otro idioma. Salté igual.',
+  },
+  'salte-en-paracaidas-y-grite-y-llore-en-el-cielo-como-un-nino': {
+    description: 'El instructor lo grabó. Lo veo cada año.',
+  },
+  'me-hice-100-km-para-hacer-puenting-y-al-borde-no-pude-saltar': {
+    description: 'Pagué cincuenta euros. Volví caminando.',
+  },
+  'mi-primer-dia-de-esqui-acabe-bajando-una-pista-azul-de-culo': {
+    description: 'La gente se reía. Pasé. Llegué viva.',
+  },
+  'me-fracture-la-muneca-el-primer-dia-probando-snowboard': {
+    description: 'Cuarenta minutos en pista. Tres meses con escayola.',
+  },
+  'me-cai-del-trineo-de-perros-en-laponia-y-me-arrastraron-5-me': {
+    description: 'Los perros no pararon. Yo sí me paré. Dolió.',
+  },
+  'pague-por-dormir-en-un-iglu-y-no-pegue-ojo-del-frio-que-pase': {
+    description: 'Doscientos euros. Quince grados bajo cero. Sin sueño.',
+  },
+  'reserve-un-glamping-y-era-un-camping-normal-con-luces-de-fer': {
+    description: 'Las fotos engañan. La realidad olía a humedad.',
+  },
+  'dormi-en-una-yurta-y-un-bicho-paso-por-encima-de-mi-cara': {
+    description: 'Lo sentí. No lo vi. Mejor así.',
+  },
+  'hice-3-vuelos-seguidos-y-llegue-al-destino-sin-saber-que-dia': {
+    description: 'Treinta horas en aviones. Cero idea del día.',
+  },
+  'llegue-a-mi-destino-el-dia-de-mi-cumpleanos-y-nadie-me-felic': {
+    description: 'En otro huso horario. Lo recordaron tarde.',
+  },
+  'perdi-un-vuelo-por-una-resaca-brutal-del-dia-anterior': {
+    description: 'No sonó la alarma. Mejor: la apagué dormida.',
+  },
+  'corri-por-el-aeropuerto-como-en-las-peliculas-y-aun-asi-lleg': {
+    description: 'La puerta cerrada por treinta segundos.',
+  },
+  'en-un-viaje-me-toco-el-mismo-asiento-de-ida-y-de-vuelta-sin': {
+    description: 'Mismo número. Misma ventanilla. Sin elegir.',
+  },
+  'conoci-a-mi-pareja-actual-en-un-viaje-y-todavia-no-me-lo-cre': {
+    description: 'Llevamos cinco años. Todavía no lo cuento sin sonreír.',
+  },
+  'a-los-30-descubri-que-ya-no-me-gusta-volar-y-me-da-ansiedad': {
+    description: 'Antes era de ventanilla. Ahora me tomo una pastilla.',
+  },
+  'tome-pastillas-para-dormir-en-un-vuelo-y-desperte-con-la-car': {
+    description: 'Babas en la mejilla. Pelo levantado. Compañero risueño.',
+  },
+  'compre-billetes-baratos-saltandome-el-primer-tramo-y-casi-me': {
+    description: 'La aerolínea no perdona. Lo aprendí caro.',
+  },
+  'perdi-la-llave-del-hotel-y-tuve-que-despertar-a-recepcion-a': {
+    description: 'El recepcionista me odió por una semana.',
+  },
+  'me-quede-encerrado-en-el-bano-de-un-restaurante-en-otro-idio': {
+    description: 'El cerrojo no giraba. Veinte minutos golpeando.',
+  },
+  'perdi-el-ultimo-bus-al-aeropuerto-y-un-taxi-me-cobro-el-viaj': {
+    description: 'Doscientos euros. Para un trayecto de quince.',
+  },
+  'me-llego-un-email-importante-de-la-aerolinea-a-spam-y-casi-p': {
+    description: 'Lo descubrí en el aeropuerto. Cambio de puerta a la otra punta.',
+  },
+  'reserve-un-hotel-sin-aire-acondicionado-en-pleno-julio-en-el': {
+    description: 'Cuarenta grados. Ventilador del año 90. Cero pegadas.',
+  },
+  'no-entendi-lo-que-pedia-la-camarera-y-le-dije-que-si-a-todo': {
+    description: 'Me trajeron tres platos extras. Comí todo.',
+  },
+  'pague-15-euros-por-una-ducha-en-el-aeropuerto-y-volvi-a-sent': {
+    description: 'Quince euros mejor invertidos de mi vida.',
+  },
+  'pague-una-sala-vip-del-aeropuerto-y-se-acabo-la-comida-5-min': {
+    description: 'Sesenta euros. Tres galletas. Cero esperanza.',
+  },
+  'compre-una-sim-en-otro-pais-y-no-me-funciono-hasta-el-ultimo': {
+    description: 'Seis días sin internet. El séptimo, conexión perfecta.',
+  },
+  'me-cambiaron-el-vuelo-cancelado-a-otra-aerolinea-peor-y-sin': {
+    description: 'Lo descubrí en facturación. Otra aerolínea. Otra terminal.',
+  },
+  'llegue-corriendo-a-la-puerta-de-embarque-cuando-estaban-cerr': {
+    description: 'La azafata me miró sin compasión. Pero abrió.',
+  },
+  'no-imprimi-el-billete-de-ryanair-y-me-cobraron-60-euros-en-m': {
+    description: 'Sesenta euros por un papel. Lección aprendida.',
+  },
+  'estando-de-viaje-pense-en-serio-si-volvia-o-me-quedaba-a-viv': {
+    description: 'Tres días dándole vueltas. Volví. A veces dudo.',
+  },
 };
