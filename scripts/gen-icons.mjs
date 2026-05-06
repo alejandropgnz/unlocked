@@ -153,7 +153,11 @@ async function genOgDefault() {
  */
 async function genRoundedAppIcon(size, outName) {
   const radius = Math.round(size * 0.225);
-  const logoSize = Math.round(size * 0.7);
+  // 82% of canvas — bigger than the typical iOS apps but matches the
+  // chunky, illustrated aesthetic of the padlock (which has its own
+  // contour/border, so it can afford to fill more of the square without
+  // looking cramped against the indigo edges).
+  const logoSize = Math.round(size * 0.82);
   const inset = Math.round((size - logoSize) / 2);
 
   // Background: rounded square in indigo, drawn as SVG so sharp can
@@ -187,7 +191,11 @@ async function genRoundedAppIcon(size, outName) {
  * apply their own mask shape). Same logo safe zone.
  */
 async function genMaskable(size, outName) {
-  const logoSize = Math.round(size * 0.6); // tighter safe zone for maskable
+  // Android maskable safe zone spec is "inner 80% of the canvas" — any
+  // pixel outside that radius can get cropped by the launcher's shape.
+  // We size the logo at 75% so the contour has a small breath of indigo
+  // before the crop boundary, never getting clipped on circle/squircle.
+  const logoSize = Math.round(size * 0.75);
   const inset = Math.round((size - logoSize) / 2);
 
   const bgSvg = `
