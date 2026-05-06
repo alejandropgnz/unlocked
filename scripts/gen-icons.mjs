@@ -4,12 +4,26 @@
 //   node scripts/gen-icons.mjs
 //
 // Outputs (all into public/):
-//   - icon-32.png            32×32   browser tab (modern)
-//   - icon-192.png           192×192 PWA / Android Chrome
-//   - icon-512.png           512×512 PWA splash (also used as og:image fallback source)
-//   - apple-touch-icon.png   180×180 iOS home screen
+//   - icon-32.png            32×32    browser tab (modern) — TRANSPARENT bg
+//   - icon-192.png           192×192  PWA / Android Chrome — TRANSPARENT bg
+//   - icon-512.png           512×512  PWA splash             — TRANSPARENT bg
+//   - apple-touch-icon.png   180×180  iOS home screen        — INDIGO BG ROUNDED
+//   - icon-maskable.png      512×512  Android maskable PWA   — INDIGO BG (full bleed)
+//   - app-icon.png           1024×1024 standalone for IG profile / marketing — INDIGO BG ROUNDED
 //   - favicon.ico            16+32+48 multi-size for legacy browsers
 //   - og-default.png         1200×630 social-share fallback (logo + UNLOCKY wordmark on bg-bg)
+//
+// Why two variants:
+//   - Browser tabs (icon-32/192/512, favicon.ico): the icon sits on top
+//     of the browser's chrome which has its own background. Transparent
+//     looks clean and pops against any tab color.
+//   - Home screens (apple-touch-icon, app-icon): iOS and Android render
+//     app icons as if they're "real apps" with backgrounds. A logo on
+//     transparent bg there looks like it's floating — wrong vibe.
+//     Indigo rounded square = intentional, brand-aligned, native-app feel.
+//   - Android maskable (icon-maskable): launchers crop these to circles,
+//     squircles, or whatever shape the OEM uses. Need full-bleed bg with
+//     logo in inner ~70% safe zone so cropping never clips the icon.
 //
 // Re-run this script every time public/logo.png changes.
 //
@@ -29,6 +43,10 @@ const SOURCE = join(PUBLIC, "logo.png");
 
 // Brand background color (matches --color-bg in src/index.css).
 const BG = { r: 14, g: 14, b: 20, alpha: 1 };
+
+// Brand primary indigo (matches --color-indigo in src/index.css). Used
+// as the background for the app-icon / apple-touch / maskable variants.
+const INDIGO = "#6366F1";
 
 async function genPng(size, outName) {
   await sharp(SOURCE)
@@ -125,13 +143,89 @@ async function genOgDefault() {
   console.log(`  og-default.png (1200×630, logo + wordmark on bg)`);
 }
 
+/**
+ * Compose the logo on top of an indigo rounded-corner square. iOS uses
+ * roughly 22.5% of width as the corner radius for the "squircle" home
+ * screen icon — we match that so the generated apple-touch-icon already
+ * looks rounded if the OS doesn't apply its own mask, and matches the
+ * native crop if it does. Logo sits in the inner ~70% safe zone so
+ * Android's variable launcher masks never clip into the lock symbol.
+ */
+async function genRoundedAppIcon(size, outName) {
+  const radius = Math.round(size * 0.225);
+  const logoSize = Math.round(size * 0.7);
+  const inset = Math.round((size - logoSize) / 2);
+
+  // Background: rounded square in indigo, drawn as SVG so sharp can
+  // rasterize at exact size without aliasing the corner curve.
+  const bgSvg = `
+    <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${size}" height="${size}" rx="${radius}" ry="${radius}" fill="${INDIGO}"/>
+    </svg>
+  `;
+  const bg = await sharp(Buffer.from(bgSvg)).png().toBuffer();
+
+  // Logo resized to fit the safe zone, kept transparent so it composes
+  // cleanly over the indigo background.
+  const logo = await sharp(SOURCE)
+    .resize(logoSize, logoSize, {
+      fit: "contain",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    })
+    .png()
+    .toBuffer();
+
+  await sharp(bg)
+    .composite([{ input: logo, top: inset, left: inset }])
+    .png()
+    .toFile(join(PUBLIC, outName));
+  console.log(`  ${outName} (${size}×${size}, indigo bg, rounded ${radius}px)`);
+}
+
+/**
+ * Android maskable: full-bleed indigo (no rounded corners — launchers
+ * apply their own mask shape). Same logo safe zone.
+ */
+async function genMaskable(size, outName) {
+  const logoSize = Math.round(size * 0.6); // tighter safe zone for maskable
+  const inset = Math.round((size - logoSize) / 2);
+
+  const bgSvg = `
+    <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${size}" height="${size}" fill="${INDIGO}"/>
+    </svg>
+  `;
+  const bg = await sharp(Buffer.from(bgSvg)).png().toBuffer();
+
+  const logo = await sharp(SOURCE)
+    .resize(logoSize, logoSize, {
+      fit: "contain",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    })
+    .png()
+    .toBuffer();
+
+  await sharp(bg)
+    .composite([{ input: logo, top: inset, left: inset }])
+    .png()
+    .toFile(join(PUBLIC, outName));
+  console.log(`  ${outName} (${size}×${size}, indigo full-bleed, maskable safe zone)`);
+}
+
 async function main() {
   console.log(`Generating icons from ${SOURCE}...\n`);
+  // Browser tab variants — transparent
   await genPng(32, "icon-32.png");
   await genPng(192, "icon-192.png");
   await genPng(512, "icon-512.png");
-  await genPng(180, "apple-touch-icon.png");
   await genFavicon();
+
+  // Home-screen / app variants — indigo rounded square
+  await genRoundedAppIcon(180, "apple-touch-icon.png");
+  await genRoundedAppIcon(1024, "app-icon.png");
+  await genMaskable(512, "icon-maskable.png");
+
+  // Social share fallback
   await genOgDefault();
   console.log(`\n✓ Done. Re-run when public/logo.png changes.`);
 }
