@@ -195,3 +195,123 @@ export function useDismissReport() {
     onError: (e: Error) => toast.error(e.message),
   });
 }
+
+/* ────────────────────────── catalog editing ─────────────────────────── */
+
+import type { AchievementCategory, AchievementStatus } from "./types";
+
+export interface CatalogItem {
+  id: string;
+  slug: string;
+  title: string;
+  emoji: string;
+  description: string | null;
+  category: AchievementCategory;
+  status: AchievementStatus;
+  unlock_count: number;
+  created_at: string;
+}
+
+export interface CatalogFilters {
+  q: string;
+  category: AchievementCategory | "";
+  status: AchievementStatus | "";
+  page: number;
+  pageSize: number;
+}
+
+/**
+ * Server-side paginated + filtered catalog query for the admin catalog
+ * tab. The select uses { count: "exact" } so we know the total result
+ * size for pagination UI without a second query.
+ *
+ * Returns logros across ALL statuses (not just approved) — admin sees
+ * pending and rejected too. RLS policy "achievements: read approved"
+ * already grants full read access to admins, so this works directly.
+ */
+export function useAdminCatalog(filters: CatalogFilters) {
+  const { profile } = useAuth();
+  return useQuery({
+    queryKey: ["admin", "catalog", filters],
+    queryFn: async (): Promise<{ rows: CatalogItem[]; totalCount: number }> => {
+      let query = supabase
+        .from("achievements")
+        .select(
+          "id, slug, title, emoji, description, category, status, unlock_count, created_at",
+          { count: "exact" },
+        );
+
+      const q = filters.q.trim();
+      if (q) {
+        // ilike for case-insensitive match. Escape % and _ to avoid
+        // accidental wildcard injection from the search input.
+        const safe = q.replace(/[%_]/g, "\\$&");
+        query = query.ilike("title", `%${safe}%`);
+      }
+      if (filters.category) {
+        query = query.eq("category", filters.category);
+      }
+      if (filters.status) {
+        query = query.eq("status", filters.status);
+      }
+
+      const from = filters.page * filters.pageSize;
+      const to = from + filters.pageSize - 1;
+      query = query.order("created_at", { ascending: false }).range(from, to);
+
+      const { data, error, count } = await query;
+      if (error) throw error;
+      return {
+        rows: (data ?? []) as CatalogItem[],
+        totalCount: count ?? 0,
+      };
+    },
+    enabled: !!profile?.is_admin,
+    // We want fresh data when filters change. The default Infinity stale
+    // time is fine because the queryKey already includes all filters,
+    // but we still set a small placeholderData behavior for smooth pagination.
+    placeholderData: (prev) => prev,
+  });
+}
+
+/**
+ * Update a single achievement row. Admin-only via RLS policy
+ * "achievements: admin updates" which permits UPDATE on any column for
+ * users where profiles.is_admin = true.
+ *
+ * Invalidates BOTH the admin catalog cache AND the public-facing
+ * achievement caches (used in /l/<slug>, profile pages, infinite feed)
+ * so the change shows up everywhere immediately.
+ */
+export interface AchievementUpdate {
+  title?: string;
+  emoji?: string;
+  description?: string | null;
+  category?: AchievementCategory;
+  status?: AchievementStatus;
+}
+
+export function useUpdateAchievement() {
+  const queryClient = useQueryClient();
+  const { profile } = useAuth();
+  return useMutation({
+    mutationFn: async (input: { id: string; updates: AchievementUpdate }) => {
+      if (!profile?.is_admin) throw new Error("No autorizado");
+      const { error } = await supabase
+        .from("achievements")
+        .update(input.updates)
+        .eq("id", input.id);
+      if (error) {
+        logger.error("update achievement", error);
+        throw new Error("No se pudo guardar");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "catalog"] });
+      queryClient.invalidateQueries({ queryKey: ["achievements"] });
+      queryClient.invalidateQueries({ queryKey: ["achievement"] });
+      toast.success("Logro actualizado");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+}

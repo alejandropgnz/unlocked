@@ -1,6 +1,8 @@
 import type { AchievementCategory } from "@/hooks/types";
 
-const CATEGORIES: { value: AchievementCategory; label: string; emoji: string }[] = [
+// Exported so the admin catalog filter and edit modal can reuse the same
+// list (single source of truth for category labels + emojis across the app).
+export const CATEGORIES: { value: AchievementCategory; label: string; emoji: string }[] = [
   { value: "familia", label: "Familia", emoji: "👨‍👩‍👧" },
   { value: "amigos", label: "Amigos", emoji: "👯" },
   { value: "amor", label: "Amor", emoji: "💔" },
