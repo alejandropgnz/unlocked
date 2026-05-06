@@ -60,10 +60,10 @@ export function Footer() {
               Privacidad y términos
             </Link>
             <a
-              href="mailto:hola@unlocky.app"
+              href="mailto:info@unlockyapp.com"
               className="text-xs text-muted hover:text-white transition"
             >
-              hola@unlocky.app
+              info@unlockyapp.com
             </a>
           </div>
         </div>

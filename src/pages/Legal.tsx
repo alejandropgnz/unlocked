@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
  */
 
 const RESPONSABLE = "Alejandro Pérez Hernández";
-const CONTACTO = "perezhtz@gmail.com";
+const CONTACTO = "info@unlockyapp.com";
 const ULTIMA_ACTUALIZACION = "2026-05-05";
 
 export default function Legal() {
