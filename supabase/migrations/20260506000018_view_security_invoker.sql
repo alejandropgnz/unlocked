@@ -1,0 +1,22 @@
+-- =================================================================
+-- Switch all views to security_invoker = on so they respect the RLS
+-- of the calling user instead of running with the view owner's
+-- (typically postgres superuser) permissions.
+--
+-- Why: Postgres views default to the OWNER's security context, which
+-- bypasses Row Level Security on underlying tables. Supabase Dashboard
+-- flags this as "UNRESTRICTED" because the view could leak data that
+-- the calling user shouldn't see.
+--
+-- For `achievement_rarity` specifically there's no current data leak
+-- (the columns it returns — id, slug, unlock_count, total_users count,
+-- rarity_percent — are all public by product design). But hygiene +
+-- defensive future-proofing: any new column added via JOIN, or any
+-- future RLS policy change on `achievements`/`profiles`, will then
+-- be respected automatically.
+--
+-- Idempotent. Re-running is safe (the property toggle is the same
+-- whether already on or off).
+-- =================================================================
+
+alter view achievement_rarity set (security_invoker = on);
