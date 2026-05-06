@@ -132,30 +132,28 @@ function SidePanel({
 }
 
 /**
- * Each card varies in 3 ways based on its index — deterministic so the
- * wall never re-shuffles between renders:
- *  - size variant (compact / normal / tall) → masonry actually staggers
- *    instead of degenerating into a grid
- *  - rotation ±1.6° → organic, not perfectly aligned
- *  - emoji scale follows the size variant
+ * Each card varies in size based on its index — deterministic so the
+ * wall never re-shuffles between renders. 3 size variants (compact /
+ * normal / tall) cycle by index → masonry actually staggers instead
+ * of degenerating into a flat grid.
+ *
+ * NO rotation: tried `transform: rotate(±1.6°)` for organic feel but
+ * triggered two issues: (a) cards looked "torcidas" / unprofessional,
+ * (b) when the foreground swipe card was dragged, framer-motion forced
+ * a repaint that re-rendered the rotated cards on sub-pixel positions
+ * → blur in GPU compositing. Straight cards solve both.
  */
 function BackgroundCard({ card, index }: { card: BgLogro; index: number }) {
   // 3 visual variants cycled deterministically. Different paddings + emoji
-  // sizes give the masonry real height variance.
+  // sizes give the masonry real height variance without rotation.
   const variant = index % 3;
   const padding = variant === 2 ? "p-4" : "p-3";
   const emojiSize = variant === 0 ? "text-2xl" : variant === 1 ? "text-3xl" : "text-4xl";
   const emojiSpacing = variant === 2 ? "my-3" : "my-2";
 
-  // Pseudo-random but deterministic rotation per card. Multiplying by a
-  // prime (37) and modding by 9 gives a varied -2..+2 distribution
-  // without needing Math.random (which would re-shuffle every render).
-  const rotateDeg = (((index * 37) % 9) - 4) * 0.4;
-
   return (
     <div
       className={`break-inside-avoid mb-3 lg:mb-4 bg-surface border-2 border-grey rounded-2xl ${padding}`}
-      style={{ transform: `rotate(${rotateDeg}deg)` }}
     >
       <div className="text-right text-[8px] font-bold tracking-widest font-mono text-muted">
         {card.rarityPercent.toFixed(2)}%

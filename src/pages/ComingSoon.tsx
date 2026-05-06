@@ -348,7 +348,7 @@ function PeekCard({
  */
 function BrandTag() {
   return (
-    <span className="absolute top-3 left-4 text-[10px] sm:text-[11px] font-mono text-muted tracking-widest pointer-events-none z-10">
+    <span className="absolute top-5 left-6 text-[10px] sm:text-[11px] font-mono text-muted tracking-widest pointer-events-none z-10">
       unlocky.app
     </span>
   );
