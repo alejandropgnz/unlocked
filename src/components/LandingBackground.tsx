@@ -8,7 +8,15 @@
  *
  * Hidden below lg (1024px). At md the side panels would be too narrow for
  * a 1-column masonry to feel like a wall.
+ *
+ * Cards are repeated REPEATS times so the column always overflows the
+ * viewport (clipped by overflow-hidden) — guarantees the wall fills the
+ * whole height even on tall monitors. Each card gets a deterministic
+ * size variant + rotation so the wall feels organic, not gridded. The
+ * 0.92 black overlay makes the repetition imperceptible: cards read as
+ * texture, not as identifiable copies.
  */
+const REPEATS = 3;
 
 interface BgLogro {
   emoji: string;
@@ -84,6 +92,16 @@ function SidePanel({
       ? { paddingLeft: SIDE_MARGIN_PX, paddingRight: 0 }
       : { paddingLeft: 0, paddingRight: SIDE_MARGIN_PX };
 
+  // Repeat the source array so the column always overflows. Offset the
+  // start index per repeat to avoid stacking identical cards on top of
+  // each other when columns wrap.
+  const expanded: BgLogro[] = [];
+  for (let r = 0; r < REPEATS; r++) {
+    for (let i = 0; i < cards.length; i++) {
+      expanded.push(cards[(i + r * 3) % cards.length]);
+    }
+  }
+
   return (
     <div
       className="absolute top-0 bottom-0 overflow-hidden"
@@ -93,8 +111,8 @@ function SidePanel({
         className="columns-1 xl:columns-2 gap-3 lg:gap-4 py-6"
         style={innerPadStyle}
       >
-        {cards.map((card, i) => (
-          <BackgroundCard key={i} card={card} />
+        {expanded.map((card, i) => (
+          <BackgroundCard key={i} card={card} index={i} />
         ))}
       </div>
 
@@ -108,13 +126,38 @@ function SidePanel({
   );
 }
 
-function BackgroundCard({ card }: { card: BgLogro }) {
+/**
+ * Each card varies in 3 ways based on its index — deterministic so the
+ * wall never re-shuffles between renders:
+ *  - size variant (compact / normal / tall) → masonry actually staggers
+ *    instead of degenerating into a grid
+ *  - rotation ±1.6° → organic, not perfectly aligned
+ *  - emoji scale follows the size variant
+ */
+function BackgroundCard({ card, index }: { card: BgLogro; index: number }) {
+  // 3 visual variants cycled deterministically. Different paddings + emoji
+  // sizes give the masonry real height variance.
+  const variant = index % 3;
+  const padding = variant === 2 ? "p-4" : "p-3";
+  const emojiSize = variant === 0 ? "text-2xl" : variant === 1 ? "text-3xl" : "text-4xl";
+  const emojiSpacing = variant === 2 ? "my-3" : "my-2";
+
+  // Pseudo-random but deterministic rotation per card. Multiplying by a
+  // prime (37) and modding by 9 gives a varied -2..+2 distribution
+  // without needing Math.random (which would re-shuffle every render).
+  const rotateDeg = (((index * 37) % 9) - 4) * 0.4;
+
   return (
-    <div className="break-inside-avoid mb-3 lg:mb-4 bg-surface border-2 border-grey rounded-2xl p-3">
+    <div
+      className={`break-inside-avoid mb-3 lg:mb-4 bg-surface border-2 border-grey rounded-2xl ${padding}`}
+      style={{ transform: `rotate(${rotateDeg}deg)` }}
+    >
       <div className="text-right text-[8px] font-bold tracking-widest font-mono text-muted">
         {card.rarityPercent.toFixed(2)}%
       </div>
-      <div className="text-3xl text-center my-2 leading-none">{card.emoji}</div>
+      <div className={`${emojiSize} ${emojiSpacing} text-center leading-none`}>
+        {card.emoji}
+      </div>
       <div className="text-[10px] font-black text-white text-center leading-tight tracking-tighter line-clamp-2 min-h-[2.4em]">
         {card.title}
       </div>
