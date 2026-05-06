@@ -172,7 +172,7 @@ export default function ComingSoon() {
           into the header/footer zones. */}
       <main className="relative flex-1 min-h-0 flex flex-col items-center px-4 pt-2 pb-3">
         <LandingBackground />
-        <div className="relative z-10 w-full max-w-md flex flex-col flex-1 min-h-0 justify-center">
+        <div className="relative z-10 w-full max-w-md lg:max-w-lg flex flex-col flex-1 min-h-0 justify-center">
           {/* Progress bar only shows during the main flow (steps 0-4).
               In the post-submit bonus, the user already converted —
               the bar would be misleading (5/5 done) or confusing

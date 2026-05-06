@@ -50,15 +50,20 @@ const RIGHT_LOGROS: BgLogro[] = [
 // Symmetric whitespace pattern: cards have the same margin to the deck
 // edge as they have to the viewport edge.
 //
-//   half deck width = 224 (max-w-md / 2)
+//   half deck width = 256 (max-w-lg / 2 at lg+ breakpoint)
 //   margin Y = 28
 //
-// HALF_VOID_PX = 224 + Y means the panel ends Y px BEFORE the deck.
+// HALF_VOID_PX = 256 + Y means the panel ends Y px BEFORE the deck.
 // Combined with asymmetric panel padding (`pl-Y pr-0` on left,
 // `pl-0 pr-Y` on right), each card has Y on its viewport-facing edge AND
 // Y on its deck-facing edge. Visually balanced.
+//
+// Why 256 (not 224 like the mobile/sm card width): the swipe deck
+// upgrades to max-w-lg (512px) at lg breakpoint where the side panels
+// become visible. At lg the deck is always 512 wide, so HALF_VOID_PX
+// reflects that — never the smaller 448 used at sm/md.
 const SIDE_MARGIN_PX = 28;
-const HALF_VOID_PX = 224 + SIDE_MARGIN_PX;
+const HALF_VOID_PX = 256 + SIDE_MARGIN_PX;
 
 export function LandingBackground() {
   return (
