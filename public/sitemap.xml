@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Pre-launch sitemap. Solo dos URLs públicas con contenido real:
+    - /        Landing (sirve /proximamente vía LaunchGate antes del 29-may)
+    - /legal   Privacidad y términos
+
+  Post-launch (29-may-2026 en adelante) este archivo se sustituye por
+  uno generado dinámicamente desde Supabase con todos los logros
+  approved + perfiles públicos + unlocks. Por ahora estático y mínimo.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://unlocky.app/</loc>
+    <lastmod>2026-05-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://unlocky.app/legal</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

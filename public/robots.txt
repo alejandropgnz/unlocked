@@ -1,0 +1,19 @@
+# https://unlocky.app/robots.txt
+#
+# Bots — esto es lo que pueden y lo que no pueden indexar.
+# Pre-launch: la landing y la página legal son las únicas con contenido
+# real para humanos; el resto redirige a /proximamente.
+# Post-launch: ampliar la lista o pasar a sitemap dinámico que incluya
+# /l/<slug>, /u/<username>, /u/<username>/<slug>.
+
+User-agent: *
+
+# Áreas privadas / funcionales — sin contenido útil para indexación
+Disallow: /admin
+Disallow: /crear
+Disallow: /descubrir
+Disallow: /login
+Disallow: /auth/
+Disallow: /api/
+
+Sitemap: https://unlocky.app/sitemap.xml
