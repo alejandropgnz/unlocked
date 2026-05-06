@@ -120,28 +120,30 @@ function SidePanel({
     >
       {/* lg breakpoint: panels too narrow for 2 columns → single
           column, all cards stacked. xl+ : real masonry with explicit
-          stagger between the two columns (one starts at top, the
-          other ~80px lower) so the wall feels Pinterest-style instead
-          of grid-aligned. */}
+          stagger between the two columns. Column B uses `-mt-20`
+          (NEGATIVE) so its first card sticks out ABOVE the panel and
+          gets clipped by overflow-hidden — same effect that already
+          happens at the bottom. Result: both top and bottom of the
+          wall feel like a continuous flow extending past the viewport,
+          not a contained block with empty bands at the edges. */}
       <div className="py-6" style={innerPadStyle}>
         {/* Single column for lg (1024-1279) */}
-        <div className="flex flex-col gap-3 xl:hidden">
+        <div className="flex flex-col gap-2 xl:hidden">
           {expanded.map((card, i) => (
             <BackgroundCard key={`s-${i}`} card={card} index={i} />
           ))}
         </div>
 
-        {/* Two staggered columns for xl+ (1280+). Second column has
-            mt-20 offset so the wall reads as masonry, not grid. The
-            in-card variant cycling (3 sizes) inside each column adds
-            the additional intra-column height variance. */}
-        <div className="hidden xl:flex gap-4">
-          <div className="flex-1 flex flex-col gap-4">
+        {/* Two staggered columns for xl+ (1280+). Column B has -mt-20
+            so the masonry stagger comes from clipping (top of B card
+            disappears past viewport) instead of from an empty gap. */}
+        <div className="hidden xl:flex gap-2">
+          <div className="flex-1 flex flex-col gap-2">
             {colA.map((card, i) => (
               <BackgroundCard key={`a-${i}`} card={card} index={i * 2} />
             ))}
           </div>
-          <div className="flex-1 flex flex-col gap-4 mt-20">
+          <div className="flex-1 flex flex-col gap-2 -mt-20">
             {colB.map((card, i) => (
               <BackgroundCard key={`b-${i}`} card={card} index={i * 2 + 1} />
             ))}
@@ -181,7 +183,7 @@ function BackgroundCard({ card, index }: { card: BgLogro; index: number }) {
 
   return (
     <div
-      className={`break-inside-avoid mb-3 lg:mb-4 bg-surface border-2 border-grey rounded-2xl ${padding}`}
+      className={`bg-surface border-2 border-grey rounded-2xl ${padding}`}
     >
       <div className="text-right text-[8px] font-bold tracking-widest font-mono text-muted">
         {card.rarityPercent.toFixed(2)}%
