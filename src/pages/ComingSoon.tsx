@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
+import { Instagram } from "lucide-react";
 import { useJoinWaitlist } from "@/hooks/useJoinWaitlist";
 import { LaunchDate } from "@/components/CountdownTimer";
 import { LandingBackground } from "@/components/LandingBackground";
@@ -246,10 +247,22 @@ export default function ComingSoon() {
       </main>
 
       <footer
-        className="shrink-0 px-4 pt-3 pb-3 border-t border-grey text-[11px] text-muted text-center"
+        className="shrink-0 px-4 pt-3 pb-3 border-t border-grey text-[11px] text-muted text-center flex items-center justify-center gap-3"
         style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
       >
-        Hecho en España · 2026 ·{" "}
+        <span>Hecho en España · 2026</span>
+        <span className="text-grey">·</span>
+        <a
+          href="https://instagram.com/unlucky.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 hover:text-white transition"
+          aria-label="Síguenos en Instagram @unlucky.app"
+        >
+          <Instagram className="w-3.5 h-3.5" />
+          <span>@unlucky.app</span>
+        </a>
+        <span className="text-grey">·</span>
         <a href="/legal" className="hover:text-white underline-offset-2 hover:underline">
           Privacidad
         </a>
