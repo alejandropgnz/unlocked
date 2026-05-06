@@ -385,6 +385,15 @@ function SwipeCard({
       setExiting("left");
   };
 
+  // onTap fires after a pointer release that DIDN'T involve a
+  // significant drag — so tap and drag coexist without conflicting.
+  // Framer-motion handles the discrimination: a small movement = tap,
+  // anything past its tap threshold = drag (handled by onDragEnd).
+  const handleTap = () => {
+    if (exiting) return;
+    setExiting("right");
+  };
+
   return (
     <motion.div
       drag={exiting ? false : "x"}
@@ -393,6 +402,7 @@ function SwipeCard({
       dragSnapToOrigin
       dragMomentum={false}
       onDragEnd={handleDragEnd}
+      onTap={handleTap}
       // Initial only fades (no Y offset). Was { opacity: 0, y: 24 } which
       // bounced on the FIRST card on click: AnimatePresence's
       // initial={false} skipped the entry but framer-motion held the
@@ -419,7 +429,7 @@ function SwipeCard({
       }}
       style={{ x, rotate }}
       whileTap={{ cursor: "grabbing" }}
-      className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl select-none cursor-grab active:cursor-grabbing"
+      className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl select-none cursor-pointer"
     >
       <BrandTag />
       {children}
@@ -884,10 +894,15 @@ function ShareCardBody() {
 
       {/* CTA grande con border indigo (mismo lenguaje visual que el
           CTA de email, para que el usuario lea "esto es la acción
-          principal aquí"). */}
+          principal aquí"). stopPropagation evita que el tap del
+          SwipeCard wrapper avance al goodbye en cuanto el usuario
+          pulsa este botón — queremos abrir el share, no saltar slide. */}
       <button
         type="button"
-        onClick={handleShare}
+        onClick={(e) => {
+          e.stopPropagation();
+          void handleShare();
+        }}
         className="shrink-0 w-full rounded-full px-6 py-3.5 font-black tracking-widest text-xs uppercase bg-indigo text-bg hover:bg-white transition"
       >
         Mándaselo →
