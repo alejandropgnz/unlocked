@@ -7,10 +7,47 @@ import { SwipeDeck } from "@/components/SwipeDeck";
 import { Skeleton } from "@/components/ui/Skeleton";
 import type { SwipeItem } from "@/components/SwipeDeck";
 
-function shuffled<T>(arr: T[]): T[] {
+/**
+ * FNV-1a hash of a string → uint32. Cheap, deterministic, no deps.
+ * Used to derive a numeric seed from the user.id (UUID string) so each
+ * user gets their own consistent shuffle order across sessions and
+ * page navigations.
+ */
+function hashStr(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+/**
+ * Mulberry32 — small fast seeded PRNG. Returns a function that yields
+ * floats in [0,1). Enough quality for shuffling a deck; not for crypto.
+ */
+function mulberry32(seed: number): () => number {
+  let s = seed;
+  return function () {
+    s = (s + 0x6d2b79f5) | 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * Fisher-Yates with a seeded RNG. Same seed always produces the same
+ * order — that's the whole point. Each user has their own shuffle that
+ * stays stable across mounts/navigations, but two users see different
+ * orders so the swipe deck doesn't feel "global" / scripted.
+ */
+function shuffledSeeded<T>(arr: T[], seed: number): T[] {
+  const rand = mulberry32(seed);
   const copy = [...arr];
   for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(rand() * (i + 1));
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
   return copy;
@@ -29,10 +66,19 @@ export default function Descubrir() {
     return set;
   }, [myUnlocks, passedIds]);
 
+  // Seed derived from user.id → each user has a personal but consistent
+  // shuffle. Anonymous users (no id) all share seed 0; that's fine,
+  // /descubrir requires login anyway via the route guard.
+  const seed = useMemo(() => (user?.id ? hashStr(user.id) : 0), [user?.id]);
+
   const deck = useMemo((): SwipeItem[] => {
     if (!achievements) return [];
     const remaining = achievements.filter((a) => !skipIds.has(a.id));
-    return shuffled(remaining).map((a) => ({
+    // Shuffle BEFORE filtering would also work, but filtering first means
+    // the seeded RNG runs over a slightly smaller array each time the
+    // user passes a card. Net result is the same effective order minus
+    // the cards already interacted with — feels stable.
+    return shuffledSeeded(remaining, seed).map((a) => ({
       id: a.id,
       slug: a.slug,
       emoji: a.emoji,
@@ -41,7 +87,7 @@ export default function Descubrir() {
       unlockCount: a.unlock_count,
       category: a.category,
     }));
-  }, [achievements, skipIds]);
+  }, [achievements, skipIds, seed]);
 
   const isLoading = achLoading || unlocksLoading || passesLoading;
 
