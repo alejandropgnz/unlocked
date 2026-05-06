@@ -329,6 +329,31 @@ function PeekCard({
   );
 }
 
+/* ─────────────────── brand tag (top-left of every card) ─────────────── */
+
+/**
+ * Tiny "unlocky.app" stamp on the top-left of every landing card.
+ * Two purposes:
+ *   1. Repetition: 8 brand impressions per visit instead of 1 (header)
+ *      → calar la URL en memoria pasiva
+ *   2. Screenshot-friendly: si un usuario captura una card para
+ *      mandársela a un amigo, la URL viaja CON la imagen — sin esto,
+ *      el screenshot es un meme anónimo y se pierde el origen
+ *
+ * Mono font (matches the product's data aesthetic), text-muted (no
+ * compite con el contenido), pointer-events-none (no atrapa el drag
+ * gesture del swipe). z-10 para ir por encima del body absoluto del
+ * card pero por debajo de cualquier overlay activo (peek cards van
+ * por detrás).
+ */
+function BrandTag() {
+  return (
+    <span className="absolute top-3 left-4 text-[10px] sm:text-[11px] font-mono text-muted tracking-widest pointer-events-none z-10">
+      unlocky.app
+    </span>
+  );
+}
+
 /* ─────────────────── swipeable card wrapper (cards 0-2) ──────────────── */
 
 function SwipeCard({
@@ -396,6 +421,7 @@ function SwipeCard({
       whileTap={{ cursor: "grabbing" }}
       className="absolute inset-0 bg-surface border-2 border-grey rounded-3xl select-none cursor-grab active:cursor-grabbing"
     >
+      <BrandTag />
       {children}
     </motion.div>
   );
@@ -655,6 +681,7 @@ function CTACard({ onSubmitted }: { onSubmitted: () => void }) {
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
       className="absolute inset-0 bg-surface border-2 border-indigo rounded-3xl p-8 sm:p-10 flex flex-col"
     >
+      <BrandTag />
       <div className="text-center shrink-0">
             <h2
               className="font-black tracking-tighter leading-tight"
@@ -922,6 +949,7 @@ function GoodbyeCard() {
       transition={{ duration: 0.32, ease: [0.22, 0.61, 0.36, 1] }}
       className="absolute inset-0 bg-surface border-2 border-indigo rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center text-center"
     >
+      <BrandTag />
       <div className="text-6xl mb-4">📬</div>
       <h2
         className="font-black tracking-tighter leading-tight"
