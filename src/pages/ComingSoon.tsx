@@ -111,8 +111,12 @@ export default function ComingSoon() {
   return (
     <div className="h-screen h-[100dvh] bg-bg text-white flex flex-col overflow-hidden">
       {/* Header — wordmark left, "Apúntate" skip pill right (only visible
-          while we're not already on the CTA card). */}
-      <header className="px-4 sm:px-6 py-4 flex items-center justify-between shrink-0">
+          while we're not already on the CTA card). Safe-area top padding
+          so the notch on iPhone doesn't eat into the wordmark. */}
+      <header
+        className="px-4 sm:px-6 py-3 flex items-center justify-between shrink-0"
+        style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
+      >
         <Wordmark size="sm" />
         {step < 4 && (
           <button
@@ -125,17 +129,16 @@ export default function ComingSoon() {
         )}
       </header>
 
-      {/* Body — centered vertically. Card has a viewport-aware fixed
-          height so it never feels sparse (no huge inner gaps) nor
-          overflows on small phones. The leftover space splits as small
-          margins above the progress bar and below the card, which on
-          standard phones is ~30-50px each — perceived as breathing,
-          not as empty zones.
+      {/* Body — fills all leftover vertical space between header and footer.
+          The card itself is `flex-1` so on mobile it grows to fully use the
+          available viewport (no wasted top/bottom margins) and on desktop
+          it caps at 620px (kept centered by the inner column's
+          justify-center) to avoid an absurdly tall rectangle.
           Atmospheric wall of cards lives INSIDE main so it never bleeds
           into the header/footer zones. */}
-      <main className="relative flex-1 min-h-0 flex flex-col items-center justify-center px-4 py-3">
+      <main className="relative flex-1 min-h-0 flex flex-col items-center px-4 pt-2 pb-3">
         <LandingBackground />
-        <div className="relative z-10 w-full max-w-md flex flex-col">
+        <div className="relative z-10 w-full max-w-md flex flex-col flex-1 min-h-0 justify-center">
           {/* Progress bar only shows during the main flow (steps 0-4).
               In the post-submit bonus, the user already converted —
               the bar would be misleading (5/5 done) or confusing
@@ -149,13 +152,14 @@ export default function ComingSoon() {
             />
           )}
 
-          {/* Card sized tightly so inner content doesn't stretch sparsely.
-              Mobile max 520, sm bumps to 580. Excess viewport space stays
-              outside the card (above/below via main's justify-center). */}
+          {/* Card fills available vertical space inside main (no fixed
+              height → no overflow on small phones, no waste on tall
+              viewports). max-h caps it on desktop so the card stays
+              card-shaped instead of stretching into a billboard. */}
           <div
             className={cn(
-              "relative h-[520px] sm:h-[580px] max-h-[calc(100dvh-180px)]",
-              !inBonus && "mt-5 sm:mt-6",
+              "relative flex-1 min-h-0 max-h-[620px] w-full",
+              !inBonus && "mt-3 sm:mt-4",
             )}
           >
             {/* Peek stack behind the active card — same pattern as the real
@@ -207,7 +211,10 @@ export default function ComingSoon() {
         </div>
       </main>
 
-      <footer className="shrink-0 px-4 py-4 border-t border-grey text-[11px] text-muted text-center">
+      <footer
+        className="shrink-0 px-4 pt-3 pb-3 border-t border-grey text-[11px] text-muted text-center"
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
         Hecho en España · 2026 ·{" "}
         <a href="/legal" className="hover:text-white underline-offset-2 hover:underline">
           Privacidad
